@@ -11,6 +11,12 @@
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
+                       @if ($errors->has('username'))
+                            <span style="color:red;">
+                                {{ $errors->first('username') }}
+                            </span>
+                        @endif
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="username" class="col-md-4 control-label">Username</label>
 

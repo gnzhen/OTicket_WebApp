@@ -25,6 +25,23 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
+                            <label for="role_id" class="col-md-4 control-label">User Role</label>
+
+                            <div class="col-md-6">
+                                <select class="btn btn-default dropdown-toggle" name="role_id">
+                                        <option value="0">Admin</option>
+                                        <option value="1">Counter Staff</option>
+                                </select>
+
+                                @if ($errors->has('role_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('role_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
