@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('/home');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -27,3 +27,9 @@ Route::resources([
     'display' => 'DisplayController',
     'printer' => 'PrinterController',
 ]);
+
+/* AppController */
+Route::get('getSidebarSession', 'AppController@getSidebarSession');
+Route::get('setSidebarSession', 'AppController@setSidebarSession');
+Route::get('authCheck', 'AppController@authCheck');
+Route::get('checkTimeout', 'AppController@checkTimeout');
