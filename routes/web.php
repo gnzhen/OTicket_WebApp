@@ -11,25 +11,27 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('home');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () { return redirect('home'); });
+	Route::get('/home', 'HomeController@index')->name('home');
+
+	Route::resources([
+	    'config' => 'ConfigController',
+	    'manage' => 'ManageController',
+	    'report' => 'ReportController',
+	    'counter' => 'CounterController',
+	    'display' => 'DisplayController',
+	    'printer' => 'PrinterController',
+	]);
+
+	Route::get('getSidebarSession', 'AppController@getSidebarSession');
+	Route::get('setSidebarSession', 'AppController@setSidebarSession');
 });
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::resources([
-    'config' => 'ConfigController',
-    'manage' => 'ManageController',
-    'report' => 'ReportController',
-    'counter' => 'CounterController',
-    'display' => 'DisplayController',
-    'printer' => 'PrinterController',
-]);
 
 /* AppController */
-Route::get('getSidebarSession', 'AppController@getSidebarSession');
-Route::get('setSidebarSession', 'AppController@setSidebarSession');
 Route::get('authCheck', 'AppController@authCheck');
 Route::get('checkTimeout', 'AppController@checkTimeout');

@@ -1,127 +1,61 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'OTicket') }} @yield('title')</title>
 
+
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    
+    {{-- <!-- MDB -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/css/mdb.min.css"/> --}}
+
+    {{-- Bootstrap 4 --}}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 </head>
 <body>
-    <div class="wrapper">
+    <div class="wrapper">   
         {{-- Top Nav Bar--}}
+        @include('partials._topbar')
 
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+        <div class="container-fluid">
+            @yield('content')
+        </div>
 
-                    <!-- Collapsed Hamburger -->
-                    @auth
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sidebar" aria-expanded="false">
-                            <span class="sr-only">Toggle Navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    @endauth
+        {{-- Sidebar --}}
 
-                    <!-- Branding Image -->
-                    <div class="header-sidebar">
-                        <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name') }}</a>
-                    </div>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    {{-- <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul> --}}
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        @yield('content')
+        @include('partials._sidebar')
     </div>
 
-    {{-- Sidebar --}}
+    {{-- <!-- MDB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script> --}}
 
-    <nav class="sidebar" id="sidebar">
-        
-        <!-- Sidebar Header -->
-        <div class="sidebar-header">
+     {{-- Bootstrap 4 --}}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-           <ul class="nav navbar-nav">
-                @auth
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                            {{ Auth::user()->username }} <span class="caret"></span>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                @endauth
-            </ul>
-        </div>
-
-        <!-- Sidebar Links -->
-        <div class="sidebar-body">
-            <ul class="list-unstyled components" role="button">
-            <li class="{{ Request::is('home') ? "active" : "" }}"><a href="{{ route('home') }}">Home</a></li>
-
-            <!-- Link with dropdown items -->
-            <li class="{{ (Request::is('config')||Request::is('manage')||Request::is('report')) ? "active" : "" }}">
-                 <a href="#" class="dropdown-toggle" data-target="#adminMenu" data-toggle="collapse" aria-expanded="false">Admin &nbsp; 
-                    <span class="caret"></span>
-                </a> 
-
-                <ul class="collapse list-unstyled" id="adminMenu">
-                    <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configuration</a></li>
-                    <li class="{{ Request::is('manage') ? "active" : "" }}"><a href="{{ route('manage.index') }}">Manage Users</a></li>
-                    <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
-                </ul>
-
-            <li class="{{ Request::is('counter') ? "active" : "" }}"><a href="{{ route('counter.index') }}">Counter</a></li>
-            <li class="{{ Request::is('display') ? "active" : "" }}"><a href="{{ route('display.index') }}">Caller Display</a></li>
-            <li class="{{ Request::is('printer') ? "active" : "" }}"><a href="{{ route('printer.index') }}">Ticket Printer</a></li>
-        </ul>
-        </div>
-    </nav>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     <script src="{{ asset('js/custom.js') }}"></script>
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </body>
 </html>
