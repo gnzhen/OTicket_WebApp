@@ -1,0 +1,190 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+body {
+    color: #636b6f;
+    font-family: 'Raleway';
+    font-size: 14px;
+}
+
+.container-fluid {
+    padding-top: 30px;
+}
+
+.container {
+    padding-top: 30px;
+}
+
+.card {
+    margin: 10px;
+}
+
+.btn.btn-dropdown {
+    background-color: white;
+    border-color: #ced4da;
+    color: #636b6f;
+}
+
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid  #d3e0e9;
+}
+
+.wrapper{
+    background-color: #f8f9fa;
+    margin-left: 0;
+    transition: all 0.1s;
+    min-height: 800px;
+    overflow-x: hidden;
+}
+
+.wrapper.active {
+    margin-left: 230px;
+}
+
+.navbar-light .navbar-brand {
+    color: #636b6f;
+}
+
+@media (min-width: 992px){
+    .navbar-toggler {
+        display: inline-block !important;
+    }
+}
+
+.navbar-toggler,
+.navbar-toggler:hover,
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    border: none;
+    outline: none;
+}
+
+
+.dropdown-toggle a,
+.dropdown-toggle a:hover, 
+.dropdown-toggle a:active {
+    text-decoration: none;
+    font-weight: bold;
+    background: white;
+}
+
+#sidebar {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	min-height: 800px;
+	min-width: 230px;
+	max-width: 230px;
+	margin-left: -230px;
+	z-index: 1110;
+    background: white;
+    color: #636b6f;
+    transition: all 0.1s;
+    border-right: 1px solid #d3e0e9;
+}
+
+#sidebar.active {
+    margin-left: 0;
+}
+
+#sidebar .sidebar-header {
+    margin-left: 100px;
+    padding: 15px;
+}
+
+#sidebar .sidebar-body {
+	margin-top: 0; 
+    border-top: 1px solid #d3e0e9;
+}
+
+.card>.card-header {
+    font-size: 16px;
+    background-color: white;
+    margin: auto;
+}
+
+.card>.card-body{
+    font-size: 20px;
+    margin: auto;
+}
+
+.card.card-dashboard {
+    width: 200px;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+#sidebar ul.components {
+	padding-top: 10px;
+}
+
+#sidebar ul p {
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    text-decoration: none;
+    padding: 10px;
+    font-size: 16px;
+    display: block;
+    color: #636b6f !important;
+}
+
+#sidebar ul li a:active,
+#sidebar ul li a:hover {
+    text-decoration: none;
+  	font-weight: bold;
+    background: white;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #636b6f;
+    background: #f5f8fa;
+    text-decoration: none;
+  	font-weight: bold;
+}
+
+ul ul a {
+    font-size: 15px !important;
+    padding-left: 30px !important;
+    background: white;
+}
+
+.table>thead, .table>tbody {
+    background-color: white;
+}
+
+.div-table, .div-dashboard {
+    margin: 20px;
+}
+
+.div-table {
+    position: relative;
+    overflow-x: scroll;
+}
+
+/*MDB Table*/
+table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after {
+   padding: 5px;
+}
+.dataTables_wrapper .mdb-select {
+    border: none;
+    float: left;
+}
+.dataTables_wrapper .mdb-select.form-control {
+    padding-top: 0;
+    margin-top: -1rem;
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+    width: 100px;
+}
+.dataTables_length label {
+    float: left;
+}
+table.dataTable {
+    margin-bottom: 3rem!important;
+}
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: 0;
+}
