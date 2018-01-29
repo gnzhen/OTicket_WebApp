@@ -3,23 +3,14 @@
 @section('title', '| Manage')
 
 @section('content')
-<div class="dataTables_wrapper container-fluid dt-bootstrap4" id="example_wrpper">
-    <div class="row">   
+<div class="row">   
         <div class="col-sm-12 col-md-6">    
             <div class="dataTables_length" id="example_length"> 
                 <h3>Manage Users</h3>
             </div>
         </div> 
     </div>
-    <div class="row">  
-        <div class="col-sm-24 col-md-12">    
-            <div class="dataTables_filter" id="example_filter"> 
-                <label>Search:
-                    <input type="search" class="form-control form-control-sm">
-                </label>
-            </div>
-        </div>
-    </div>
+    
     <div class="row">   
         <div class="col-sm-12"> 
             <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
@@ -494,38 +485,4 @@
             </table>
         </div>
     </div> 
-
-    <div class="row">  
-        <div class="col-sm-24 col-md-12">    
-            <div class="dataTables_paginate paging_simple_numbers" id="example_paginate"> 
-                <ul class="pagination"> 
-                    <li class="paginate_button page_item previous" id="example_previous"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="0" tabindex="0">Previous</a>
-                    </li>
-                    <li class="paginate_button page_item active" id="example_previous"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="1" tabindex="0">1</a>
-                    </li>
-                    <li class="paginate_button page_item"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="2" tabindex="0">2</a>
-                    </li>
-                    <li class="paginate_button page_item"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="3" tabindex="0">3</a>
-                    </li>
-                    <li class="paginate_button page_item"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="4" tabindex="0">4</a>
-                    </li>
-                    <li class="paginate_button page_item"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="5" tabindex="0">5</a>
-                    </li>
-                    <li class="paginate_button page_item"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="6" tabindex="0">6</a>
-                    </li>
-                    <li class="paginate_button page_item next"> 
-                        <a href="#" class="page-link" aria-controls="example" data-dt-idx="7" tabindex="0">Next</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection

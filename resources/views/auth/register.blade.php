@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-header">Register</div>
         <div class="card-body">
-            <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+            <form class="form-horizontal" method="POST" action="{{ route('register') }}" data-parsley-validate="">
                 {{ csrf_field() }}
 
                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
