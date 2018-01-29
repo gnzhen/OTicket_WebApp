@@ -4,6 +4,12 @@ body {
     color: #636b6f;
     font-family: 'Raleway';
     font-size: 14px;
+    background-color: #f8f9fa;
+}
+
+.alert {
+    width: 300px;
+    margin: auto;
 }
 
 .container-fluid {
@@ -81,9 +87,19 @@ body {
     margin-bottom: 30px;
 }
 
+.card.card-report {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .container {
     overflow: hidden;
     padding-bottom: 50px;
+}
+
+.row.row-report, .row.row-tab {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 #sidebar {

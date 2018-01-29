@@ -3,6 +3,7 @@
 @section('title', '| Home')
 
 @section('content')
+
 <div class="row">   
     <div class="col-md-4 offset-1 div-dashboard">
         <div class="row">   
@@ -29,7 +30,7 @@
         </div>
         
         <div class="row">
-            <table id="example" class="table table-responsive-md" cellspacing="0">
+            <table id="dataTable" class="table table-responsive-md" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Branch</th>

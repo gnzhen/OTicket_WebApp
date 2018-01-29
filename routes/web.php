@@ -17,7 +17,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::resources([
 	    'config' => 'ConfigController',
-	    'manage' => 'ManageController',
+	    'user' => 'UserController',
 	    'report' => 'ReportController',
 	    'counter' => 'CounterController',
 	    'display' => 'DisplayController',
@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
+	Route::get('getAllSession', 'AppController@getAllSession');
 });
 
 

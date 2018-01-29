@@ -34,14 +34,14 @@
         <li class="{{ Request::is('home') ? "active" : "" }}"><a href="{{ route('home') }}">Home</a></li>
 
         <!-- Link with dropdown items -->
-        <li class="{{ (Request::is('config')||Request::is('manage')||Request::is('report')) ? "active" : "" }}" id="adminDropdownMenu">
+        <li class="{{ (Request::is('config')||Request::is('user')||Request::is('report')) ? "active" : "" }}" id="adminDropdownMenu">
              <a href="#" class="dropdown-toggle" id="adminDropdown" data-target="#adminMenu" data-toggle="collapse" aria-expanded="false">Admin &nbsp; 
                 <span class="caret"></span>
             </a> 
 
             <ul class="collapse list-unstyled" id="adminMenu">
                 <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configuration</a></li>
-                <li class="{{ Request::is('manage') ? "active" : "" }}"><a href="{{ route('manage.index') }}">Manage Users</a></li>
+                <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
                 <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
             </ul>
 

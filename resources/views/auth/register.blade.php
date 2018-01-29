@@ -2,10 +2,11 @@
 
 @section('content')
 <div class="col-md-6 offset-3">
+
     <div class="card">
         <div class="card-header">Register</div>
         <div class="card-body">
-            <form class="form-horizontal" method="POST" action="{{ route('register') }}" data-parsley-validate="">
+            <form class="form-horizontal" method="POST" action="{{ route('register') }}" >
                 {{ csrf_field() }}
 
                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
@@ -22,7 +23,7 @@
                     </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
                     <label for="role_id" class="col-md-10 control-label">User Role</label>
 
                     <div class="col-md-6">

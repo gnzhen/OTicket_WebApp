@@ -7,7 +7,61 @@ $(document).ready(function () {
     	setSidebarSession(checkSidebar());
     });
 
-    $('#example').DataTable();
+    //session flash
+    getAllSession();
+
+    //close alert
+	window.setTimeout(function() {
+    	$(".alert").fadeTo(500, 0).slideUp(500, function(){
+        	$(this).remove(); 
+    	});
+	}, 1000);
+
+
+    //sorting table
+    $('.dataTable').DataTable();
+
+
+    /* Custom filtering function which will search data in column four between two values */
+	var table = $('.dataTable').DataTable();
+     
+    // Event listener to the two range filtering inputs to redraw on input
+    $('#min, #max').keyup( function() {
+        table.draw();
+    } );
+
+	$.fn.dataTable.ext.search.push(
+	    function( settings, data, dataIndex ) {
+	        var min = parseInt( $('#min').val(), 10 );
+	        var max = parseInt( $('#max').val(), 10 );
+	        var age = parseFloat( data[3] ) || 0; // use data for the age column
+	 
+	        if ( ( isNaN( min ) && isNaN( max ) ) ||
+	             ( isNaN( min ) && age <= max ) ||
+	             ( min <= age   && isNaN( max ) ) ||
+	             ( min <= age   && age <= max ) )
+	        {
+	            return true;
+	        }
+	        return false;
+	    }
+	);
+
+	//table checker
+	$("#mytable #checkall").click(function () {
+        if ($("#mytable #checkall").is(':checked')) {
+            $("#mytable input[type=checkbox]").each(function () {
+                $(this).prop("checked", true);
+            });
+
+        } else {
+            $("#mytable input[type=checkbox]").each(function () {
+                $(this).prop("checked", false);
+            });
+        }
+    });
+    
+    $("[data-toggle=tooltip]").tooltip();
 });
 
 function checkSidebar(){
@@ -51,6 +105,16 @@ function setSidebarSession(status){
 	$.get('setSidebarSession', {'sidebar':status})
 		.done(function(data) {
 			console.log("setsidebar" + data);
+		})
+		.fail(function(xhr, status, error){
+			console.log(xhr);
+		});		
+}
+
+function getAllSession(status){
+	$.get('getAllSession')
+		.done(function(data) {
+			console.log(data);
 		})
 		.fail(function(xhr, status, error){
 			console.log(xhr);
