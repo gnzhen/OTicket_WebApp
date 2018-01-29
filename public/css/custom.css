@@ -12,8 +12,55 @@ body {
     margin: auto;
 }
 
+.btn.btn-add {
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+th.th-email {
+    max-width: 150px;
+}
+
+td.td-email {
+    max-width: 150px;
+    overflow-x: auto;
+}
+
+th.th-password {
+    max-width: 45px;
+}
+
+td.td-password {
+    max-width: 45px;
+    overflow-x: auto;
+}
+
+th.th-branch {
+    max-width: 100px;
+}
+
+td.td-branch {
+    max-width: 100px;
+    overflow-x: auto;
+}
+
+.tab-content {
+    padding-top: 10px;
+    border-right: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #dee2e6;
+    border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+    color: #636b6f;
+}
+
 .container-fluid {
-    padding-top: 30px;
+    /*padding-top: 30px;*/
 }
 
 .container {
