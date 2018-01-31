@@ -44,14 +44,26 @@ td.td-branch {
     overflow-x: auto;
 }
 
+th.th-action {
+    max-width: 40px;
+}
+
+td.td-action {
+    max-width: 40px;
+    overflow-x: auto;
+}
+
 .tab-content {
-    padding-top: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-right: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
     border-left: 1px solid #dee2e6;
+    background-color: white;
 }
 
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-    background-color: #dee2e6;
+    background-color: white;
     border-bottom: none;
 }
 
@@ -158,7 +170,7 @@ td.td-branch {
     min-width: 230px;
     max-width: 230px;
     margin-left: -230px;
-    z-index: 1110;
+    z-index: 1000;
     background: white;
     color: #636b6f;
     transition: all 0.1s;
@@ -234,3 +246,10 @@ ul ul a {
     position: relative;
 }
 
+span.help-block {
+    color: red;
+}
+
+.form-group .btn.btn-primary {
+    margin-top: 10px;
+}

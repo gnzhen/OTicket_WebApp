@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateCountersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,16 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('counters', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('id')->unique();
+            $table->increments('id')->unique();
             $table->string('name');
+            $table->string('branch_service_id');
+            $table->string('staff_username');
             $table->timestamps();
+
+            // $table->foreign('branch_service_id')->references('id')->on('branch_services');
+            // $table->foreign('staff_username')->references('username')->on('users');
         });
     }
 
@@ -28,6 +33,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('counters');
     }
 }

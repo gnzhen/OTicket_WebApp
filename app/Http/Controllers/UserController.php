@@ -25,8 +25,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('username', 'asc')->get();
-        $roles = Role::orderBy('id', 'asc')->get();
+        // $users = User::orderBy('username', 'asc')->get();
+        // $roles = Role::orderBy('id', 'asc')->get();
+
+        $users = User::join('roles', 'roles.id', '=', 'users.role_id');
+            // ->selectRaw('users.username, users.email, roles.name')
+
+            // $table->increments('id');
+            // $table->string('username');
+            // $table->string('email')->unique();
+            // $table->string('password');
+            // $table->integer('role_id')->unsigned();
+            // $table->string('branch_id')->nullable();
 
         return view('user', ['users' => $users]);
     }
@@ -51,7 +61,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            // 'slug' => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
+            'body' => 'required'
+        ]);
+
+
+
+            Session::flash('success', 'A new user is added!');
     }
 
     /**

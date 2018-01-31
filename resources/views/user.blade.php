@@ -3,6 +3,9 @@
 @section('title', '| Manage Users')
 
 @section('content')
+
+@include('partials._modal')
+
 <div class="row">   
     <div class="col-sm-12 col-md-6">    
         <div class="dataTables_length" id="example_length"> 
@@ -29,7 +32,7 @@
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade show active" id="staff">
 
-            <a href="#" class="btn btn-info btn-add"><span>Add Counter Staff</span></a>
+            <button class="btn btn-info btn-add" id="btnAddStaff" data-target="#registerStaffModal"><span>Add Counter Staff</span></button>
           
             <table id="staffTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
                 <thead>
@@ -38,7 +41,7 @@
                         <th class="sorting th-email" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Email</th>
                         <th class="sorting th-branch" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Branch</th>
                         <th class="sorting th-password" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Password</th>
-                        <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
+                        <th class="sorting th-action" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,9 +51,9 @@
                         <td class="td-email"><div>{{ $user->email }}</div></td>
                         <td class="td-branch"><div>{{ $user->branch }}</div></td>
                         <td class="td-password"><div>{{ $user->password }}</div></td>
-                        <td>
-                            <a href="#" class="btn btn-secondary btn-sm"><span>Edit</span></a>
-                            <a href="#" class="btn btn-danger btn-sm"><span>Delete</span></a>
+                        <td class="td-action">
+                            <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
+                            <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
                         </td>
                     </tr>
                 @endforeach
@@ -59,7 +62,7 @@
         </div>
         <div role="tabpanel" class="tab-pane fade" id="admin">
 
-            <a href="#" class="btn btn-info btn-add"><span>Add Counter Staff</span></a>
+            <a href="#" class="btn btn-info btn-add" id="btnAddAdmin"><span>Add Admin</span></a>
           
             <table id="adminTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
                 <thead>
@@ -67,7 +70,7 @@
                         <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Username</th>
                         <th class="sorting th-email" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Email</th>
                         <th class="sorting th-password" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Password</th>
-                        <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
+                        <th class="sorting th-action" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,9 +79,9 @@
                         <td><div>{{ $user->username }}</div></td>
                         <td class="td-email"><div>{{ $user->email }}</div></td>
                         <td class="td-password"><div>{{ $user->password }}</div></td>
-                        <td>
-                            <a href="#" class="btn btn-secondary btn-sm"><span>Edit</span></a>
-                            <a href="#" class="btn btn-danger btn-sm"><span>Delete</span></a>
+                        <td class="td-action">
+                            <a href="#" class="btn btn-secondary btn-sm" id="btnEditAdmin"><span>Edit</span></a>
+                            <a href="#" class="btn btn-danger btn-sm" id="btnDeleteAdmin"><span>Delete</span></a>
                         </td>
                     </tr>
                 @endforeach
@@ -93,7 +96,7 @@
                         <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Username</th>
                         <th class="sorting th-email" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Email</th>
                         <th class="sorting th-password" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Password</th>
-                        <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
+                        <th class="sorting th-action" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,8 +105,8 @@
                         <td><div>{{ $user->username }}</div></td>
                         <td class="td-email"><div>{{ $user->email }}</div></td>
                         <td class="td-password"><div>{{ $user->password }}</div></td>
-                        <td>
-                            <a href="#" class="btn btn-secondary btn-sm"><span>Edit</span></a>
+                        <td class="td-action">
+                            <a href="#" class="btn btn-secondary btn-sm" id="btnEditSuperAdmin"><span>Edit</span></a>
                         </td>
                     </tr>
                 @endforeach

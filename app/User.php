@@ -34,6 +34,17 @@ class User extends Authenticatable
     * Get all the user for a role.
     */
     public function role(){
+
         return $this->belongsTo(Role::class);
+    }
+
+    public function branch(){
+
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function servings(){
+        
+        return $this->hasMany(Serving::class);
     }
 }

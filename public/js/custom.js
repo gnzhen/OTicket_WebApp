@@ -1,4 +1,7 @@
-$(document).ready(function () {
+$.noConflict();
+
+jQuery( document ).ready(function( $ ) {
+  // Code that uses jQuery's $ can follow here.
 
 	setInitialSidebar();
 
@@ -10,13 +13,49 @@ $(document).ready(function () {
     //session flash
     getAllSession();
 
+    $('#btnAddStaff').click(function() {
+		$('#registerStaffModal').modal('show');
+	});
+
+	$('#btnAddAdmin').click(function() {
+		$('#registerAdminModal').modal('show');
+	});
+
+	$('#btnEditStaff').click(function() {
+		$('#updateStaffModal').modal('show');
+	});
+
+	$('#btnEditAdmin').click(function() {
+		$('#updateAdminModal').modal('show');
+	});
+
+	$('#btnEditSuperAdmin').click(function() {
+		$('#updateSuperAdminModal').modal('show');
+	});
+
+	$('#btnDeleteStaff').click(function() {
+		$('#deleteStaffModal').modal('show');
+	});
+
+	$('#btnDeleteAdmin').click(function() {
+		$('#deleteAdminModal').modal('show');
+	});
+
+
+    // $("[data-toggle=tooltip]").tooltip();
+
+});
+
+
+/* Code that uses other library's $ can follow here. */
+
+
     //close alert
 	window.setTimeout(function() {
     	$(".alert").fadeTo(500, 0).slideUp(500, function(){
         	$(this).remove(); 
     	});
 	}, 1000);
-
 
     //sorting table
     $('.dataTable').DataTable();
@@ -60,9 +99,6 @@ $(document).ready(function () {
             });
         }
     });
-    
-    $("[data-toggle=tooltip]").tooltip();
-});
 
 function checkSidebar(){
 	if($('#sidebar').hasClass('active'))
