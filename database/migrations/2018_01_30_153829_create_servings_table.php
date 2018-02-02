@@ -36,6 +36,8 @@ class CreateServingsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('servings');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

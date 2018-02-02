@@ -15,18 +15,19 @@
         </div>
     </div>
 
-    <div class="form-group{{ $errors->has('branch') ? ' has-error' : '' }}">
-        <label for="branch" class="col-md-10 control-label">Branch</label>
+    <div class="form-group{{ $errors->has('branch_id') ? ' has-error' : '' }}">
+        <label for="branch_id" class="col-md-10 control-label">Branch</label>
 
         <div class="col-md-6">
-            <select class="btn btn-dropdown dropdown-toggle" name="branch">
+            <select class="btn btn-dropdown dropdown-toggle" name="branch_id">
+                    <option>-</option>
                     <option value="0">Ampang</option>
                     <option value="1">Sunway</option>
             </select>
 
-            @if ($errors->has('branch'))
+            @if ($errors->has('branch_id'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('branch') }}</strong>
+                    <strong>{{ $errors->first('branch_id') }}</strong>
                 </span>
             @endif
         </div>
@@ -37,7 +38,7 @@
 
         <div class="col-md-6">
             <select class="btn btn-dropdown dropdown-toggle" name="role_id">
-                    <option value="1">Counter Staff</option>
+                    <option value="2">Counter Staff</option>
             </select>
 
             @if ($errors->has('role_id'))

@@ -28,7 +28,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.registerStaff')
+              @include('forms.registerAdmin')
             </div>
         </div>
     </div>

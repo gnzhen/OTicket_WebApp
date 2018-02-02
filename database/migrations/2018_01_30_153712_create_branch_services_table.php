@@ -18,7 +18,7 @@ class CreateBranchServicesTable extends Migration
             $table->string('id')->unique();
             $table->string('branch_id');
             $table->string('service_id');
-            $table->integer('avg_wait_time');
+            $table->integer('avg_wait_time')->nullable();
             $table->integer('default_avg_wait_time');
             $table->timestamps();
         });
@@ -36,6 +36,8 @@ class CreateBranchServicesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('branch_services');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

@@ -17,8 +17,8 @@ class CreateBranchesTable extends Migration
             $table->engine = 'InnoDB';
             $table->string('id')->unique();
             $table->string('name');
-            $table->string('desc');
-            $table->text('service_ids');
+            $table->string('desc')->nullable();
+            $table->text('service_ids')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,8 @@ class CreateBranchesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('branches');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

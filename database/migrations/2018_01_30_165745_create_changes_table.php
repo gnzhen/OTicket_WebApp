@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateChangesTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -18,7 +19,7 @@ class CreateChangesTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->integer('action');
             $table->bigInteger('time');
-            $table->text('ticket_ids');
+            $table->text('ticket_ids')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,8 @@ class CreateChangesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('changes');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

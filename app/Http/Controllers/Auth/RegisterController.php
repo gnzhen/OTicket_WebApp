@@ -7,6 +7,7 @@ use App\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Traits\NullableFields;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/user';
 
     /**
      * Create a new controller instance.
@@ -51,7 +52,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'role_id' => 'required|string|max:255',
+            'role_id' => 'required|integer',
+            'branch_id' => 'string|max:255',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -64,10 +66,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // return User::create([
+        //     'username' => 'gnzhen',
+        //     'email' => 'mioyazhen1996@gmail.com',
+        //     'role_id' => 0,
+        //     'branch_id' => null,
+        //     'password' => bcrypt('qweqwe'),
+        // ]);
+
         return User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'role_id' => $data['role_id'],
+            'branch_id' => $this->nullIfEmpty($data['branch_id']),
             'password' => bcrypt($data['password']),
         ]);
     }

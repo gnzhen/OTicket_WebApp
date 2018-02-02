@@ -14,13 +14,31 @@
             @endif
         </div>
     </div>
+
+    <div class="form-group{{ $errors->has('branch_id') ? ' has-error' : '' }}">
+        <label for="branch_id" class="col-md-10 control-label">Branch</label>
+
+        <div class="col-md-6">
+            <select class="btn btn-dropdown dropdown-toggle" name="branch_id">
+                    <option>-</option>
+                    <option value="0">Ampang</option>
+                    <option value="1">Sunway</option>
+            </select>
+
+            @if ($errors->has('branch_id'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('branch_id') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
     
     <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}" style="display:none;">
         <label for="role_id" class="col-md-10 control-label">User Role</label>
 
         <div class="col-md-6">
             <select class="btn btn-dropdown dropdown-toggle" name="role_id">
-                    <option value="1">Counter Staff</option>
+                    <option value="1">Admin</option>
             </select>
 
             @if ($errors->has('role_id'))

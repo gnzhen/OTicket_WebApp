@@ -30,6 +30,8 @@ class CreateMobileUsersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('mobile_users');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateQueuesTable extends Migration
 {
+    
     /**
      * Run the migrations.
      *
@@ -17,8 +18,8 @@ class CreateQueuesTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
             $table->string('branch_service_id');
-            $table->text('ticket_ids');
-            $table->integer('ticket_serving_now');
+            $table->text('ticket_ids')->nullable();
+            $table->integer('ticket_serving_now')->nullable();
             $table->text('counter_ids');
             $table->timestamps();
 
@@ -33,6 +34,8 @@ class CreateQueuesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('queues');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

@@ -26,7 +26,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
-	Route::get('getAllSession', 'AppController@getAllSession');
 });
 
 
@@ -36,3 +35,4 @@ Auth::routes();
 /* AppController */
 Route::get('authCheck', 'AppController@authCheck');
 Route::get('checkTimeout', 'AppController@checkTimeout');
+Route::get('getAllSession', 'AppController@getAllSession');

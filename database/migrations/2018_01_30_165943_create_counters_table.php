@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateCountersTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -18,7 +19,7 @@ class CreateCountersTable extends Migration
             $table->increments('id')->unique();
             $table->string('name');
             $table->string('branch_service_id');
-            $table->string('staff_username');
+            $table->string('staff_username')->nullable();
             $table->timestamps();
 
             // $table->foreign('branch_service_id')->references('id')->on('branch_services');
@@ -33,6 +34,8 @@ class CreateCountersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('counters');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

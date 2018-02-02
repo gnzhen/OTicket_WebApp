@@ -3,22 +3,59 @@
 @section('title', '| Configurations')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+<div class="row">   
+    <div class="col-md-5 offset-1 div-table">
+        <div class="row">
+            <h3>Branch</h3>
+        </div>
+        
+        <div class="row">
+            <button class="btn btn-info btn-add" id="btnAddBranch" data-target="#addBranchModal"><span>Add Branch</span></button>
 
-                    Configurations
-                </div>
-            </div>
+            <table id="branchTable" class="table table-responsive-md" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Branch</th>
+                        <th>Service</th>
+                        <th>Avg Wait Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kepong</td>
+                        <td>Customer Service</td>
+                        <td>35 min</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-5 offset-1 div-table">
+        <div class="row">
+            <h3>Service</h3>
+        </div>
+        
+        <div class="row">
+            <button class="btn btn-info btn-add" id="btnAddService" data-target="#addServiceModal"><span>Add Service</span></button>
+
+            <table id="serviceTable" class="table table-responsive-md" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Service Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{-- @foreach ($services as $service) --}}
+                    <tr>
+                        <td>S1</td>
+                        <td>Customer Service</td>
+                    </tr>
+                </tbody>
+                {{-- @endforeach --}}
+            </table>
         </div>
     </div>
 </div>
