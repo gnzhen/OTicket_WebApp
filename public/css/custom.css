@@ -363,7 +363,7 @@ input:checked + .slider:before {
 }
 
 /* multi select */
-td select {
+td select.btn {
     padding: 0;
 }
 

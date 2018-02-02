@@ -73,7 +73,7 @@
 
     <button class="btn btn-info btn-sm btn-add" id="btnAddCounter" data-target="#addCounterModal"><span>Add Counter</span></button>
 
-    <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
+     <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
                 <th>Id</th>
@@ -83,6 +83,7 @@
         </thead>
         <tbody>
         {{-- @foreach ($branches as $branch) --}}
+        @for ($i = 0; $i < 10; $i++)
             <tr>
                 <td>C1</td>
                 <td>Counter 1</td>
@@ -92,13 +93,14 @@
                 </td>
             </tr>
         {{-- @endforeach --}}
+        @endfor
         </tbody>
     </table>
 </div>
 
 <div class="row row-space">
     <h4>Branch Service</h4>
-
+    
     <table id="branchServiceTable" class="table table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
@@ -109,6 +111,7 @@
             </tr>
         </thead>
         <tbody>
+        @for ($i = 0; $i < 10; $i++)
         {{-- @foreach ($services as $service) --}}
             <tr>
                 <td>Ampang</td>
@@ -139,8 +142,9 @@
                     <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
                 </td>
             </tr>
-        </tbody>
+        @endfor
         {{-- @endforeach --}}
+        </tbody>
     </table>
 </div>
 
