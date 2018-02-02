@@ -40,7 +40,7 @@
             </a> 
 
             <ul class="collapse list-unstyled" id="adminMenu">
-                <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configuration</a></li>
+                <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configurations</a></li>
                 <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
                 <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
             </ul>

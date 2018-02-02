@@ -30,7 +30,7 @@
         </div>
         
         <div class="row">
-            <table id="dataTable" class="table table-responsive-md" cellspacing="0">
+            <table id="homeTable" class="table table-bordered dataTable" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Branch</th>

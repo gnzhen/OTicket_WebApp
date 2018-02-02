@@ -17,6 +17,10 @@ body {
     margin-bottom: 15px;
 }
 
+td .btn.btn-add {
+    margin-bottom: 0;
+}
+
 th.th-email {
     max-width: 150px;
 }
@@ -161,6 +165,25 @@ td.td-action {
     margin-bottom: 30px;
 }
 
+.row.row-space {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top: 2px dotted #d3e0e9;
+}
+
+.row.row-space h4{
+    margin-left: 15px;
+}
+
+.row.row-space form {
+    margin-top: 15px;
+}
+
+.container h3 {
+    margin-bottom: 15px;
+}
+
+
 #sidebar {
     display: block;
     position: absolute;
@@ -252,4 +275,101 @@ span.help-block {
 
 .form-group .btn.btn-primary {
     margin-top: 10px;
+}
+
+/*table*/
+
+div.div-branch div.dataTables_wrapper div.dataTables_filter input,
+div.div-service div.dataTables_wrapper div.dataTables_filter input,
+div.div-counter div.dataTables_wrapper div.dataTables_filter input,
+div.div-branch-service div.dataTables_wrapper div.dataTables_filter input {
+    width: 130px;
+}
+
+div.div-branch div.dataTables_wrapper div.dataTables_length select,
+div.div-service div.dataTables_wrapper div.dataTables_length select,
+div.div-counter div.dataTables_wrapper div.dataTables_filter select,
+div.div-branch-service div.dataTables_wrapper div.dataTables_filter select {
+    width: 65px;
+}
+
+.div-table.div-service,
+.div-table.div-branch-service {
+    margin-left: 50px;
+}
+
+div.div-branch div.dataTables_wrapper div.dataTables_info,
+div.div-service div.dataTables_wrapper div.dataTables_info, 
+div.div-counter div.dataTables_wrapper div.dataTables_info,
+div.div-branch-service div.dataTables_wrapper div.dataTables_info {
+    display: none;
+}
+
+/* Toggle switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* multi select */
+td select {
+    padding: 0;
+}
+
+td select option {
+    text-align: left;
+    font-size: 14px;
+    padding-bottom: 5px;
+    color: #636b6f;
 }

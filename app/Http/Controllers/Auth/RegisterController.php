@@ -49,13 +49,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'role_id' => 'required|integer',
-            'branch_id' => 'string|max:255',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        var_dump($data);
+
+        // return Validator::make($data, [
+        //     'username' => 'required|string|max:255|unique:users',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'role_id' => 'required|integer',
+        //     'branch_id' => 'string|max:255',
+        //     'password' => 'required|string|min:6|confirmed',
+        // ]);
     }
 
     /**
@@ -66,14 +68,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // return User::create([
-        //     'username' => 'gnzhen',
-        //     'email' => 'mioyazhen1996@gmail.com',
-        //     'role_id' => 0,
-        //     'branch_id' => null,
-        //     'password' => bcrypt('qweqwe'),
-        // ]);
-
         return User::create([
             'username' => $data['username'],
             'email' => $data['email'],

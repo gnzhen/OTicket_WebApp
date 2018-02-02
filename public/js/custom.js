@@ -58,7 +58,11 @@ jQuery( document ).ready(function( $ ) {
 	}, 1000);
 
     //sorting table
-    $('.dataTable').DataTable();
+    /* Set custom pagination entries */
+    $('.dataTable').dataTable({
+	    "iDisplayLength": 3,
+	    "aLengthMenu": [[ 3, 5, 10, -1], [3, 5, 10, "All"]]
+	 });
 
 
     /* Custom filtering function which will search data in column four between two values */
