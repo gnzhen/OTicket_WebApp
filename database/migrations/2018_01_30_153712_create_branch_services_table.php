@@ -22,11 +22,6 @@ class CreateBranchServicesTable extends Migration
             $table->integer('default_avg_wait_time');
             $table->timestamps();
         });
-
-        // Schema::table('branch_services', function($table) {
-        //     $table->foreign('branch_id')->references('id')->on('branches');
-        //     $table->foreign('service_id')->references('id')->on('services');
-        // });
     }
 
     /**

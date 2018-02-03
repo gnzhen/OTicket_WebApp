@@ -13,6 +13,7 @@ jQuery( document ).ready(function( $ ) {
     //session flash
     getAllSession();
 
+    /* Show different modal form on button click */
     $('#btnAddStaff').click(function() {
 		$('#registerStaffModal').modal('show');
 	});
@@ -39,6 +40,26 @@ jQuery( document ).ready(function( $ ) {
 
 	$('#btnDeleteAdmin').click(function() {
 		$('#deleteAdminModal').modal('show');
+	});
+
+	$('#btnAddBranch').click(function() {
+		$('#addBranchModal').modal('show');
+	});
+
+	$('#btnAddService').click(function() {
+		$('#addServiceModal').modal('show');
+	});
+
+	$('#btnAddCounter').click(function() {
+		$('#addCounterModal').modal('show');
+	});
+
+	$('#btnAddBranchService').click(function() {
+		$('#addBranchServiceModal').modal('show');
+	});
+
+	$('#btnAddBranchCounter').click(function() {
+		$('#addBranchCounterModal').modal('show');
 	});
 
 
@@ -103,6 +124,10 @@ jQuery( document ).ready(function( $ ) {
             });
         }
     });
+
+
+
+/* Functions */
 
 function checkSidebar(){
 	if($('#sidebar').hasClass('active'))

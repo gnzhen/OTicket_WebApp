@@ -19,6 +19,7 @@ class CreateBranchesTable extends Migration
             $table->string('name');
             $table->string('desc')->nullable();
             $table->text('service_ids')->nullable();
+            $table->text('counter_ids')->nullable();
             $table->timestamps();
         });
     }

@@ -22,10 +22,6 @@ class CreateServingsTable extends Migration
             $table->bigInteger('serve_time');
             $table->bigInteger('done_time');
             $table->timestamps();
-
-            // $table->foreign('ticket_id')->references('id')->on('tickets');
-            // $table->foreign('staff_username')->references('username')->on('users');
-            // $table->foreign('counter_id')->references('id')->on('counters');
         });
     }
 

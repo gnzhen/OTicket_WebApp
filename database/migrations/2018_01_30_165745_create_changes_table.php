@@ -17,7 +17,7 @@ class CreateChangesTable extends Migration
         Schema::create('changes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
-            $table->integer('action');
+            $table->String('change');
             $table->bigInteger('time');
             $table->text('ticket_ids')->nullable();
             $table->timestamps();

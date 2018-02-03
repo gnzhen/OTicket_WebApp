@@ -4,9 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCountersTable extends Migration
+class CreateBranchCountersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,10 +13,11 @@ class CreateCountersTable extends Migration
      */
     public function up()
     {
-        Schema::create('counters', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->increments('id')->unique();
-            $table->string('name');
+        Schema::create('branch_counters', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('branch_id');
+            $table->integer('counter_id');
+            $table->string('staff_username')->nullable();
             $table->timestamps();
         });
     }
@@ -29,8 +29,6 @@ class CreateCountersTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('counters');
-        Schema::enableForeignKeyConstraints(); 
+        Schema::dropIfExists('branch_counters');
     }
 }

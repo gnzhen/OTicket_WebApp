@@ -21,11 +21,9 @@ class CreateTicketsTable extends Migration
             $table->unsignedBigInteger('queue_id')->index();
             $table->integer('wait_time');
             $table->integer('ppl_ahead');
-            $table->string('username');
+            $table->string('customer_username');
             $table->integer('postponed');
             $table->timestamps();
-
-            // $table->foreign('queue_id')->references('id')->on('queues');
         });
     }
 

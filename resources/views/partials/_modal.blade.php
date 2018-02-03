@@ -122,3 +122,58 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="addBranchModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Branch</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.addBranch')
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addServiceModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Service</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.addService')
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCounterModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Counter</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.addCounter')
+            </div>
+        </div>
+    </div>
+</div>
+
