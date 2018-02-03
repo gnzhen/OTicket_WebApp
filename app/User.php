@@ -48,4 +48,9 @@ class User extends Authenticatable
         
         return $this->hasMany(Serving::class);
     }
+
+    public function branchCounter(){
+        
+        return $this->belongsTo(BranchCounter::class);
+    }
 }

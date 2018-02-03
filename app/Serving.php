@@ -14,7 +14,7 @@ class Serving extends Model
 
     public function ticket(){
 
-    	return $this->hasOne(Ticket::class);
+    	return $this->belongsTo(Ticket::class);
     }
 
     public function user(){

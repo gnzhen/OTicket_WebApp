@@ -9,12 +9,12 @@ class Queue extends Model
     //
     public function branchService(){
 
-    	return $this->hasOne(BranchService::class);
+    	return $this->belongsTo(BranchService::class);
     }
 
-    public function counters(){
+    public function branchCounters(){
 
-    	return $this->belongsToMany(Counter::class);
+    	return $this->belongsToMany(BranchCounter::class);
     }
 
     public function tickets(){

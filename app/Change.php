@@ -9,6 +9,6 @@ class Change extends Model
     //
     public function tickets(){
     	
-    	return $this->hasMany(Ticket::class);
+    	return $this->belongsToMany(Ticket::class);
     }
 }

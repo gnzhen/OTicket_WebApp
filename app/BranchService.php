@@ -18,11 +18,6 @@ class BranchService extends Model
     	return $this->belongsTo(Service::class);
     }
 
-    public function counters(){
-
-    	return $this->hasMany(Counter::class);
-    }
-
     public function queue(){
 
     	return $this->hasOne(Queue::class);
