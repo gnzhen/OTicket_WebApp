@@ -14,9 +14,10 @@ class CreateBranchCountersTable extends Migration
     public function up()
     {
         Schema::create('branch_counters', function (Blueprint $table) {
-            $table->increments('id');
+            $table->engine = 'InnoDB';
+            $table->string('id')->unique();
             $table->string('branch_id');
-            $table->integer('counter_id');
+            $table->string('counter_id');
             $table->string('staff_username')->nullable();
             $table->timestamps();
         });
@@ -29,6 +30,8 @@ class CreateBranchCountersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('branch_counters');
+        Schema::enableForeignKeyConstraints(); 
     }
 }

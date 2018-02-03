@@ -16,7 +16,7 @@ class CreateCountersTable extends Migration
     {
         Schema::create('counters', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id')->unique();
+            $table->string('id')->unique();
             $table->string('name');
             $table->timestamps();
         });

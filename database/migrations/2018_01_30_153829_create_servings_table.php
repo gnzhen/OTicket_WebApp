@@ -18,7 +18,7 @@ class CreateServingsTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('ticket_id')->index();
             $table->string('staff_username');
-            $table->unsignedInteger('counter_id');
+            $table->string('branch_counter_id');
             $table->bigInteger('serve_time');
             $table->bigInteger('done_time');
             $table->timestamps();
