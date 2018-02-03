@@ -278,6 +278,9 @@ span.help-block {
 }
 
 /*table*/
+table.dataTable {
+    border-collapse: collapse !important;
+}
 
 div.div-branch div.dataTables_wrapper div.dataTables_filter input,
 div.div-service div.dataTables_wrapper div.dataTables_filter input,
@@ -374,3 +377,4 @@ td select option {
     padding-right: 20px;
     color: #636b6f;
 }
+

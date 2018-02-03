@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\AppController;
 use App\Branch;
 use App\Service;
 use App\Counter;
+use App\BranchCounter;
+use App\BranchService;
 
 class ConfigController extends Controller
 {
@@ -26,11 +29,20 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        $branches = Branch::select('id as branch_id', 'name', 'desc')->orderBy('branch_id', 'asc')->get();
-        $services = Service::select('id as service_id', 'name')->orderBy('service_id', 'asc')->get();
-        $counters = Counter::select('id as counter_id', 'name')->orderBy('counter_id', 'asc')->get();
+        $branches = Branch::select('id as branch_id', 'name', 'desc')->get();
+        $services = Service::select('id as service_id', 'name')->get();
+        $counters = Counter::select('id as counter_id', 'name')->get();
+        $waitTimeStr = AppController::secToString(1150);
+        $branchCounters = BranchCounter::join('branches', 'branches.id', '=', 'branch_counters.branch_id')
+            ->join('counters', 'counters.id', '=', 'branch_counters.counter_id')
+            ->select('branch_counters.*', 'branches.name as branch_name', 'counters.name as counter_name')
+            ->get();
+        $branchServices = BranchService::join('branches', 'branches.id', '=', 'branch_services.branch_id')
+            ->join('services', 'services.id', '=', 'branch_services.service_id')
+            ->select('branch_services.*', 'branches.name as branch_name', 'services.name as service_name')
+            ->get();
 
-        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters);
+        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters)->withBranchCounters($branchCounters)->withBranchServices($branchServices)->withAppController(new AppController);
     }
 
     /**
@@ -38,6 +50,7 @@ class ConfigController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         //

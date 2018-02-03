@@ -29,4 +29,18 @@ class AppController extends Controller
 
 		return $request->session()->all();
 	}
+
+	/** 
+	 * Convert wait time in seconds
+	 * to a proper string for display purpose.
+	 */
+
+	public static function secToString($seconds) {
+		$hours = floor($seconds / 3600);
+  		$minutes = floor(($seconds / 60) % 60);
+  		$seconds = $seconds % 60;
+  
+  		return $hours > 0 ? "$hours hr $minutes min" : ($minutes > 0 ? "$minutes min $seconds sec" : "$seconds sec");
+	}
+
 }

@@ -93,54 +93,137 @@
 </div>
 
 <div class="row row-space">
-    <h4>Branch Service</h4>
+    <h4>Branch Counter</h4>
 
-    <table id="branchServiceTable" class="table table-bordered dataTable" cellspacing="0">
+    <button class="btn btn-info btn-sm btn-add" id="btnAddCounter" data-target="#addCounterModal"><span>Add Counter to branch</span></button>
+
+     <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Branch</th>
-                <th>Service</th>
                 <th>Counter</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-        @for ($i = 0; $i < 10; $i++)
-        {{-- @foreach ($services as $service) --}}
+        @foreach ($branchCounters as $branchCounter)
             <tr>
-                <td>Ampang</td>
-                <td>
-                    <select multiple class="btn" name="role_id">
-                        <option>Customer Service</option>
-                        <option>Deposit</option>
-                        <option>Other serevices</option>
-                        <option>Customer Service</option>
-                        <option>Deposit</option>
-                        <option>Other serevices</option>
-                    </select>
-                    <button class="btn btn-info btn-sm btn-add" id="btnAddCounter" data-target="#addCounterModal"><span>Add</span></button>
-                </td>
-                <td>
-                    <select multiple class="btn" name="role_id">
-                        <option>Counter 1</option>
-                        <option>Counter 2</option>
-                        <option>Counter 3</option>
-                        <option>Counter 1</option>
-                        <option>Counter 2</option>
-                        <option>Counter 3</option>
-                    </select>
-                    <button class="btn btn-info btn-sm btn-add" id="btnAddCounter" data-target="#addCounterModal"><span>Add</span></button>
-                </td>
+                <td>{{ $branchCounter->branch_counter_id }}</td>
+                <td>{{ $branchCounter->branch_name }} ({{ $branchCounter->branch_id }}</td>
+                <td>{{ $branchCounter->counter_name }} ({{ $branchCounter->counter_id }})</td>
                 <td class="td-action">
                     <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
                     <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
                 </td>
             </tr>
-        @endfor
-        {{-- @endforeach --}}
+        @endforeach
         </tbody>
     </table>
 </div>
+
+
+<div class="row row-space">
+    <h4>Branch Service</h4>
+
+    <table id="branchServiceTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th rowspan="2">Branch</th>
+                <th colspan="3">Service</th>
+                <th rowspan="2">Counter</th>
+                <th rowspan="2">Action</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <th>Default time</th>
+                <th>System time</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach ($branchServices as $branchService)
+        {{-- {{ $appController->secToString($branchServices[0]->default_avg_wait_time) }} --}}
+            <tr>
+                <td>
+                    {{ $branchService->branch_name }} ({{ $branchService->branch_id }})
+                </td>
+                <td>
+                    {{ $branchService->service_name }} ({{ $branchService->service_id }})
+                </td>
+                <td>
+                    {{ $appController->secToString($branchService->default_avg_wait_time) }}
+                </td>
+                <td>
+                    {{ $branchService->avg_wait_time == 'null' ? ($appController->secToString($branchService->avg_wait_time)) : '-' }}
+                </td>
+                {{-- <td>
+                    <div style="max-height: 200px;overflow-y:scroll;">
+                        @foreach ($services as $service)
+                        <tr>
+                            <td>{{ $service->name }} ({{ $service->service_id }})</td>
+                            <td>30 min</td>
+                            <td>30 min</td>
+                        </tr>
+                        @endforeach
+                    </div>
+                </td> --}}
+
+                    {{-- <select multiple class="btn" name="role_id">
+                        <option>Customer Service</option>
+                        <option>Deposit</option>
+                        <option>Other serevices</option>
+                        <option>Customer Service</option>
+                        <option>Deposit</option>
+                        <option>Other serevices</option>
+                    </select> --}}
+                
+                    {{-- <select multiple class="btn" name="role_id">
+                        <option>Counter 1</option>
+                        <option>Counter 2</option>
+                        <option>Counter 3</option>
+                        <option>Counter 1</option>
+                        <option>Counter 2</option>
+                        <option>Counter 3</option>
+                    </select> --}}
+                <td>
+                    Counter 1
+                </td>
+                <td class="td-action">
+                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
+                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                </td>
+            </tr>{{-- 
+            <tr>
+                <td>bla</td>
+                <td>bla</td>
+                <td>bla</td>
+            </tr> --}}
+            {{-- @foreach ($services as $key => $service)
+            @if($key > 0)
+                <tr>
+                    <td>
+                        {{ $services[0]->name }} ({{ $services[0]->service_id }})
+                    </td>
+                    <td>
+                        30min
+                    </td>
+                    <td>
+                        30min
+                    </td>
+                    <td>
+                        Counter {{ $key }}
+                    </td>
+                </tr>
+            @endif
+            @endforeach --}}
+        @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+<p>{{ $branchServices[0] }}</p>
+
 
 <div class="row row-space">
     <div class="container-fluid">
