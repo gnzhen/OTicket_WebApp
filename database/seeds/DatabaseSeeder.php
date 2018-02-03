@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             BranchesTableSeeder::class,
             ServicesTableSeeder::class,
+            CountersTableSeeder::class,
             BranchServicesTableSeeder::class,
             BranchCountersTableSeeder::class,
         ]);

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Branch;
+use App\Service;
+use App\Counter;
 
 class ConfigController extends Controller
 {
@@ -23,7 +26,11 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        return view('configuration');
+        $branches = Branch::select('id as branch_id', 'name', 'desc')->orderBy('branch_id', 'asc')->get();
+        $services = Service::select('id as service_id', 'name')->orderBy('service_id', 'asc')->get();
+        $counters = Counter::select('id as counter_id', 'name')->orderBy('counter_id', 'asc')->get();
+
+        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters);
     }
 
     /**

@@ -25,8 +25,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $users = User::orderBy('username', 'asc')->get();
-        // $roles = Role::orderBy('id', 'asc')->get();
 
         $users = User::orderBy('username')->get();
 

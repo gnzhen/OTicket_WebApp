@@ -21,19 +21,17 @@
             </tr>
         </thead>
         <tbody>
-        @for ($i = 0; $i < 100; $i++)
-        {{-- @foreach ($branches as $branch) --}}
+        @foreach ($branches as $branch)
             <tr>
-                <td>B1</td>
-                <td>Kepong</td>
-                <td>20, JLN Kepong 4/7, Kepong Ulu</td>
+                <td>{{ $branch->branch_id }}</td>
+                <td>{{ $branch->name }}</td>
+                <td>{{ $branch->desc }}</td>
                 <td class="td-action">
                     <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
                     <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
                 </td>
             </tr>
-        {{-- @endforeach --}}
-        @endfor
+        @endforeach
         </tbody>
     </table>
 </div>
@@ -52,18 +50,16 @@
             </tr>
         </thead>
         <tbody>
-        @for ($i = 0; $i < 100; $i++)
-        {{-- @foreach ($branches as $branch) --}}
+        @foreach ($services as $service)
             <tr>
-                <td>S1</td>
-                <td>Customer Service</td>
+                <td>{{ $service->service_id }}</td>
+                <td>{{ $service->name }}</td>
                 <td class="td-action">
                     <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
                     <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
                 </td>
             </tr>
-        {{-- @endforeach --}}
-        @endfor
+        @endforeach
         </tbody>
     </table>
 </div>
@@ -82,25 +78,23 @@
             </tr>
         </thead>
         <tbody>
-        {{-- @foreach ($branches as $branch) --}}
-        @for ($i = 0; $i < 10; $i++)
+        @foreach ($counters as $counter)
             <tr>
-                <td>C1</td>
-                <td>Counter 1</td>
+                <td>{{ $counter->counter_id }}</td>
+                <td>{{ $counter->name }}</td>
                 <td class="td-action">
                     <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
                     <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
                 </td>
             </tr>
-        {{-- @endforeach --}}
-        @endfor
+        @endforeach
         </tbody>
     </table>
 </div>
 
 <div class="row row-space">
     <h4>Branch Service</h4>
-    
+
     <table id="branchServiceTable" class="table table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
