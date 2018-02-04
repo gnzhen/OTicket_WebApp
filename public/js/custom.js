@@ -80,12 +80,19 @@ jQuery( document ).ready(function( $ ) {
 
     //sorting table
     /* Set custom pagination entries */
+    
     $('.dataTable').dataTable({
 	    "iDisplayLength": 3,
 	    "aLengthMenu": [[ 3, 5, 10, -1], [3, 5, 10, "All"]]
 	 });
 
+    $('#branchServiceTable').dataTable({
+    	destroy: true,
+	    "columnDefs": [{ "orderable": false, "targets": [2,3] }],
+      	"rowsGroup": [0, 4]
+	 });
 
+	
     /* Custom filtering function which will search data in column four between two values */
 	var table = $('.dataTable').DataTable();
      

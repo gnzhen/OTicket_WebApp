@@ -8,6 +8,7 @@ class Branch extends Model
 {
     protected $casts = [
         'service_ids' => 'array',
+        'counter_ids' => 'array',
     ];
 
     public function branchServices(){

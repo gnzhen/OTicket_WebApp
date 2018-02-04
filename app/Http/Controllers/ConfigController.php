@@ -35,11 +35,24 @@ class ConfigController extends Controller
         $waitTimeStr = AppController::secToString(1150);
         $branchCounters = BranchCounter::join('branches', 'branches.id', '=', 'branch_counters.branch_id')
             ->join('counters', 'counters.id', '=', 'branch_counters.counter_id')
-            ->select('branch_counters.*', 'branches.name as branch_name', 'counters.name as counter_name')
+            ->select(
+                'branch_counters.id as branch_counter_id', 
+                'branch_counters.branch_id', 
+                'branches.name as branch_name',
+                'branch_counters.counter_id', 
+                'counters.name as counter_name',
+                'branch_counters.staff_username')
             ->get();
         $branchServices = BranchService::join('branches', 'branches.id', '=', 'branch_services.branch_id')
             ->join('services', 'services.id', '=', 'branch_services.service_id')
-            ->select('branch_services.*', 'branches.name as branch_name', 'services.name as service_name')
+            ->select(
+                'branch_services.id as branch_services_id', 
+                'branch_services.branch_id',  
+                'branches.name as branch_name', 
+                'branch_services.service_id', 
+                'services.name as service_name',
+                'branch_services.avg_wait_time', 
+                'branch_services.default_avg_wait_time')
             ->get();
 
         return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters)->withBranchCounters($branchCounters)->withBranchServices($branchServices)->withAppController(new AppController);

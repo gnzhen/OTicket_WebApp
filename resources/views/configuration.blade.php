@@ -10,30 +10,32 @@
     <h4>Branch</h4>
 
     <button class="btn btn-info btn-sm btn-add" id="btnAddBranch" data-target="#addBranchModal"><span>Add Branch</span></button>
-
-    <table id="branchTable" class="table table-bordered dataTable" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Branch Name</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach ($branches as $branch)
-            <tr>
-                <td>{{ $branch->branch_id }}</td>
-                <td>{{ $branch->name }}</td>
-                <td>{{ $branch->desc }}</td>
-                <td class="td-action">
-                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    
+    <div class="col-md-10">
+        <table id="branchTable" class="table table-bordered dataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Branch Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach ($branches as $branch)
+                <tr>
+                    <td>{{ $branch->branch_id }}</td>
+                    <td>{{ $branch->name }}</td>
+                    <td>{{ $branch->desc }}</td>
+                    <td class="td-action">
+                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
+                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="row row-space">   
@@ -41,27 +43,29 @@
 
     <button class="btn btn-info btn-sm btn-add" id="btnAddService" data-target="#addServiceModal"><span>Add Service</span></button>
 
-    <table id="serviceTable" class="table table-bordered dataTable" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Service Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach ($services as $service)
-            <tr>
-                <td>{{ $service->service_id }}</td>
-                <td>{{ $service->name }}</td>
-                <td class="td-action">
-                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    <div class="col-md-10">
+        <table id="serviceTable" class="table table-bordered dataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Service Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach ($services as $service)
+                <tr>
+                    <td>{{ $service->service_id }}</td>
+                    <td>{{ $service->name }}</td>
+                    <td class="td-action">
+                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
+                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="row row-space">
@@ -69,52 +73,60 @@
 
     <button class="btn btn-info btn-sm btn-add" id="btnAddCounter" data-target="#addCounterModal"><span>Add Counter</span></button>
 
-     <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Counter Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach ($counters as $counter)
-            <tr>
-                <td>{{ $counter->counter_id }}</td>
-                <td>{{ $counter->name }}</td>
-                <td class="td-action">
-                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    <div class="col-md-10">
+        <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Counter Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach ($counters as $counter)
+                <tr>
+                    <td>{{ $counter->counter_id }}</td>
+                    <td>{{ $counter->name }}</td>
+                    <td class="td-action">
+                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
+                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="row row-space">
     <h4>Branch Counter</h4>
 
-    <button class="btn btn-info btn-sm btn-add" id="btnAddCounter" data-target="#addCounterModal"><span>Add Counter to branch</span></button>
-
-     <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
+    <table id="counterBranchTable" class="table table-bordered dataTable" cellspacing="0">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Branch</th>
                 <th>Counter</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-        @foreach ($branchCounters as $branchCounter)
+        @foreach ($branches as $branch)
             <tr>
-                <td>{{ $branchCounter->branch_counter_id }}</td>
-                <td>{{ $branchCounter->branch_name }} ({{ $branchCounter->branch_id }}</td>
-                <td>{{ $branchCounter->counter_name }} ({{ $branchCounter->counter_id }})</td>
+                <td>{{ $branch->name }} ({{ $branch->branch_id }})</td>
+                <td>
+                    <select multiple class="btn" name="role_id">
+                        @foreach ($branchCounters as $branchCounter)
+                        @if($branch->branch_id == $branchCounter->branch_id)
+                        <option>
+                            {{ $branchCounter->counter_name }} ({{ $branchCounter->counter_id }})
+                        </option>
+                        @endif
+                        @endforeach
+                    </select>
+                </td>
                 <td class="td-action">
-                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                    <a href="#" class="btn btn-info btn-sm" id="btnAddBranchCounter"><span>Add Counter to Branch</span></a>
+                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchCounter"><span>Delete</span></a>
                 </td>
             </tr>
         @endforeach
@@ -122,6 +134,9 @@
     </table>
 </div>
 
+@foreach($branchServices as $branchService)
+<p>{{ $branchService }}</p>
+@endforeach
 
 <div class="row row-space">
     <h4>Branch Service</h4>
@@ -131,7 +146,6 @@
             <tr>
                 <th rowspan="2">Branch</th>
                 <th colspan="3">Service</th>
-                <th rowspan="2">Counter</th>
                 <th rowspan="2">Action</th>
             </tr>
             <tr>
@@ -142,13 +156,14 @@
         </thead>
         <tbody>
         @foreach ($branchServices as $branchService)
-        {{-- {{ $appController->secToString($branchServices[0]->default_avg_wait_time) }} --}}
             <tr>
                 <td>
-                    {{ $branchService->branch_name }} ({{ $branchService->branch_id }})
+                    {{ $branchService->branch_name }} 
+                    ({{ $branchService->branch_id }})
                 </td>
                 <td>
-                    {{ $branchService->service_name }} ({{ $branchService->service_id }})
+                    {{ $branchService->service_name }} 
+                    ({{ $branchService->service_id }})
                 </td>
                 <td>
                     {{ $appController->secToString($branchService->default_avg_wait_time) }}
@@ -186,11 +201,9 @@
                         <option>Counter 3</option>
                     </select> --}}
                 <td>
-                    Counter 1
-                </td>
-                <td class="td-action">
-                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                    <a href="#" class="btn btn-info btn-sm" id="btnAddBranchService"><span>Add Service to Branch</span></a>
+                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService"><span>Edit</span></a>
+                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService"><span>Delete</span></a>
                 </td>
             </tr>{{-- 
             <tr>
@@ -220,9 +233,6 @@
         </tbody>
     </table>
 </div>
-
-
-<p>{{ $branchServices[0] }}</p>
 
 
 <div class="row row-space">
