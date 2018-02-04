@@ -33,17 +33,17 @@ class ConfigController extends Controller
         $services = Service::select('id as service_id', 'name')->get();
         $counters = Counter::select('id as counter_id', 'name')->get();
         $waitTimeStr = AppController::secToString(1150);
-        $branchCounters = BranchCounter::join('branches', 'branches.id', '=', 'branch_counters.branch_id')
+        $branchCounters = BranchCounter::leftJoin('branches', 'branches.id', '=', 'branch_counters.branch_id')
             ->join('counters', 'counters.id', '=', 'branch_counters.counter_id')
             ->select(
                 'branch_counters.id as branch_counter_id', 
-                'branch_counters.branch_id', 
+                'branches.id as branch_id', 
                 'branches.name as branch_name',
                 'branch_counters.counter_id', 
                 'counters.name as counter_name',
                 'branch_counters.staff_username')
             ->get();
-        $branchServices = BranchService::join('branches', 'branches.id', '=', 'branch_services.branch_id')
+        $branchServices = BranchService::leftJoin('branches', 'branches.id', '=', 'branch_services.branch_id')
             ->join('services', 'services.id', '=', 'branch_services.service_id')
             ->select(
                 'branch_services.id as branch_services_id', 

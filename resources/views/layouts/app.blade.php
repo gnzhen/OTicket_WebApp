@@ -59,6 +59,5 @@
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/parsley.min.js') }}"></script>
 
-
 </body>
 </html>

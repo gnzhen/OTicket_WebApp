@@ -135,7 +135,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.addBranch')
+              {{-- @include('forms.addBranch') --}}
             </div>
         </div>
     </div>
@@ -153,7 +153,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.addService')
+              {{-- @include('forms.addService') --}}
             </div>
         </div>
     </div>
@@ -171,7 +171,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.addCounter')
+              {{-- @include('forms.addCounter') --}}
             </div>
         </div>
     </div>

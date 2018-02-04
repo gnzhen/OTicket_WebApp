@@ -13,6 +13,9 @@ jQuery( document ).ready(function( $ ) {
     //session flash
     getAllSession();
 
+    /* Handle delete button on select */
+    // $('#multiSelectBranchCoutner')
+
     /* Show different modal form on button click */
     $('#btnAddStaff').click(function() {
 		$('#registerStaffModal').modal('show');
@@ -62,7 +65,6 @@ jQuery( document ).ready(function( $ ) {
 		$('#addBranchCounterModal').modal('show');
 	});
 
-
     // $("[data-toggle=tooltip]").tooltip();
 
 });
@@ -88,8 +90,14 @@ jQuery( document ).ready(function( $ ) {
 
     $('#branchServiceTable').dataTable({
     	destroy: true,
+	    "columnDefs": [{ "orderable": false, "targets": [2,3,4,5] }],
+      	"rowsGroup": [0, 5]
+	 });
+
+    $('#branchCounterTable').dataTable({
+    	destroy: true,
 	    "columnDefs": [{ "orderable": false, "targets": [2,3] }],
-      	"rowsGroup": [0, 4]
+      	"rowsGroup": [0, 3]
 	 });
 
 	
