@@ -65,7 +65,7 @@ jQuery( document ).ready(function( $ ) {
 		$('#addBranchCounterModal').modal('show');
 	});
 
-    // $("[data-toggle=tooltip]").tooltip();
+    
 
 });
 
@@ -75,7 +75,7 @@ jQuery( document ).ready(function( $ ) {
 
     //close alert
 	window.setTimeout(function() {
-    	$(".alert").fadeTo(500, 0).slideUp(500, function(){
+    	$(".alert").fadeTo(500, 0).slideUp(1500, function(){
         	$(this).remove(); 
     	});
 	}, 1000);
@@ -200,4 +200,3 @@ function getAllSession(status){
 			console.log(xhr);
 		});		
 }
-

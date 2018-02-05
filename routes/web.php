@@ -22,10 +22,12 @@ Route::group(['middleware' => ['auth']], function () {
 	    'counter' => 'CounterController',
 	    'display' => 'DisplayController',
 	    'printer' => 'PrinterController',
+	    'branch' => 'BranchController',
 	]);
 
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
+	// Route::get('showBranchTable', 'BranchController@show');
 });
 
 

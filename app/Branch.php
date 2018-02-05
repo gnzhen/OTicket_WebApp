@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
+    protected $fillable = [
+        'id',
+        'name',
+        'desc',
+    ];
+
     protected $casts = [
         'service_ids' => 'array',
-        'counter_ids' => 'array',
     ];
 
     public function branchServices(){

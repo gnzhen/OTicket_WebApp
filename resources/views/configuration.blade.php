@@ -1,3 +1,10 @@
+<?php
+
+use App\Branch;
+use Illuminate\Support\Facades\Input;
+
+?>
+
 @extends('layouts.app')
 
 @section('title', '| Configurations')
@@ -23,7 +30,7 @@
                     <th class="th-action">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="branch-tbody">
             @foreach ($branches as $branch)
                 <tr>
                     <td>{{ $branch->branch_id }}</td>
@@ -260,4 +267,16 @@
     </div>
 </div>
 
+@endsection
+
+@section('javascript')
+    @if( Session::has('add_branch_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+        jQuery( document ).ready(function( $ ) {
+            $('#addBranchModal').modal('show');
+        });
+        </script>
+    @endif
 @endsection

@@ -43,6 +43,16 @@ class TableRelations extends Migration
             $table->foreign('staff_username')->references('username')->on('users');
             $table->foreign('branch_counter_id')->references('id')->on('branch_counters');
         });
+
+        Schema::table('branch_counter_queue', function($table) {
+            $table->foreign('branch_counter_id')->references('id')->on('branch_counters');
+            $table->foreign('queue_id')->references('id')->on('queues');
+        });
+
+        Schema::table('ticket_change', function($table) {
+            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->foreign('change_id')->references('id')->on('changes');
+        });
     }
 
     /**

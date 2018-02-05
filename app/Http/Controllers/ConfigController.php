@@ -29,6 +29,7 @@ class ConfigController extends Controller
      */
     public function index()
     {
+        $appController = new AppController;
         $branches = Branch::select('id as branch_id', 'name', 'desc')->get();
         $services = Service::select('id as service_id', 'name')->get();
         $counters = Counter::select('id as counter_id', 'name')->get();
@@ -55,7 +56,7 @@ class ConfigController extends Controller
                 'branch_services.default_avg_wait_time')
             ->get();
 
-        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters)->withBranchCounters($branchCounters)->withBranchServices($branchServices)->withAppController(new AppController);
+        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters)->withBranchCounters($branchCounters)->withBranchServices($branchServices)->withAppController($appController);
     }
 
     /**
