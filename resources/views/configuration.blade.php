@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('partials._modal')
+
 <h3>Configurations</h3>
 
 <div class="row row-space">
@@ -28,8 +30,8 @@
                     <td>{{ $branch->name }}</td>
                     <td>{{ $branch->desc }}</td>
                     <td class="td-action">
-                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditBranch"><span>Edit</span></a>
+                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteBranch"><span>Delete</span></a>
                     </td>
                 </tr>
             @endforeach
@@ -58,8 +60,8 @@
                     <td>{{ $service->service_id }}</td>
                     <td>{{ $service->name }}</td>
                     <td class="td-action">
-                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditService"><span>Edit</span></a>
+                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteService"><span>Delete</span></a>
                     </td>
                 </tr>
             @endforeach
@@ -88,8 +90,8 @@
                     <td>{{ $counter->counter_id }}</td>
                     <td>{{ $counter->name }}</td>
                     <td class="td-action">
-                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditCounter"><span>Edit</span></a>
+                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteCounter"><span>Delete</span></a>
                     </td>
                 </tr>
             @endforeach

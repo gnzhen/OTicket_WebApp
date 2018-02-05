@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="updateStaffModal">
+<div class="modal fade" id="editStaffModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -46,13 +46,13 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.registerStaff')
+              @include('forms.editStaff')
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="updateAdminModal">
+<div class="modal fade" id="editAdminModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -64,13 +64,13 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.registerStaff')
+              @include('forms.editAdmin')
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="updateSuperAdminModal">
+<div class="modal fade" id="editSuperAdminModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -82,6 +82,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
+              @include('forms.editSuperAdmin')
             </div>
         </div>
     </div>
@@ -135,7 +136,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              {{-- @include('forms.addBranch') --}}
+              @include('forms.addBranch')
             </div>
         </div>
     </div>
@@ -172,6 +173,42 @@
             <!-- Modal body -->
             <div class="modal-body">
               {{-- @include('forms.addCounter') --}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addBranchCounterModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Branch Counter</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.addBranchCounter')
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addBranchServiceModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Branch Service</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.addBranchService')
             </div>
         </div>
     </div>
