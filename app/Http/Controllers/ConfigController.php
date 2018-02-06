@@ -30,9 +30,9 @@ class ConfigController extends Controller
     public function index()
     {
         $appController = new AppController;
-        $branches = Branch::select('id as branch_id', 'name', 'desc')->get();
-        $services = Service::select('id as service_id', 'name')->get();
-        $counters = Counter::select('id as counter_id', 'name')->get();
+        $branches = Branch::get();
+        $services = Service::get();
+        $counters = Counter::get();
         $waitTimeStr = AppController::secToString(1150);
         $branchCounters = BranchCounter::leftJoin('branches', 'branches.id', '=', 'branch_counters.branch_id')
             ->join('counters', 'counters.id', '=', 'branch_counters.counter_id')

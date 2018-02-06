@@ -39,7 +39,6 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        $input = ['modal_id' => '#addBranchModal',];
 
         $validator = Validator::make($request->all(), [
             'id' => 'required|alpha_dash|unique:branches|max:255',
@@ -48,8 +47,6 @@ class BranchController extends Controller
         ]);
 
         if ($validator->fails()) {
-
-            $input['autoOpenModal'] = true;
 
             return back()->withErrors($validator)->with("add_branch_error", "Fail to add branch.")->withInput();
         }
@@ -66,26 +63,6 @@ class BranchController extends Controller
 
             return redirect()->route('config.index');
         }
-
-
-        // $validator->after(function ($validator) {
-        //     if ($validator->fails()) {
-        //         Session::flash('openModal', 'addBranch');
-        //         return redirect()->route('config.index');
-        //     }
-        //     else{
-        //         $branch = new Branch;
-
-        //         $branch->id = $request->id;
-        //         $branch->name = $request->name;
-        //         $branch->desc = $this->nullIfEmpty($request->desc);
-                
-        //         $branch->save();
-                        
-        //         Session::flash('success', 'New branch created!');
-        //     }
-        // });
-        
         
     }
 
@@ -97,9 +74,7 @@ class BranchController extends Controller
      */
     public function show()
     {
-        $branches = Branch::select('id as branch_id', 'name', 'desc')->get();
 
-        return response($branches);
     }
 
     /**
@@ -110,7 +85,10 @@ class BranchController extends Controller
      */
     public function edit($id)
     {
-        //
+        $branch = Branch::find($id);
+        if(!$branch) throw new ModelNotFoundException;
+
+        return response($branch);
     }
 
     /**
@@ -122,7 +100,29 @@ class BranchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'desc' => 'max:255'
+        ]);
+
+        if ($validator->fails()) {
+
+            return back()->withErrors($validator)->with("edit_branch_error", "Fail to edit branch.")->withInput();
+        }
+        else {
+            $branch = Branch::find($id);
+            if(!$branch) throw new ModelNotFoundException;
+            
+            $branch->id = $request->id;
+            $branch->name = $request->name;
+            $branch->desc = $this->nullIfEmpty($request->desc);
+            
+            $branch->save();
+                    
+            Session::flash('success', 'Branch updated!');
+
+            return redirect()->route('config.index');
+        }
     }
 
     /**
@@ -133,6 +133,14 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // $branch = Branch::find($id);
+
+        // $branch->delete();
+
+        // Session::flash('success', 'The branch was succesfully deleted.');
+
+        // return redirect()->route('config.index');
+
+        echo "delete data";
     }
 }

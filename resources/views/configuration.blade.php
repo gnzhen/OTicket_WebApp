@@ -33,12 +33,12 @@ use Illuminate\Support\Facades\Input;
             <tbody id="branch-tbody">
             @foreach ($branches as $branch)
                 <tr>
-                    <td>{{ $branch->branch_id }}</td>
+                    <td>{{ $branch->id }}</td>
                     <td>{{ $branch->name }}</td>
                     <td>{{ $branch->desc }}</td>
                     <td class="td-action">
-                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditBranch"><span>Edit</span></a>
-                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteBranch"><span>Delete</span></a>
+                        <button class="btn btn-secondary btn-sm" id="btnEditBranch" data-id="{{ $branch->id }}"><span>Edit</span></button>
+                        <button class="btn btn-danger btn-sm" id="btnDeleteBranch" data-id="{{ $branch->id }}"><span>Delete</span></button>
                     </td>
                 </tr>
             @endforeach
@@ -64,11 +64,11 @@ use Illuminate\Support\Facades\Input;
             <tbody>
             @foreach ($services as $service)
                 <tr>
-                    <td>{{ $service->service_id }}</td>
+                    <td>{{ $service->id }}</td>
                     <td>{{ $service->name }}</td>
                     <td class="td-action">
-                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditService"><span>Edit</span></a>
-                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteService"><span>Delete</span></a>
+                        <button href="#" class="btn btn-secondary btn-sm" id="btnEditService"><span>Edit</span></button>
+                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteService" data-value="{{ $service->id }}"><span>Delete</span></button>
                     </td>
                 </tr>
             @endforeach
@@ -94,11 +94,11 @@ use Illuminate\Support\Facades\Input;
             <tbody>
             @foreach ($counters as $counter)
                 <tr>
-                    <td>{{ $counter->counter_id }}</td>
+                    <td>{{ $counter->id }}</td>
                     <td>{{ $counter->name }}</td>
                     <td class="td-action">
-                        <a href="#" class="btn btn-secondary btn-sm" id="btnEditCounter"><span>Edit</span></a>
-                        <a href="#" class="btn btn-danger btn-sm" id="btnDeleteCounter"><span>Delete</span></a>
+                        <button href="#" class="btn btn-secondary btn-sm" id="btnEditCounter"><span>Edit</span></button>
+                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteCounter"><span>Delete</span></button>
                     </td>
                 </tr>
             @endforeach
@@ -135,10 +135,10 @@ use Illuminate\Support\Facades\Input;
                     </select> --}}
                 </td>
                 <td class="td-action">
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchCounter"><span>Delete</span></a>
+                    <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchCounter"><span>Delete</span></button>
                 </td>
                 <td class="td-action">
-                    <a href="#" class="btn btn-info btn-sm" id="btnAddBranchCounter"><span>Add Counter to Branch</span></a>
+                    <button href="#" class="btn btn-info btn-sm" id="btnAddBranchCounter"><span>Add Counter to Branch</span></button>
                 </td>
             </tr>
         @endforeach
@@ -185,11 +185,11 @@ use Illuminate\Support\Facades\Input;
                     {{ $branchService->avg_wait_time == 'null' ? ($appController->secToString($branchService->avg_wait_time)) : '-' }}
                 </td>
                 <td class="td-action">
-                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService"><span>Edit</span></a>
-                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService"><span>Delete</span></a>
+                    <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService"><span>Edit</span></button>
+                    <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService"><span>Delete</span></button>
                 </td>
                 <td class="td-action">
-                    <a href="#" class="btn btn-info btn-sm" id="btnAddBranchService"><span>Add Service to Branch</span></a>
+                    <button href="#" class="btn btn-info btn-sm" id="btnAddBranchService"><span>Add Service to Branch</span></button>
                 </td>
             </tr>
         @endforeach
@@ -276,6 +276,15 @@ use Illuminate\Support\Facades\Input;
 
         jQuery( document ).ready(function( $ ) {
             $('#addBranchModal').modal('show');
+        });
+        </script>
+    @endif
+    @if( Session::has('edit_branch_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+        jQuery( document ).ready(function( $ ) {
+            $('#editBranchModal').modal('show');
         });
         </script>
     @endif

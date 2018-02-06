@@ -1,4 +1,5 @@
 $.noConflict();
+// var j = jQuery.noConflict();
 
 jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
@@ -10,72 +11,79 @@ jQuery( document ).ready(function( $ ) {
     	setSidebarSession(checkSidebar());
     });
 
-    //session flash
-    getAllSession();
-
     /* Handle delete button on select */
-    // $('#multiSelectBranchCoutner')
 
     /* Show different modal form on button click */
     $('#btnAddStaff').click(function() {
-		$('#registerStaffModal').modal('show');
+		showModal("#registerStaffModal");
 	});
 
 	$('#btnAddAdmin').click(function() {
-		$('#registerAdminModal').modal('show');
+		showModal("#registerAdminModal");
 	});
 
 	$('#btnEditStaff').click(function() {
-		$('#updateStaffModal').modal('show');
+		showModal("#updateStaffModal");
 	});
 
 	$('#btnEditAdmin').click(function() {
-		$('#updateAdminModal').modal('show');
+		showModal("#updateAdminModal");
 	});
 
 	$('#btnEditSuperAdmin').click(function() {
-		$('#updateSuperAdminModal').modal('show');
+		showModal("#updateSuperAdminModal");
 	});
 
 	$('#btnDeleteStaff').click(function() {
-		$('#deleteStaffModal').modal('show');
+		showModal("#deleteStaffModal");
 	});
 
 	$('#btnDeleteAdmin').click(function() {
-		$('#deleteAdminModal').modal('show');
+		showModal("#deleteAdminModal");
 	});
 
 	$('#btnAddBranch').click(function() {
-		$('#addBranchModal').modal('show');
+		showModal("#addBranchModal");
 	});
 
+	$('body').delegate('#btnEditBranch', 'click', function() {
+		var id = $(this).data('id');
+		showEditBranch(id);
+	});
+
+	// $('body').delegate('#btnDeleteBranch', 'click', function() {
+	// 	var id = $(this).data('id');
+	// 	$('#deleteBranchModal').modal('show');
+	// });
+
 	$('#btnAddService').click(function() {
-		$('#addServiceModal').modal('show');
+		showModal("#addServiceModal");
 	});
 
 	$('#btnAddCounter').click(function() {
+		showModal("#addServiceModal");
 		$('#addCounterModal').modal('show');
 	});
 
 	$('#btnAddBranchService').click(function() {
+		showModal("#addServiceModal");
 		$('#addBranchServiceModal').modal('show');
 	});
 
 	$('#btnAddBranchCounter').click(function() {
+		showModal("#addServiceModal");
 		$('#addBranchCounterModal').modal('show');
 	});
-
-    
-
 });
 
 
+	
+
 /* Code that uses other library's $ can follow here. */
-
-
+$( document ).ready(function() {
     //close alert
 	window.setTimeout(function() {
-    	$(".alert").fadeTo(500, 0).slideUp(1500, function(){
+    	$(".alert").fadeTo(1500, 0).slideUp(1500, function(){
         	$(this).remove(); 
     	});
 	}, 1000);
@@ -140,7 +148,7 @@ jQuery( document ).ready(function( $ ) {
         }
     });
 
-
+});
 
 /* Functions */
 
@@ -163,6 +171,10 @@ function openMenu(menu, status){
 	else{
 		$(menu).removeClass('show');
 	}
+}
+
+function showModal(id){
+	jQuery(id).modal('show');
 }
 
 function setInitialSidebar(){
@@ -199,4 +211,19 @@ function getAllSession(status){
 		.fail(function(xhr, status, error){
 			console.log(xhr);
 		});		
+}
+
+function showEditBranch(id){
+	$.get("/branch/"+id+"/edit") 
+		.done(function(data){
+			$('#formEditBranch').find('#branch-id-edit').val(data.id);
+			$('#formEditBranch').find('#branch-name-edit').val(data.name);
+			$('#formEditBranch').find('#branch-desc-edit').val(data.desc);
+			$('#formEditBranch').attr('action', '{{ route("branch.update", "data.id") }}');
+			showModal('#editBranchModal');
+		})
+		.fail(function(xhr, status, error){
+			console.log(xhr);
+		});
+
 }

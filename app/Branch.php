@@ -16,6 +16,8 @@ class Branch extends Model
         'service_ids' => 'array',
     ];
 
+    public $incrementing = false;
+
     public function branchServices(){
 
     	return $this->hasMany(BranchService::class);

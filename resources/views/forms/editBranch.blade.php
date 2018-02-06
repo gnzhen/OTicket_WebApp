@@ -1,17 +1,11 @@
-<form class="form-horizontal" method="POST" action="{{ route('branch.store') }}" >
+<form class="form-horizontal" method="POST" id="formEditBranch" action="" >
     {{ csrf_field() }}
 
     <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }}">
         <label for="id" class="col-md-12 control-label">Id</label>
 
         <div class="col-md-12">
-            <input id="branch-id" type="text" class="form-control" name="id" value="{{ old('id') }}" required autofocus>
-
-            @if ($errors->has('id'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('id') }}</strong>
-                </span>
-            @endif
+            <input id="branch-id-edit" type="text" class="form-control" name="id" value="{{ old('id') }}" readonly>
         </div>
     </div>
 
@@ -19,7 +13,7 @@
         <label for="name" class="col-md-12 control-label">Name</label>
 
         <div class="col-md-12">
-            <input id="branch-name" type="text" class="form-control" name="name" value="{{ old('name') }}" maxlength="255" required autofocus>
+            <input id="branch-name-edit" type="text" class="form-control" name="name" value="{{ old('name') }}" maxlength="255" required autofocus>
 
             @if ($errors->has('name'))
                 <span class="help-block">
@@ -33,7 +27,7 @@
         <label for="desc" class="col-md-12 control-label">Description</label>
 
         <div class="col-md-12">
-            <textarea id="branch-desc" type="text" class="form-control" name="desc" maxlength="255" autofocus>{{ old('desc') }}</textarea>
+            <textarea id="branch-desc-edit" type="text" class="form-control" name="desc" maxlength="255" autofocus>{{ old('desc') }}</textarea>
 
             @if ($errors->has('desc'))
                 <span class="help-block">
@@ -45,7 +39,8 @@
 
     <div class="form-group">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            </button>
         </div>
     </div>
 </form>
