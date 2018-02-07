@@ -13,33 +13,29 @@ class BranchServicesTableSeeder extends Seeder
     public function run()
     {
         BranchService::create([
-        	'id' => 'B1_S1',
-        	'branch_id' => 'B1',
-            'service_id' => 'S1',
+        	'branch_id' => 1,
+            'service_id' => 1,
             'avg_wait_time' => null,
             'default_avg_wait_time' => 1150,
         ]);
 
         BranchService::create([
-        	'id' => 'B1_S2',
-        	'branch_id' => 'B1',
-            'service_id' => 'S2',
+        	'branch_id' => 1,
+            'service_id' => 2,
             'avg_wait_time' => null,
             'default_avg_wait_time' => 1000,
         ]);
 
         BranchService::create([
-        	'id' => 'B2_S1',
-        	'branch_id' => 'B2',
-            'service_id' => 'S1',
+        	'branch_id' => 2,
+            'service_id' => 1,
             'avg_wait_time' => null,
             'default_avg_wait_time' => 50,
         ]);
 
         BranchService::create([
-        	'id' => 'B2_S2',
-        	'branch_id' => 'B2',
-            'service_id' => 'S2',
+        	'branch_id' => 2,
+            'service_id' => 2,
             'avg_wait_time' => null,
             'default_avg_wait_time' => 700,
         ]);

@@ -13,30 +13,26 @@ class BranchCountersTableSeeder extends Seeder
     public function run()
     {
         BranchCounter::create([
-        	'id' => 'B1_C1',
-        	'branch_id' => 'B1',
-            'counter_id' => 'C1',
+        	'branch_id' => 1,
+            'counter_id' => 1,
             'staff_username' => null,
         ]);
 
         BranchCounter::create([
-        	'id' => 'B1_C2',
-        	'branch_id' => 'B1',
-            'counter_id' => 'C2',
+        	'branch_id' => 1,
+            'counter_id' => 2,
             'staff_username' => null,
         ]);
 
         BranchCounter::create([
-        	'id' => 'B2_C1',
-        	'branch_id' => 'B2',
-            'counter_id' => 'C1',
+        	'branch_id' => 2,
+            'counter_id' => 1,
             'staff_username' => null,
         ]);
 
         BranchCounter::create([
-        	'id' => 'B2_C2',
-        	'branch_id' => 'B2',
-            'counter_id' => 'C2',
+        	'branch_id' => 2,
+            'counter_id' => 2,
             'staff_username' => null,
         ]);
     }

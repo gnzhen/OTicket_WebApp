@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Input;
         <table id="branchTable" class="table table-bordered dataTable" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>Code</th>
                     <th>Branch Name</th>
                     <th>Description</th>
                     <th class="th-action">Action</th>
@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Input;
             <tbody id="branch-tbody">
             @foreach ($branches as $branch)
                 <tr>
-                    <td>{{ $branch->id }}</td>
+                    <td>{{ $branch->code }}</td>
                     <td>{{ $branch->name }}</td>
                     <td>{{ $branch->desc }}</td>
                     <td class="td-action">
@@ -56,7 +56,7 @@ use Illuminate\Support\Facades\Input;
         <table id="serviceTable" class="table table-bordered dataTable" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>Code</th>
                     <th>Service Name</th>
                     <th class="th-action">Action</th>
                 </tr>
@@ -64,7 +64,7 @@ use Illuminate\Support\Facades\Input;
             <tbody>
             @foreach ($services as $service)
                 <tr>
-                    <td>{{ $service->id }}</td>
+                    <td>{{ $service->code }}</td>
                     <td>{{ $service->name }}</td>
                     <td class="td-action">
                         <button href="#" class="btn btn-secondary btn-sm" id="btnEditService"><span>Edit</span></button>
@@ -86,7 +86,7 @@ use Illuminate\Support\Facades\Input;
         <table id="counterTable" class="table table-bordered dataTable" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>Code</th>
                     <th>Counter Name</th>
                     <th class="th-action">Action</th>
                 </tr>
@@ -94,7 +94,7 @@ use Illuminate\Support\Facades\Input;
             <tbody>
             @foreach ($counters as $counter)
                 <tr>
-                    <td>{{ $counter->id }}</td>
+                    <td>{{ $counter->code }}</td>
                     <td>{{ $counter->name }}</td>
                     <td class="td-action">
                         <button href="#" class="btn btn-secondary btn-sm" id="btnEditCounter"><span>Edit</span></button>
@@ -122,8 +122,8 @@ use Illuminate\Support\Facades\Input;
         <tbody>
         @foreach ($branchCounters as $branchCounter)
             <tr>
-                <td>{{ $branchCounter->branch_name }} ({{ $branchCounter->branch_id }})</td>
-                <td>{{ $branchCounter->counter_name }} ({{ $branchCounter->counter_id }})
+                <td>{{ $branchCounter->branch_name }} ({{ $branchCounter->branch_code }})</td>
+                <td>{{ $branchCounter->counter_name }} ({{ $branchCounter->counter_code }})
                     {{-- <select multiple="multiple" id="multiSelectBranchCoutner" name="multiSelect[]">
                         @foreach ($branchCounters as $branchCounter)
                         @if($branch->branch_id == $branchCounter->branch_id)
@@ -172,11 +172,11 @@ use Illuminate\Support\Facades\Input;
             <tr>
                 <td>
                     {{ $branchService->branch_name }} 
-                    ({{ $branchService->branch_id }})
+                    ({{ $branchService->branch_code }})
                 </td>
                 <td>
                     {{ $branchService->service_name }} 
-                    ({{ $branchService->service_id }})
+                    ({{ $branchService->service_code }})
                 </td>
                 <td>
                     {{ $appController->secToString($branchService->default_avg_wait_time) }}

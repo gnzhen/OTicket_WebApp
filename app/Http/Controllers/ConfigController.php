@@ -38,9 +38,11 @@ class ConfigController extends Controller
             ->join('counters', 'counters.id', '=', 'branch_counters.counter_id')
             ->select(
                 'branch_counters.id as branch_counter_id', 
-                'branches.id as branch_id', 
+                'branches.id as branch_id',
+                'branches.code as branch_code', 
                 'branches.name as branch_name',
                 'branch_counters.counter_id', 
+                'counters.code as counter_code',
                 'counters.name as counter_name',
                 'branch_counters.staff_username')
             ->get();
@@ -49,8 +51,10 @@ class ConfigController extends Controller
             ->select(
                 'branch_services.id as branch_services_id', 
                 'branch_services.branch_id',  
+                'branches.code as branch_code',  
                 'branches.name as branch_name', 
                 'branch_services.service_id', 
+                'services.code as service_code', 
                 'services.name as service_name',
                 'branch_services.avg_wait_time', 
                 'branch_services.default_avg_wait_time')

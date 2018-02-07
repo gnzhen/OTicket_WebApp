@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Counter extends Model
 {
-    public $incrementing = false;
 
     public function branchCounters(){
 

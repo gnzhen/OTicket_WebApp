@@ -24,7 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
 	    'printer' => 'PrinterController',
 	    'branch' => 'BranchController',
 	]);
-
+	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
 });

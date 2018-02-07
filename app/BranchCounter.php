@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class BranchCounter extends Model
-{
-    public $incrementing = false;
-    
+{   
     public function branch(){
 
     	return $this->belongsTo(Branch::class);

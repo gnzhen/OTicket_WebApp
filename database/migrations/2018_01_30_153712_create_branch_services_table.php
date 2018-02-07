@@ -15,9 +15,9 @@ class CreateBranchServicesTable extends Migration
     {
         Schema::create('branch_services', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('id')->unique();
-            $table->string('branch_id');
-            $table->string('service_id');
+            $table->increments('id');
+            $table->unsignedInteger('branch_id');
+            $table->unsignedInteger('service_id');
             $table->integer('avg_wait_time')->nullable();
             $table->integer('default_avg_wait_time');
             $table->timestamps();

@@ -1,11 +1,12 @@
-<form class="form-horizontal" method="POST" id="formEditBranch" action="" >
+<form class="form-horizontal" method="PUT" id="formEditBranch" action="" data-method="PUT" data-token="{{ csrf_token() }}">
     {{ csrf_field() }}
 
-    <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }}">
-        <label for="id" class="col-md-12 control-label">Id</label>
+    <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
+        <label for="code" class="col-md-12 control-label">Code</label>
 
         <div class="col-md-12">
-            <input id="branch-id-edit" type="text" class="form-control" name="id" value="{{ old('id') }}" readonly>
+            <input id="branch-id-edit" type="hidden" class="form-control" name="id">
+            <input id="branch-code-edit" type="text" class="form-control" name="code" value="{{ old('code') }}">
         </div>
     </div>
 
@@ -39,7 +40,7 @@
 
     <div class="form-group">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" id="branch-save-edit">Save</button>
             </button>
         </div>
     </div>

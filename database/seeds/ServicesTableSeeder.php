@@ -12,8 +12,8 @@ class ServicesTableSeeder extends Seeder
      */
     public function run()
     {
-        Service::create(['id' => 'S1', 'name' => 'Customer Service']);
-        Service::create(['id' => 'S2', 'name' => 'Deposit']);
-        Service::create(['id' => 'S3', 'name' => 'Other Services']);
+        Service::create(['code' => 'S1', 'name' => 'Customer Service']);
+        Service::create(['code' => 'S2', 'name' => 'Deposit']);
+        Service::create(['code' => 'S3', 'name' => 'Other Services']);
     }
 }

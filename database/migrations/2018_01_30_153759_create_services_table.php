@@ -15,7 +15,8 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('id')->unique();
+            $table->increments('id');
+            $table->string('code')->unique();
             $table->string('name');
             $table->timestamps();
         });

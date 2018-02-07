@@ -15,7 +15,8 @@ class CreateBranchesTable extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('id')->unique();
+            $table->increments('id');
+            $table->string('code')->unique();
             $table->string('name');
             $table->string('desc')->nullable();
             $table->text('service_ids')->nullable();

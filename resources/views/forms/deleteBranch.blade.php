@@ -1,6 +1,6 @@
-<form class="form-horizontal" method="POST" action="{{ route('branch.destroy', 'test') }}" >
-    {{ method_field('delete') }}
-    {{ csrf_field() }}
+<form class="form-horizontal" method="DELETE" action="" id="formDeleteBranch" data-method="DELETE" data-token="{{ csrf_token() }}">
+    {{-- {{ method_field('delete') }}
+    {{ csrf_field() }} --}}
 
     <div class="form-group">
         <div class="col-md-12">

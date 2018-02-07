@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
         	'username' => 'gnzhen',
         	'email' => 'mioyazhen@gmail.com',
             'password' => bcrypt('qweqwe'),
-            'role_id' => 0,
+            'role_id' => 1,
             'branch_id' => null,
         ]);
 
@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
         	'username' => 'gnzhen1',
         	'email' => 'mioyazhen1@gmail.com',
             'password' => bcrypt('qweqwe'),
-            'role_id' => 1,
+            'role_id' => 2,
             'branch_id' => null,
         ]);
 
@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
         	'username' => 'gnzhen2',
         	'email' => 'mioyazhen2@gmail.com',
             'password' => bcrypt('qweqwe'),
-            'role_id' => 2,
+            'role_id' => 3,
             'branch_id' => null,
         ]);
     }

@@ -17,7 +17,7 @@ class CreateQueuesTable extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
-            $table->string('branch_service_id');
+            $table->unsignedInteger('branch_service_id');
             $table->text('ticket_ids')->nullable();
             $table->integer('ticket_serving_now')->nullable();
             $table->text('branch_counter_ids');

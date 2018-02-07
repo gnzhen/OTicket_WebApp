@@ -13,7 +13,7 @@ class BranchesTableSeeder extends Seeder
     public function run()
     {
         Branch::create([
-        	'id' => 'B1',
+        	'code' => 'B1',
         	'name' => 'Kepong',
             'desc' => '20, JLN Kepong 4/7, Kepong Ulu',
             'service_ids' => null,
@@ -21,7 +21,7 @@ class BranchesTableSeeder extends Seeder
         ]);
 
         Branch::create([
-        	'id' => 'B2',
+        	'code' => 'B2',
         	'name' => 'Ampang',
             'desc' => '20, JLN Ampang 4/7, Ampang',
             'service_ids' => null,
@@ -29,7 +29,7 @@ class BranchesTableSeeder extends Seeder
         ]);
 
         Branch::create([
-        	'id' => 'B3',
+        	'code' => 'B3',
         	'name' => 'Damansara',
             'desc' => '20, JLN Damansara 4/7, Damansara',
             'service_ids' => null,
@@ -37,7 +37,7 @@ class BranchesTableSeeder extends Seeder
         ]);
 
         Branch::create([
-        	'id' => 'B4',
+        	'code' => 'B4',
         	'name' => 'PJ',
             'desc' => '20, JLN PJ 4/7, PJ',
             'service_ids' => null,

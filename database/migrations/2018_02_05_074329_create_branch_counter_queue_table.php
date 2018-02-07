@@ -16,7 +16,7 @@ class CreateBranchCounterQueueTable extends Migration
         Schema::create('branch_counter_queue', function (Blueprint $table) {
 
             $table->engine = 'InnoDB';
-            $table->string('branch_counter_id');
+            $table->unsignedInteger('branch_counter_id');
             $table->unsignedBigInteger('queue_id')->index();
             $table->timestamps();
         });

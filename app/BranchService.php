@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class BranchService extends Model
 {
-    public $incrementing = false;
-
     public function branch(){
 
     	return $this->belongsTo(Branch::class);

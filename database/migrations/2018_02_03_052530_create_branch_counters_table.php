@@ -15,9 +15,9 @@ class CreateBranchCountersTable extends Migration
     {
         Schema::create('branch_counters', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('id')->unique();
-            $table->string('branch_id');
-            $table->string('counter_id');
+            $table->increments('id');
+            $table->unsignedInteger('branch_id');
+            $table->unsignedInteger('counter_id');
             $table->string('staff_username')->nullable();
             $table->timestamps();
         });
