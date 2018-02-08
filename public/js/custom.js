@@ -4,7 +4,6 @@ jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
 	setInitialSidebar();
-	getAllSession();
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();
@@ -23,6 +22,7 @@ jQuery( document ).ready(function( $ ) {
 	$('.modal-edit').on('hidden.bs.modal', function (e) {
 	  	$(this).find("span").html('').end()
 	})
+
 
     /* Show different modal form on button click */
     $('#btnAddStaff').click(function() {
@@ -57,9 +57,27 @@ jQuery( document ).ready(function( $ ) {
 		showModal("#addBranchModal");
 	});
 
+	$('#btnAddService').click(function() {
+		showModal("#addServiceModal");
+	});
+	
+	$('#btnAddCounter').click(function() {
+		showModal("#addCounterModal");
+	});
+
 	$('body').delegate('#btnEditBranch', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#editBranchModal'+id);
+	});
+
+	$('body').delegate('#btnEditService', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#editServiceModal'+id);
+	});
+
+	$('body').delegate('#btnEditCounter', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#editCounterModal'+id);
 	});
 
 	$('body').delegate('#btnDeleteBranch', 'click', function() {
@@ -67,13 +85,14 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#deleteBranchModal'+id);
 	});
 
-	$('#btnAddService').click(function() {
-		showModal("#addServiceModal");
+	$('body').delegate('#btnDeleteService', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteServiceModal'+id);
 	});
 
-	$('#btnAddCounter').click(function() {
-		showModal("#addServiceModal");
-		$('#addCounterModal').modal('show');
+	$('body').delegate('#btnDeleteCounter', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteCounterModal'+id);
 	});
 
 	$('#btnAddBranchService').click(function() {
@@ -90,7 +109,7 @@ jQuery( document ).ready(function( $ ) {
 
 /* Code that uses other library's $ can follow here. */
 // $( document ).ready(function() {
-	
+
     //close alert
 	window.setTimeout(function() {
     	$(".alert").fadeTo(3000, 0).slideUp(3000, function(){

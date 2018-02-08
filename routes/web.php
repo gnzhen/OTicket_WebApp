@@ -18,16 +18,17 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resources([
 	    'config' => 'ConfigController',
 	    'user' => 'UserController',
+	    'call' => 'CallController',
 	    'report' => 'ReportController',
-	    'counter' => 'CounterController',
 	    'display' => 'DisplayController',
 	    'printer' => 'PrinterController',
 	    'branch' => 'BranchController',
+	    'service' => 'ServiceController',
+	    'counter' => 'CounterController',
 	]);
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
-	Route::get('/branch/getDatatable', 'BranchController@getDatatable')->name('branch.getDatatable');
 });
 
 

@@ -17,11 +17,6 @@ class BranchCounter extends Model
     	return $this->belongsTo(Counter::class);
     }
 
-    public function queues(){
-
-    	return $this->belongsToMany(Queue::class);
-    }
-
     public function servings(){
     	
     	return $this->hasMany(Serving::class);

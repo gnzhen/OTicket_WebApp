@@ -3,23 +3,85 @@
 @section('title', '| Display')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    Display
+<div class="container-fluid">
+    <div class="row" style="height:80%;">
+        <div class="col-md-3 display-section">
+            <div class="row row-section">
+                <div class="box shadow">
+                    <div class="box-content">
+                        <p>Serving Now:</p>
+                        <p>Ticket</p>
+                        <p>0000</p>
+                        <p>Counter 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-section">
+                <div class="box shadow">
+                    <div class="box-content">
+                        <p>Serving Now:</p>
+                        <p>Ticket</p>
+                        <p>0000</p>
+                        <p>Counter 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-section">
+                <div class="box shadow">
+                    <div class="box-content">
+                        <p>Serving Now:</p>
+                        <p>Ticket</p>
+                        <p>0000</p>
+                        <p>Counter 1</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="col-md-6 display-section">
+            <div class="box shadow">
+                <div class="box-content">
+                    <p>Serving Now:</p>
+                    <p>Ticket</p>
+                    <p>0000</p>
+                    <p>Counter 1</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 display-section">
+            <div class="row row-section-3">
+                <div class="box shadow">
+                    <div class="box-content">
+                        <p>Serving Now:</p>
+                        <p>Ticket</p>
+                        <p>0000</p>
+                        <p>Counter 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-section-3">
+                <div class="box shadow">
+                    <div class="box-content">
+                        <p>Serving Now:</p>
+                        <p>Ticket</p>
+                        <p>0000</p>
+                        <p>Counter 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-section-3">
+                <div class="box shadow">
+                    <div class="box-content">
+                        <p>Serving Now:</p>
+                        <p>Ticket</p>
+                        <p>0000</p>
+                        <p>Counter 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </div>
 @endsection
