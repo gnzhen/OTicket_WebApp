@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Traits\NullableFields;
+use App\Http\Controllers\AppController;
 use App\Branch;
 use Session;
+use Datatables;
 
 class BranchController extends Controller
 {
     use NullableFields;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +22,14 @@ class BranchController extends Controller
      */
     public function index()
     {
-        //
+        // $branches = Branch::all();
+
+        // return Datatables::of($branches)
+        //     ->addColumn('action', function($branches){
+        //         return '<button class="btn btn-secondary btn-sm" id="btnEditBranch" data-id="{{ $branch->id }}"><span>Edit</span></button>
+        //                 <button class="btn btn-danger btn-sm" id="btnDeleteBranch" data-id="{{ $branch->id }}"><span>Delete</span></button>';
+        //     })
+        //     ->make(true);
     }
 
     /**
@@ -39,7 +50,6 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'code' => 'required|alpha_dash|unique:branches|max:255',
             'name' => 'required|max:255',
@@ -48,7 +58,9 @@ class BranchController extends Controller
 
         if ($validator->fails()) {
 
-            return back()->withErrors($validator)->with("add_branch_error", "Fail to add branch.")->withInput();
+            Session::flash('add_branch_error', 'Fail to add branch.');
+
+            return back()->withErrors($validator)->withInput();
         }
         else {
             $branch = new Branch;
@@ -99,32 +111,34 @@ class BranchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'code' => 'required|alpha_dash|unique:branches|max:255',
-        //     'name' => 'required|max:255',
-        //     'desc' => 'max:255'
-        // ]);
+        $branch = Branch::findOrFail($id);
 
-        // if ($validator->fails()) {
+        $validator = Validator::make($request->all(), [
+            'code' => ['required', 'alpha_dash', 'max:255',
+                Rule::unique('branches')->ignore($branch->id),
+            ],
+            'name' => 'required|max:255',
+            'desc' => 'max:255'
+        ]);
 
-        //     return back()->withErrors($validator)->with("edit_branch_error", "Fail to edit branch.")->withInput();
-        // }
-        // else {
-        //     $branch = Branch::findOrFail($id);
-
-        //     $branch->code = $request->code;
-        //     $branch->name = $request->name;
-        //     $branch->desc = $this->nullIfEmpty($request->desc);
-            
-        //     $branch->save();
-                    
-        //     Session::flash('success', 'Branch updated!');
-
-        //     // return redirect()->route('config.index');
-
-        // }
+        if ($validator->fails()) {
         
-            return 'hi';
+            Session::flash('fail', 'Update Fail! Something wrong.');
+
+            return back()->withErrors($validator)->with("edit_branch_error", $id)->withInput();
+        }
+        else {
+            $branch->code = $request->code;
+            $branch->name = $request->name;
+            $branch->desc = $this->nullIfEmpty($request->desc);
+            
+            $branch->save();
+                    
+            Session::flash('success', 'Branch updated!');
+
+            return redirect()->route('config.index');
+
+        }
     }
 
     /**
@@ -139,8 +153,10 @@ class BranchController extends Controller
 
         $branch->delete();
 
+        //delete branchService and branchCounter
+
         Session::flash('success', 'Branch is deleted!');
 
-        return response(['message' => 'branch deleted']);
+        return redirect()->route('config.index');
     }
 }

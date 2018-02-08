@@ -1,4 +1,4 @@
-<div class="modal fade" id="registerStaffModal">
+<div class="modal fade modal-add" id="registerStaffModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="registerAdminModal">
+<div class="modal fade modal-add" id="registerAdminModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editStaffModal">
+<div class="modal fade modal-edit" id="editStaffModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editAdminModal">
+<div class="modal fade modal-edit" id="editAdminModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editSuperAdminModal">
+<div class="modal fade modal-edit" id="editSuperAdminModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addBranchModal">
+<div class="modal fade modal-add" id="addBranchModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -142,25 +142,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editBranchModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Branch</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            
-            <!-- Modal body -->
-            <div class="modal-body">
-              @include('forms.editBranch')
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addServiceModal">
+<div class="modal fade modal-add" id="addServiceModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -178,7 +160,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addCounterModal">
+<div class="modal fade modal-add" id="addCounterModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -196,7 +178,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addBranchCounterModal">
+<div class="modal fade modal-add" id="addBranchCounterModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -214,7 +196,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addBranchServiceModal">
+<div class="modal fade modal-add" id="addBranchServiceModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -232,7 +214,28 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteBranchModal">
+@foreach($branches as $branch)
+<div class="modal fade modal-edit" id="editBranchModal{{ $branch->id }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Edit Branch</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.editBranch')
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@foreach($branches as $branch)
+<div class="modal fade" id="deleteBranchModal{{ $branch->id }}">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             
@@ -243,4 +246,5 @@
         </div>
     </div>
 </div>
+@endforeach
 

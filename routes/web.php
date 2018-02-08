@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
+	Route::get('/branch/getDatatable', 'BranchController@getDatatable')->name('branch.getDatatable');
 });
 
 

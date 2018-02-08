@@ -1,17 +1,28 @@
 $.noConflict();
-// var j = jQuery.noConflict();
 
 jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
 	setInitialSidebar();
+	getAllSession();
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();
     	setSidebarSession(checkSidebar());
     });
 
-    /* Handle delete button on select */
+    /* Clear modal input on closed */
+    $('.modal-add').on('hidden.bs.modal', function (e) {
+	  	$(this)
+		    .find("input,textarea,select").val('').end()
+	       	.find("span").html('').end()
+		    .find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
+		$('.modal-edit').find("span").html('').end();
+	})
+
+	$('.modal-edit').on('hidden.bs.modal', function (e) {
+	  	$(this).find("span").html('').end()
+	})
 
     /* Show different modal form on button click */
     $('#btnAddStaff').click(function() {
@@ -48,12 +59,12 @@ jQuery( document ).ready(function( $ ) {
 
 	$('body').delegate('#btnEditBranch', 'click', function() {
 		var id = $(this).data('id');
-		editBranch(id);
+		showModal('#editBranchModal'+id);
 	});
 
 	$('body').delegate('#btnDeleteBranch', 'click', function() {
 		var id = $(this).data('id');
-		deleteConfig('branch', id);
+		showModal('#deleteBranchModal'+id);
 	});
 
 	$('#btnAddService').click(function() {
@@ -78,7 +89,8 @@ jQuery( document ).ready(function( $ ) {
 
 
 /* Code that uses other library's $ can follow here. */
-$( document ).ready(function() {
+// $( document ).ready(function() {
+	
     //close alert
 	window.setTimeout(function() {
     	$(".alert").fadeTo(3000, 0).slideUp(3000, function(){
@@ -86,22 +98,25 @@ $( document ).ready(function() {
     	});
 	}, 1000);
 
-    //sorting table
-    /* Set custom pagination entries */
-    
+    /* Initialize datatables */
+
     $('.dataTable').dataTable({
-	    "iDisplayLength": 3,
-	    "aLengthMenu": [[ 3, 5, 10, -1], [3, 5, 10, "All"]]
+	    "iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
 	 });
 
     $('#branchServiceTable').dataTable({
     	destroy: true,
+    	"iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
 	    "columnDefs": [{ "orderable": false, "targets": [2,3,4,5] }],
       	"rowsGroup": [0, 5]
 	 });
 
     $('#branchCounterTable').dataTable({
     	destroy: true,
+    	"iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
 	    "columnDefs": [{ "orderable": false, "targets": [2,3] }],
       	"rowsGroup": [0, 3]
 	 });
@@ -146,17 +161,9 @@ $( document ).ready(function() {
         }
     });
 
-});
+// });
 
 /* Functions */
-
-function createTable(id){
-	$(id).dataTable({
-    	destroy: true,
-	    "iDisplayLength": 3,
-	    "aLengthMenu": [[ 3, 5, 10, -1], [3, 5, 10, "All"]]
-	 });
-}
 
 function checkSidebar(){
 	if($('#sidebar').hasClass('active'))
@@ -222,97 +229,3 @@ function getAllSession(status){
 			console.log(xhr);
 		});		
 }
-
-function editBranch(id){
-	$.get(route('branch.edit', id)) 
-		.done(function(data){
-			$('#formEditBranch').find('#branch-code-edit').val(data.code);
-			$('#formEditBranch').find('#branch-name-edit').val(data.name);
-			$('#formEditBranch').find('#branch-desc-edit').val(data.desc);
-
-			showModal('#editBranchModal');
-		})
-		.fail(function(xhr, status, error){
-			console.log(xhr);
-		});
-
-	$('#formDeleteBranch').submit(function(e) {
-		e.preventDefault();
-
-		var branch = $(this).serialize();
-		var token = $(this).data('token');
-		var method = $(this).data('method');
-
-		$.post(route('branch.update', id), {_method: method, _token :token})
-			.done(function(data){
-				createTable('#branchTable');
-
-				// window.location = route('config.index');
-				console.log(data);
-			})
-			.fail(function(xhr, status, error){
-				console.log(xhr);
-			});
-	});
-
-	// $('#formEditBranch').submit(function(e) {
-	// 		e.preventDefault();
-
-	// 		var branch = $(this).serialize();
-	// 		var url = route('branch.update', id);
-
-	// 		// $.ajax({
-	// 		//   	url: route('branch.update', {id:id}),
-	// 		//   	type: "POST",
-	// 		//   	data: branch,
-	// 		//   	success: function(data){
-	// 		// 		console.log(data);
-	// 		// 	}
-	// 		// });
-
-	// 		$.ajax({
-	// 		  	url: route('branch.update', id),
-	// 		  	type: "POST",
-	// 		  	data: {branch, _method:"PATCH"},
-	// 		  	success: function(data){
-	// 				console.log(data);
-	// 			}
-	// 		});
-
-	// 		// $.post('branch/'+id+'update/', branch)
-	// 		// 	.done(function(data){
-	// 		// 		console.log(data);
-	// 		// 	})
-	// 		// 	.fail(function(xhr, status, error){
-	// 		// 		console.log(xhr);
-	// 		// 	});
-	// 	});
-}
-
-function deleteConfig(toDel, id){
-	var modal = "";
-	var url = "";
-
-	if(toDel == 'branch'){
-		modal = '#deleteBranchModal';
-		url = route('branch.destroy', id);
-	}
-
-	showModal(modal);
-	$('#formDeleteBranch').submit(function(e) {
-			e.preventDefault();
-
-			var token = $(this).data('token');
-			var method = $(this).data('method');
-
-			$.post(url, {_method: method, _token :token})
-				.done(function(data){
-					hideModal(modal);
-					window.location = route('config.index');
-				})
-				.fail(function(xhr, status, error){
-					console.log(xhr);
-				});
-	});
-}
-

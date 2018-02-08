@@ -270,22 +270,63 @@ use Illuminate\Support\Facades\Input;
 @endsection
 
 @section('javascript')
+
+    {{-- Re-open different modal to show error --}}
     @if( Session::has('add_branch_error'))
         <script type="text/javascript">
             $.noConflict();
 
-        jQuery( document ).ready(function( $ ) {
-            $('#addBranchModal').modal('show');
-        });
+            jQuery( document ).ready(function( $ ) {
+                $('#addBranchModal').modal('show');
+            });
         </script>
     @endif
     @if( Session::has('edit_branch_error'))
         <script type="text/javascript">
             $.noConflict();
 
-        jQuery( document ).ready(function( $ ) {
-            $('#editBranchModal').modal('show');
-        });
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('edit_branch_error') }};
+                $('#editBranchModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('add_service_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                $('#addServiceModal').modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('edit_service_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('edit_service_error') }};
+                $('#editServiceModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('add_counter_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                $('#addCounterModal').modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('edit_counter_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('edit_counter_error') }};
+                $('#editCounterModal'+id).modal('show');
+            });
         </script>
     @endif
 @endsection

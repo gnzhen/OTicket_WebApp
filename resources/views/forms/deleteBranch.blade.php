@@ -1,11 +1,9 @@
-<form class="form-horizontal" method="DELETE" action="" id="formDeleteBranch" data-method="DELETE" data-token="{{ csrf_token() }}">
-    {{-- {{ method_field('delete') }}
-    {{ csrf_field() }} --}}
+{!! Form::model($branch, ['route' => ['branch.destroy', $branch->id], 'method' => 'DELETE']) !!}
 
     <div class="form-group">
         <div class="col-md-12">
-            <p>Are you sure you want to delete?</p>
-            <input type="hidden" name="delete-branch_id" id="delete-branch_id">
+            <p><strong>Delete this branch?</strong></p>
+            <p>{{ $branch->code }}-{{ $branch->name }}</p>
         </div>
     </div>
 

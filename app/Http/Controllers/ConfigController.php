@@ -9,6 +9,7 @@ use App\Service;
 use App\Counter;
 use App\BranchCounter;
 use App\BranchService;
+use Datatables;
 
 class ConfigController extends Controller
 {
@@ -129,4 +130,6 @@ class ConfigController extends Controller
     {
         //
     }
+
+
 }
