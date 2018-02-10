@@ -125,7 +125,7 @@ use Illuminate\Support\Facades\Input;
                     <td>{{ $branchCounter->branch_name }} ({{ $branchCounter->branch_code }})</td>
                     <td>
                         @if( $branchCounter->counter_id != null )
-                        {{ $branchCounter->counter_name }}({{ $branchCounter->counter_code }}) 
+                        {{ $branchCounter->counter_name }} ({{ $branchCounter->counter_code }}) 
                         @else
                         -
                         @endif
@@ -142,23 +142,19 @@ use Illuminate\Support\Facades\Input;
                     </td>
                     <td class="td-action">
                         @if( $branchCounter->counter_id != null )
-                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchCounter"><span>Delete</span></button>
+                        <button class="btn btn-danger btn-sm" id="btnDeleteBranchCounter" data-id="{{ $branchCounter->id }}"><span>Delete</span></button>
                         @else
                         -
                         @endif
                     </td>
                     <td class="td-action">
-                        <button href="#" class="btn btn-info btn-sm" id="btnAddBranchCounter"><span>Add Counter to Branch</span></button>
+                        <button class="btn btn-info btn-sm" id="btnAddBranchCounter" data-id="{{ $branchCounter->branch_id }}"><span>Add Counter to Branch</span></button>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
-
-    {{-- @foreach($branchServices as $branchService)
-    <p>{{ $branchService }}</p>
-    @endforeach --}}
 
     <div class="row row-space">
         <h4>Branch Service</h4>
@@ -195,11 +191,11 @@ use Illuminate\Support\Facades\Input;
                         {{ $branchService->avg_wait_time == null ? ($appController->secToString($branchService->avg_wait_time)) : '-' }}
                     </td>
                     <td class="td-action">
-                        <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService"><span>Edit</span></button>
-                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService"><span>Delete</span></button>
+                        <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService" data-id="{{ $branchService->id }}"><span>Edit</span></button>
+                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService" data-id="{{ $branchService->id }}"><span>Delete</span></button>
                     </td>
                     <td class="td-action">
-                        <button href="#" class="btn btn-info btn-sm" id="btnAddBranchService"><span>Add Service to Branch</span></button>
+                        <button href="#" class="btn btn-info btn-sm" id="btnAddBranchService" data-id="{{ $branchService->branch_id }}"><span>Add Service to Branch</span></button>
                     </td>
                 </tr>
             @endforeach

@@ -1,14 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 
-html {
-    height: 100%;
-}
 body {
     color: #636b6f;
     font-family: 'Raleway';
     font-size: 14px;
     background-color: #f8f9fa;
-    height: 100%;
+}
+
+label.inline-label {
+    padding-left: 5px;
+    padding-right: 8px;
 }
 
 .alert {

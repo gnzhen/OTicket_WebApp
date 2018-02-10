@@ -3,7 +3,7 @@
     <div class="form-group">
         <div class="col-md-12">
             <p><strong>Delete this service?</strong></p>
-            <p>{{ $service->code }}-{{ $service->name }}</p>
+            <p>{{ $service->name }} ({{ $service->code }})</p>
         </div>
     </div>
 

@@ -3,7 +3,7 @@
     <div class="form-group">
         <div class="col-md-12">
             <p><strong>Delete this counter?</strong></p>
-            <p>{{ $counter->code }}-{{ $counter->name }}</p>
+            <p>{{ $counter->name }} ({{ $counter->code }})</p>
         </div>
     </div>
 

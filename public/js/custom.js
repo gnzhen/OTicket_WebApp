@@ -54,15 +54,25 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	$('#btnAddBranch').click(function() {
-		showModal("#addBranchModal");
+		showModal('#addBranchModal');
 	});
 
 	$('#btnAddService').click(function() {
-		showModal("#addServiceModal");
+		showModal('#addServiceModal');
 	});
 	
 	$('#btnAddCounter').click(function() {
-		showModal("#addCounterModal");
+		showModal('#addCounterModal');
+	});
+
+	$('body').delegate('#btnAddBranchCounter', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#addBranchCounterModal'+id);
+	});
+
+	$('body').delegate('#btnAddBranchService', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#addBranchServiceModal'+id);
 	});
 
 	$('body').delegate('#btnEditBranch', 'click', function() {
@@ -80,6 +90,11 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#editCounterModal'+id);
 	});
 
+	$('body').delegate('#btnEditBranchService', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#editBranchServiceModal'+id);
+	});
+
 	$('body').delegate('#btnDeleteBranch', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#deleteBranchModal'+id);
@@ -95,15 +110,17 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#deleteCounterModal'+id);
 	});
 
-	$('#btnAddBranchService').click(function() {
-		showModal("#addServiceModal");
-		$('#addBranchServiceModal').modal('show');
+	$('body').delegate('#btnDeleteBranchCounter', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteBranchCounterModal'+id);
 	});
 
-	$('#btnAddBranchCounter').click(function() {
-		showModal("#addServiceModal");
-		$('#addBranchCounterModal').modal('show');
+	$('body').delegate('#btnDeleteBranchService', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteBranchServiceModal'+id);
 	});
+
+	
 });
 
 

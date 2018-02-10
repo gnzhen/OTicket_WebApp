@@ -38,7 +38,7 @@ class ConfigController extends Controller
         $branchCounters = Branch::leftJoin('branch_counters', 'branches.id', '=', 'branch_counters.branch_id')
             ->leftJoin('counters', 'counters.id', '=', 'branch_counters.counter_id')
             ->select(
-                'branch_counters.id as branch_counter_id', 
+                'branch_counters.id', 
                 'branches.id as branch_id',
                 'branches.code as branch_code', 
                 'branches.name as branch_name',
@@ -51,7 +51,7 @@ class ConfigController extends Controller
         $branchServices = BranchService::leftJoin('branches', 'branches.id', '=', 'branch_services.branch_id')
             ->join('services', 'services.id', '=', 'branch_services.service_id')
             ->select(
-                'branch_services.id as branch_services_id', 
+                'branch_services.id', 
                 'branch_services.branch_id',  
                 'branches.code as branch_code',  
                 'branches.name as branch_name', 

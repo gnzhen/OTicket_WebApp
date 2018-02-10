@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
 	    'branch' => 'BranchController',
 	    'service' => 'ServiceController',
 	    'counter' => 'CounterController',
+	    'branchCounter' => 'BranchCounterController',
+	    'branchService' => 'BranchServiceController',
 	]);
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
