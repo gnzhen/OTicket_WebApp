@@ -53,19 +53,19 @@
 </div>
 
 @foreach($branches as $branch)
-<div class="modal fade" id="addBranchCounterModal{{ $branch->id }}">
+<div class="modal fade" id="editBranchCounterModal{{ $branch->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-              <h4 class="modal-title">Add Branch Counter</h4>
+              <h4 class="modal-title">Edit Branch Counter</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.addBranchCounter')
+              @include('forms.editBranchCounter')
             </div>
         </div>
     </div>

@@ -28,6 +28,11 @@ Route::group(['middleware' => ['auth']], function () {
 	    'branchCounter' => 'BranchCounterController',
 	    'branchService' => 'BranchServiceController',
 	]);
+
+	Route::post('/branch/{id}/counter', 'BranchController@updateCounter')->name('branch.updateCounter');
+	Route::post('/branch/{id}/service/store', 'BranchController@addService')->name('branch.addService');
+	Route::post('/branch/{id}/service/destroy', 'BranchController@deleteService')->name('branch.deleteService');
+
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');

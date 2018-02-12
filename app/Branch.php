@@ -32,4 +32,12 @@ class Branch extends Model
 
     	return $this->hasMany(User::class);
     }
+
+    public function counters(){
+        return $this->belongsToMany(Counter::class, 'branch_counters')->withPivot('id', 'staff_username');
+    }
+
+    public function services(){
+        return $this->belongsToMany(Service::class, 'branch_services')->withPivot('id','system_wait_time', 'default_wait_time');
+    }
 }

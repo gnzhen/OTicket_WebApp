@@ -115,8 +115,7 @@ use Illuminate\Support\Facades\Input;
                 <tr>
                     <th>Branch</th>
                     <th>Counter</th>
-                    <th class="th-action">Action(Counter)</th>
-                    <th class="th-action">Action(Branch)</th>
+                    <th class="th-action">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -129,26 +128,9 @@ use Illuminate\Support\Facades\Input;
                         @else
                         -
                         @endif
-                        
-                        {{-- <select multiple="multiple" id="multiSelectBranchCoutner" name="multiSelect[]">
-                            @foreach ($branchCounters as $branchCounter)
-                            @if($branch->branch_id == $branchCounter->branch_id)
-                            <option value='{{ $branchCounter->counter_id }}'>
-                                {{ $branchCounter->counter_name }} ({{ $branchCounter->counter_id }})
-                            </option>
-                            @endif
-                            @endforeach
-                        </select> --}}
                     </td>
                     <td class="td-action">
-                        @if( $branchCounter->counter_id != null )
-                        <button class="btn btn-danger btn-sm" id="btnDeleteBranchCounter" data-id="{{ $branchCounter->id }}"><span>Delete</span></button>
-                        @else
-                        -
-                        @endif
-                    </td>
-                    <td class="td-action">
-                        <button class="btn btn-info btn-sm" id="btnAddBranchCounter" data-id="{{ $branchCounter->branch_id }}"><span>Add Counter to Branch</span></button>
+                        <button class="btn btn-info btn-sm" id="btnEditBranchCounter" data-id="{{ $branchCounter->branch_id }}"><span>Edit Branch Counter</span></button>
                     </td>
                 </tr>
             @endforeach
@@ -185,10 +167,10 @@ use Illuminate\Support\Facades\Input;
                         ({{ $branchService->service_code }})
                     </td>
                     <td>
-                        {{ $appController->secToString($branchService->default_avg_wait_time) }}
+                        {{ $appController->secToString($branchService->default_wait_time) }}
                     </td>
                     <td>
-                        {{ $branchService->avg_wait_time == null ? ($appController->secToString($branchService->avg_wait_time)) : '-' }}
+                        {{ $branchService->system_wait_time == null ? ($appController->secToString($branchService->system_wait_time)) : '-' }}
                     </td>
                     <td class="td-action">
                         <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService" data-id="{{ $branchService->id }}"><span>Edit</span></button>
@@ -331,6 +313,26 @@ use Illuminate\Support\Facades\Input;
             jQuery( document ).ready(function( $ ) {
                 var id = {{ Session::get('edit_counter_error') }};
                 $('#editCounterModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('edit_branch_counter_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('edit_branch_counter_error') }};
+                $('#editBranchCounterModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('add_branch_service_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('add_branch_service_error') }};
+                $('#addBranchServiceModal'+id).modal('show');
             });
         </script>
     @endif

@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use App\Traits\NullableFields;
 use App\Http\Controllers\AppController;
 use App\Branch;
+use App\Counter;
+use App\Service;
 use Session;
 
 class BranchController extends Controller
@@ -112,7 +114,7 @@ class BranchController extends Controller
 
         if ($validator->fails()) {
         
-            // Session::flash('fail', 'Update Fail! Something wrong.');
+            Session::flash('edit_branch_error', 'Fail to edit branch.');
 
             return back()->withErrors($validator)->with("edit_branch_error", $id)->withInput();
         }
@@ -145,6 +147,61 @@ class BranchController extends Controller
         //delete branchService and branchCounter
 
         Session::flash('success', 'Branch is deleted!');
+
+        return redirect()->route('config.index');
+    }
+
+    public function updateCounter(Request $request, $id) {
+
+        $validator = Validator::make($request->all(), [
+            'counters' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+
+            Session::flash('edit_branch_counter_error', 'Fail to edit counters from branch.');
+
+            return back()->withErrors($validator)->withInput();
+        }
+        else {
+
+            $branch = Branch::findOrFail($id);
+
+            $branch->counters()->sync($request->get('counters'));
+
+            Session::flash('success', 'Counters added to branch!');
+
+            return redirect()->route('config.index');
+        }
+    }
+
+    public function addService(Request $request, $id) {
+
+        $validator = Validator::make($request->all(), [
+            'service' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Session::flash('add_branch_service_error', 'Fail to add service from branch.');
+
+            return back()->withErrors($validator)->withInput();
+        }
+        else {
+            $branch = Branch::findOrFail($id);
+
+            $branch->services()->attach($request->service, ['default_wait_time' => '1150']);
+
+            Session::flash('success', 'Service added to branch!');
+
+            return redirect()->route('config.index');
+        }
+    }
+
+    public function deleteService(Request $request, $id) {
+
+        $branch = Branch::findOrFail($id);
+
+        $branch->services()->detach($request->service_id);
 
         return redirect()->route('config.index');
     }

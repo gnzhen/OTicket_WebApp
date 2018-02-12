@@ -12,4 +12,9 @@ class Service extends Model
 
     	return $this->hasMany(BranchService::class);
     }
+
+
+    public function branches(){
+        return $this->belongsToMany(Branch::class, 'branch_services')->withPivot('id', 'system_wait_time', 'default_wait_time');
+    }
 }

@@ -65,11 +65,6 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#addCounterModal');
 	});
 
-	$('body').delegate('#btnAddBranchCounter', 'click', function() {
-		var id = $(this).data('id');
-		showModal('#addBranchCounterModal'+id);
-	});
-
 	$('body').delegate('#btnAddBranchService', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#addBranchServiceModal'+id);
@@ -88,6 +83,11 @@ jQuery( document ).ready(function( $ ) {
 	$('body').delegate('#btnEditCounter', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#editCounterModal'+id);
+	});
+
+	$('body').delegate('#btnEditBranchCounter', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#editBranchCounterModal'+id);
 	});
 
 	$('body').delegate('#btnEditBranchService', 'click', function() {
@@ -153,8 +153,8 @@ jQuery( document ).ready(function( $ ) {
     	destroy: true,
     	"iDisplayLength": 5,
 	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
-	    "columnDefs": [{ "orderable": false, "targets": [2,3] }],
-      	"rowsGroup": [0, 3]
+	    "columnDefs": [{ "orderable": false, "targets": [2] }],
+      	"rowsGroup": [0, 2]
 	 });
 
 	

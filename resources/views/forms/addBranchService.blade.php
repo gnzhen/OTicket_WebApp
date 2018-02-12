@@ -1,5 +1,5 @@
-<form class="form-horizontal" method="POST" action="{{ route('branchService.store') }}" >
-    {{ csrf_field() }}
+{!! Form::model($branch, ['route' => ['branch.addService', $branch->id], 'class' => 'form-horizontal']) !!}
+
 
     <div class="form-group">
         <label for="code" class="col-md-12 control-label">Branch</label>
@@ -10,23 +10,21 @@
         </div>
     </div>
 
-    <div class="form-group{{ $errors->has('service_id') ? ' has-error' : '' }}">
-        <label for="service_id" class="col-md-12 control-label">Services</label>
+    <div class="form-group{{ $errors->has('service') ? ' has-error' : '' }}">
+        <label for="service" class="col-md-12 control-label">Services</label>
 
         <div class="col-md-8">
-            <select id="multiSelectBranchCoutner" class="form-control" name="service_id">
+            <select id="multiSelectBranchCoutner" class="form-control" name="service">
                 @foreach ($services as $service)
-                {{-- @if($counter->id == $branchCounter->branch_id) --}}
-                <option value='{{ $service->counter_id }}'>
-                    {{ $service->name }} ({{ $service->code }})
-                </option>
-                {{-- @endif --}}
+                    <option value='{{ $service->id }}' {{ $branch->services->contains($service->id) ? "disabled" : "" }}>
+                        {{ $service->name }} ({{ $service->code }})
+                    </option>
                 @endforeach
             </select>
 
-            @if ($errors->has('service_id'))
+            @if ($errors->has('service'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('service_id') }}</strong>
+                    <strong>{{ $errors->first('service') }}</strong>
                 </span>
             @endif
         </div>

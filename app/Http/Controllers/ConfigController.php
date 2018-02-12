@@ -58,8 +58,8 @@ class ConfigController extends Controller
                 'branch_services.service_id', 
                 'services.code as service_code', 
                 'services.name as service_name',
-                'branch_services.avg_wait_time', 
-                'branch_services.default_avg_wait_time')
+                'branch_services.system_wait_time', 
+                'branch_services.default_wait_time')
             ->get();
 
         // return $branchCounters;

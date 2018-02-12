@@ -11,4 +11,8 @@ class Counter extends Model
 
     	return $this->hasMany(BranchCounter::class);
     }
+
+    public function branches(){
+        return $this->belongsToMany(Branch::class, 'branch_counters')->withPivot('id', 'staff_username');
+    }
 }

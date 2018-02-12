@@ -18,16 +18,16 @@ class TableRelations extends Migration
             $table->foreign('branch_id')->references('id')->on('branches');
         });
 
-        Schema::table('branch_services', function($table) {
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->foreign('service_id')->references('id')->on('services');
-        });
+        // Schema::table('branch_services', function($table) {
+        //     $table->foreign('branch_id')->references('id')->on('branches');
+        //     $table->foreign('service_id')->references('id')->on('services');
+        // });
 
-        Schema::table('branch_counters', function($table) {
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->foreign('counter_id')->references('id')->on('counters');
-            $table->foreign('staff_username')->references('username')->on('users');
-        });
+        // Schema::table('branch_counters', function($table) {
+        //     $table->foreign('branch_id')->references('id')->on('branches');
+        //     $table->foreign('counter_id')->references('id')->on('counters');
+        //     $table->foreign('staff_username')->references('username')->on('users');
+        // });
 
         Schema::table('queues', function($table) {
             $table->foreign('branch_service_id')->references('id')->on('branch_services');

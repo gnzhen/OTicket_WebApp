@@ -18,8 +18,8 @@ class CreateBranchServicesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('branch_id');
             $table->unsignedInteger('service_id');
-            $table->integer('avg_wait_time')->nullable();
-            $table->integer('default_avg_wait_time');
+            $table->integer('system_wait_time')->nullable();
+            $table->integer('default_wait_time');
             $table->timestamps();
         });
     }
