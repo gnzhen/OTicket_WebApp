@@ -48,11 +48,11 @@ class ConfigController extends Controller
                 'branch_counters.staff_username')
             ->get();
 
-        $branchServices = BranchService::leftJoin('branches', 'branches.id', '=', 'branch_services.branch_id')
-            ->join('services', 'services.id', '=', 'branch_services.service_id')
+        $branchServices = Branch::leftJoin('branch_services', 'branches.id', '=', 'branch_services.branch_id')
+            ->leftJoin('services', 'services.id', '=', 'branch_services.service_id')
             ->select(
                 'branch_services.id', 
-                'branch_services.branch_id',  
+                'branches.id as branch_id',  
                 'branches.code as branch_code',  
                 'branches.name as branch_name', 
                 'branch_services.service_id', 
@@ -60,6 +60,7 @@ class ConfigController extends Controller
                 'services.name as service_name',
                 'branch_services.system_wait_time', 
                 'branch_services.default_wait_time')
+            ->withCount('services')
             ->get();
 
         // return $branchCounters;

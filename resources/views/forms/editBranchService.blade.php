@@ -1,28 +1,20 @@
-<form class="form-horizontal" method="POST" action="{{ route('branchService.store') }}" >
+{!! Form::model($branchService, ['route' => ['branch.updateService', $branchService->id], 'class' => 'form-horizontal']) !!}
     {{ csrf_field() }}
 
     <div class="form-group">
         <label for="code" class="col-md-12 control-label">Branch</label>
 
         <div class="col-md-12">
-            <input type="hidden" class="form-control" name="branch_id" value="{{ $branch->id }}">
-            <input type="text" class="form-control" value="{{ $branch->name }}({{ $branch->code }})" disabled>
+            <input type="hidden" class="form-control" name="branch" value="{{ $branch->id }}">
+            <input type="text" class="form-control" value="{{ $branch->name }} ({{ $branch->code }})" disabled>
         </div>
     </div>
 
     <div class="form-group{{ $errors->has('service_id') ? ' has-error' : '' }}">
         <label for="service_id" class="col-md-12 control-label">Services</label>
 
-        <div class="col-md-8">
-            <select id="multiSelectBranchCoutner" class="form-control" name="service_id">
-                @foreach ($services as $service)
-                {{-- @if($counter->id == $branchCounter->branch_id) --}}
-                <option value='{{ $service->counter_id }}'>
-                    {{ $service->name }} ({{ $service->code }})
-                </option>
-                {{-- @endif --}}
-                @endforeach
-            </select>
+        <div class="col-md-12">
+            <input type="text" class="form-control" value="{{ $service->name }} ({{ $service->code }})" disabled>
 
             @if ($errors->has('service_id'))
                 <span class="help-block">

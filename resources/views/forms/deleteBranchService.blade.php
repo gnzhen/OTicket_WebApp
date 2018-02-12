@@ -1,8 +1,9 @@
-{!! Form::model($branchCounter, ['route' => ['branchService.destroy', $branchService->id], 'method' => 'DELETE']) !!}
+{!! Form::model($branchService, ['route' => ['branch.deleteService', $branchService->branch_id], 'method' => 'POST']) !!}
 
     <div class="form-group">
         <div class="col-md-12">
             <p>Delete <strong>{{ $branchService->service_name }} ({{ $branchService->service_code }})</strong> from <strong>{{ $branchService->branch_name }} ({{ $branchService->branch_code }})</strong>?</p>
+            <input type="hidden" name="service" value="{{ $branchService->service_id }}">
         </div>
     </div>
 

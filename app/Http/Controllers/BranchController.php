@@ -52,9 +52,7 @@ class BranchController extends Controller
 
         if ($validator->fails()) {
 
-            Session::flash('add_branch_error', 'Fail to add branch.');
-
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->with("add_branch_error", $id)->withInput();
         }
         else {
             $branch = new Branch;
@@ -113,8 +111,6 @@ class BranchController extends Controller
         ]);
 
         if ($validator->fails()) {
-        
-            Session::flash('edit_branch_error', 'Fail to edit branch.');
 
             return back()->withErrors($validator)->with("edit_branch_error", $id)->withInput();
         }
@@ -153,38 +149,28 @@ class BranchController extends Controller
 
     public function updateCounter(Request $request, $id) {
 
-        $validator = Validator::make($request->all(), [
-            'counters' => 'required',
-        ]);
+        $branch = Branch::findOrFail($id);
 
-        if ($validator->fails()) {
+        $branch->counters()->sync($request->get('counters'));
 
-            Session::flash('edit_branch_counter_error', 'Fail to edit counters from branch.');
+        Session::flash('success', 'Branch counter updated!');
 
-            return back()->withErrors($validator)->withInput();
-        }
-        else {
-
-            $branch = Branch::findOrFail($id);
-
-            $branch->counters()->sync($request->get('counters'));
-
-            Session::flash('success', 'Counters added to branch!');
-
-            return redirect()->route('config.index');
-        }
+        return redirect()->route('config.index');
     }
 
     public function addService(Request $request, $id) {
 
         $validator = Validator::make($request->all(), [
             'service' => 'required',
+            'default_wait_time_hr' => 'numeric|between:0,23',
+            'default_wait_time_min' => 'numeric|between:0,59',
+            'default_wait_time_sec' => 'numeric|between:0,59',
         ]);
 
+        // return $request;
         if ($validator->fails()) {
-            Session::flash('add_branch_service_error', 'Fail to add service from branch.');
 
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->with("add_branch_service_error", $id)->withInput();
         }
         else {
             $branch = Branch::findOrFail($id);
@@ -197,11 +183,36 @@ class BranchController extends Controller
         }
     }
 
+    public function updateService(Request $request, $id) {
+
+        $validator = Validator::make($request->all(), [
+            'service' => 'required',
+            'default_wait_time_hr' => 'numeric|between:0,23',
+            'default_wait_time_min' => 'numeric|between:0,59',
+            'default_wait_time_sec' => 'numeric|between:0,59',
+        ]);
+
+        // return $request;
+        if ($validator->fails()) {
+
+            return back()->withErrors($validator)->with("edit_branch_service_error", $id)->withInput();
+        }
+        else {
+            $branch = Branch::findOrFail($id);
+
+            // $branch->services()->attach($request->service, ['default_wait_time' => '1150']);
+
+            Session::flash('success', 'Branch service is updated!');
+
+            return redirect()->route('config.index');
+        }
+    }
+
     public function deleteService(Request $request, $id) {
 
         $branch = Branch::findOrFail($id);
 
-        $branch->services()->detach($request->service_id);
+        $branch->services()->detach($request->service);
 
         return redirect()->route('config.index');
     }

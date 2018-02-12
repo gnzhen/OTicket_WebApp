@@ -214,20 +214,6 @@
 </div>
 @endforeach
 
-@foreach($branchCounters as $branchCounter)
-<div class="modal fade" id="deleteBranchCounterModal{{ $branchCounter->id }}">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            
-            <!-- Modal body -->
-            <div class="modal-body">
-              @include('forms.deleteBranchCounter')
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach
-
 @foreach($branchServices as $branchService)
 <div class="modal fade" id="deleteBranchServiceModal{{ $branchService->id }}">
     <div class="modal-dialog modal-sm">

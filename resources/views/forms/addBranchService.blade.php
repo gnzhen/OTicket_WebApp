@@ -35,21 +35,31 @@
 
         <div class="form-inline col-md-12">
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_hr" min="0" max="23"></input>
+                <input type="number" class="form-control" name="default_wait_time_hr" min="0" max="23" value="0"></input>
                 <label for="default_wait_time_hr" class="control-label inline-label">hour</label>
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_min" min="0" max="23"></input>
+                <input type="number" class="form-control" name="default_wait_time_min" min="0" max="23" value="0"></input>
                 <label for="default_wait_time_min" class="control-label inline-label">min</label>
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_sec" min="0" max="23"></input>
+                <input type="number" class="form-control" name="default_wait_time_sec" min="0" max="23" value="0"></input>
                 <label for="default_wait_time_sec" class="control-label inline-label">sec</label>
             </div>
 
-            @if ($errors->has('default_wait_time'))
+            @if ($errors->has('default_wait_time_hr'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('default_wait_time') }}</strong>
+                    <strong>{{ $errors->first('default_wait_time_hr') }}</strong>
+                </span>
+            @endif
+            @if ($errors->has('default_wait_time_min'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('default_wait_time_min') }}</strong>
+                </span>
+            @endif
+            @if ($errors->has('default_wait_time_sec'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('default_wait_time_sec') }}</strong>
                 </span>
             @endif
         </div>

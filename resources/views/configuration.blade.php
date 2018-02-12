@@ -163,21 +163,32 @@ use Illuminate\Support\Facades\Input;
                         ({{ $branchService->branch_code }})
                     </td>
                     <td>
-                        {{ $branchService->service_name }} 
-                        ({{ $branchService->service_code }})
+                        @if( $branchService->service_id != null )
+                         {{ $branchService->service_name }} ({{ $branchService->service_code }})
+                        @else
+                        -
+                        @endif
                     </td>
                     <td>
+                        @if( $branchService->service_id != null )
                         {{ $appController->secToString($branchService->default_wait_time) }}
+                        @else
+                        -
+                        @endif
                     </td>
                     <td>
+                        @if( $branchService->service_id != null )
                         {{ $branchService->system_wait_time == null ? ($appController->secToString($branchService->system_wait_time)) : '-' }}
+                        @else
+                        -
+                        @endif
                     </td>
                     <td class="td-action">
-                        <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService" data-id="{{ $branchService->id }}"><span>Edit</span></button>
-                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService" data-id="{{ $branchService->id }}"><span>Delete</span></button>
+                        <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService" data-id="{{ $branchService->id }}" {{ $branchService->service_id == null?"disabled":"" }}><span>Edit</span></button>
+                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService" data-id="{{ $branchService->branch_id }}" {{ $branchService->service_id == null?"disabled":"" }}><span>Delete</span></button>
                     </td>
                     <td class="td-action">
-                        <button href="#" class="btn btn-info btn-sm" id="btnAddBranchService" data-id="{{ $branchService->branch_id }}"><span>Add Service to Branch</span></button>
+                        <button class="btn btn-info btn-sm" id="btnAddBranchService" data-id="{{ $branchService->branch_id }}" {{ $branchService->services_count == $service->count() ?"disabled":""}}><span>Add Service to Branch</span></button>
                     </td>
                 </tr>
             @endforeach
