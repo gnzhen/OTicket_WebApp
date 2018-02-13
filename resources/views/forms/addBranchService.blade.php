@@ -39,11 +39,11 @@
                 <label for="default_wait_time_hr" class="control-label inline-label">hour</label>
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_min" min="0" max="23" value="0"></input>
+                <input type="number" class="form-control" name="default_wait_time_min" min="0" max="59" value="0"></input>
                 <label for="default_wait_time_min" class="control-label inline-label">min</label>
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_sec" min="0" max="23" value="0"></input>
+                <input type="number" class="form-control" name="default_wait_time_sec" min="0" max="59" value="0"></input>
                 <label for="default_wait_time_sec" class="control-label inline-label">sec</label>
             </div>
 

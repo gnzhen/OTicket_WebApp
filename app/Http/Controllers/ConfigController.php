@@ -63,8 +63,9 @@ class ConfigController extends Controller
             ->withCount('services')
             ->get();
 
-        // return $branchCounters;
-        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters)->withBranchCounters($branchCounters)->withBranchServices($branchServices)->withAppController($appController);
+        $wait_time_array = AppController::timeToArray($branchServices);
+
+        return view('configuration')->withBranches($branches)->withServices($services)->withCounters($counters)->withBranchCounters($branchCounters)->withBranchServices($branchServices)->withAppController($appController)->withWaitTimeArray($wait_time_array);
     }
 
     /**

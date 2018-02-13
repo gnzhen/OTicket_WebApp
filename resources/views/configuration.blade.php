@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Input;
 
 @section('content')
 
-@include('modals._config')
 <div class="container">
+@include('modals._config')
+
     <h3>Configurations</h3>
 
     <div class="row row-space">
@@ -178,14 +179,14 @@ use Illuminate\Support\Facades\Input;
                     </td>
                     <td>
                         @if( $branchService->service_id != null )
-                        {{ $branchService->system_wait_time == null ? ($appController->secToString($branchService->system_wait_time)) : '-' }}
+                        {{ $branchService->system_wait_time != null ? ($appController->secToString($branchService->system_wait_time)) : '-' }}
                         @else
                         -
                         @endif
                     </td>
                     <td class="td-action">
                         <button href="#" class="btn btn-secondary btn-sm" id="btnEditBranchService" data-id="{{ $branchService->id }}" {{ $branchService->service_id == null?"disabled":"" }}><span>Edit</span></button>
-                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService" data-id="{{ $branchService->branch_id }}" {{ $branchService->service_id == null?"disabled":"" }}><span>Delete</span></button>
+                        <button href="#" class="btn btn-danger btn-sm" id="btnDeleteBranchService" data-id="{{ $branchService->id }}" {{ $branchService->service_id == null?"disabled":"" }}><span>Delete</span></button>
                     </td>
                     <td class="td-action">
                         <button class="btn btn-info btn-sm" id="btnAddBranchService" data-id="{{ $branchService->branch_id }}" {{ $branchService->services_count == $service->count() ?"disabled":""}}><span>Add Service to Branch</span></button>
@@ -344,6 +345,16 @@ use Illuminate\Support\Facades\Input;
             jQuery( document ).ready(function( $ ) {
                 var id = {{ Session::get('add_branch_service_error') }};
                 $('#addBranchServiceModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('edit_branch_service_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('edit_branch_service_error') }};
+                $('#editBranchServiceModal'+id).modal('show');
             });
         </script>
     @endif

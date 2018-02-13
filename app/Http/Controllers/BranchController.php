@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Traits\NullableFields;
 use App\Http\Controllers\AppController;
 use App\Branch;
+use App\BranchService;
 use App\Counter;
 use App\Service;
 use Session;
@@ -175,7 +176,9 @@ class BranchController extends Controller
         else {
             $branch = Branch::findOrFail($id);
 
-            $branch->services()->attach($request->service, ['default_wait_time' => '1150']);
+            $default_wait_time = AppController::timeToSec($request->default_wait_time_hr, $request->default_wait_time_min, $request->default_wait_time_sec);
+
+            $branch->services()->attach($request->service, ['default_wait_time' => $default_wait_time]);
 
             Session::flash('success', 'Service added to branch!');
 
@@ -190,6 +193,10 @@ class BranchController extends Controller
             'default_wait_time_hr' => 'numeric|between:0,23',
             'default_wait_time_min' => 'numeric|between:0,59',
             'default_wait_time_sec' => 'numeric|between:0,59',
+
+            'system_wait_time_hr' => 'numeric|between:0,23',
+            'system_wait_time_min' => 'numeric|between:0,59',
+            'system_wait_time_sec' => 'numeric|between:0,59',
         ]);
 
         // return $request;
@@ -198,11 +205,19 @@ class BranchController extends Controller
             return back()->withErrors($validator)->with("edit_branch_service_error", $id)->withInput();
         }
         else {
-            $branch = Branch::findOrFail($id);
+            $branchService = BranchService::findOrFail($id);
 
-            // $branch->services()->attach($request->service, ['default_wait_time' => '1150']);
+            $branch = Branch::findOrFail($branchService->branch_id);
 
-            Session::flash('success', 'Branch service is updated!');
+            $default_wait_time = AppController::timeToSec($request->default_wait_time_hr, $request->default_wait_time_min, $request->default_wait_time_sec);
+            $system_wait_time = AppController::timeToSec($request->system_wait_time_hr, $request->system_wait_time_min, $request->system_wait_time_sec);
+
+            $branchService->default_wait_time = $default_wait_time;
+            $branchService->system_wait_time = $system_wait_time;
+            
+            $branchService->save();
+
+            Session::flash('success', 'Branch service updated!');
 
             return redirect()->route('config.index');
         }
@@ -210,9 +225,13 @@ class BranchController extends Controller
 
     public function deleteService(Request $request, $id) {
 
-        $branch = Branch::findOrFail($id);
+        $branchService = BranchService::findOrFail($id);
 
-        $branch->services()->detach($request->service);
+        $branch = Branch::findOrFail($branchService->branch_id);
+
+        $branch->services()->detach($branchService->service_id);
+
+        Session::flash('success', 'Service deleted from branch!');
 
         return redirect()->route('config.index');
     }

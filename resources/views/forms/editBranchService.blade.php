@@ -5,20 +5,21 @@
         <label for="code" class="col-md-12 control-label">Branch</label>
 
         <div class="col-md-12">
-            <input type="hidden" class="form-control" name="branch" value="{{ $branch->id }}">
-            <input type="text" class="form-control" value="{{ $branch->name }} ({{ $branch->code }})" disabled>
+            <input type="hidden" class="form-control" name="branch" value="{{ $branchService->branch_id }}">
+            <input type="text" class="form-control" value="{{ $branchService->branch_name }} ({{ $branchService->branch_code }})" disabled>
         </div>
     </div>
 
-    <div class="form-group{{ $errors->has('service_id') ? ' has-error' : '' }}">
-        <label for="service_id" class="col-md-12 control-label">Services</label>
+    <div class="form-group{{ $errors->has('service') ? ' has-error' : '' }}">
+        <label for="service" class="col-md-12 control-label">Services</label>
 
         <div class="col-md-12">
-            <input type="text" class="form-control" value="{{ $service->name }} ({{ $service->code }})" disabled>
+            <input type="hidden" class="form-control" name="service" value="{{ $branchService->service_id }}">
+            <input type="text" class="form-control" value="{{ $branchService->service_name }} ({{ $branchService->service_code }})" disabled>
 
-            @if ($errors->has('service_id'))
+            @if ($errors->has('service'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('service_id') }}</strong>
+                    <strong>{{ $errors->first('service') }}</strong>
                 </span>
             @endif
         </div>
@@ -29,15 +30,15 @@
 
         <div class="form-inline col-md-12">
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_hr" min="0" max="23"></input>
+                <input type="number" class="form-control" name="default_wait_time_hr" min="0" max="23" value="{{ $waitTimeArray[$branchService->id]['default_wait_time_hr'] }}"></input>
                 <label for="default_wait_time_hr" class="control-label inline-label">hour</label>
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_min" min="0" max="23"></input>
+                <input type="number" class="form-control" name="default_wait_time_min" min="0" max="59" value="{{ $waitTimeArray[$branchService->id]['default_wait_time_min'] }}"></input>
                 <label for="default_wait_time_min" class="control-label inline-label">min</label>
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="default_wait_time_sec" min="0" max="23"></input>
+                <input type="number" class="form-control" name="default_wait_time_sec" min="0" max="59" value="{{ $waitTimeArray[$branchService->id]['default_wait_time_sec'] }}"></input>
                 <label for="default_wait_time_sec" class="control-label inline-label">sec</label>
             </div>
 
@@ -54,19 +55,19 @@
 
         <div class="form-inline col-md-12">
             <div class="form-group">
-                <p type="text" class="form-control" name="default_wait_time_hr">-</p>
-                <label for="default_wait_time_hr" class="control-label inline-label">hour</label>
+                <input type="number" class="form-control" name="system_wait_time_hr" id="systemWaitTimeHr" value="{{ $waitTimeArray[$branchService->id]['system_wait_time_hr'] }}" disabled></input>
+                <label for="system_wait_time_hr" class="control-label inline-label">hour</label>
             </div>
             <div class="form-group">
-                <p type="text" class="form-control" name="default_wait_time_min">-</p>
-                <label for="default_wait_time_min" class="control-label inline-label">min</label>
+                <input type="number" class="form-control" name="system_wait_time_min" id="systemWaitTimeMin" value="{{ $waitTimeArray[$branchService->id]['system_wait_time_min'] }}" disabled></input>
+                <label for="system_wait_time_min" class="control-label inline-label">min</label>
             </div>
             <div class="form-group">
-                <p type="text" class="form-control" name="default_wait_time_sec">-</p>
-                <label for="default_wait_time_sec" class="control-label inline-label">sec</label>
+                <input type="number" class="form-control" name="system_wait_time_sec" id="systemWaitTimeSec" value="{{ $waitTimeArray[$branchService->id]['system_wait_time_sec'] }}" disabled></input>
+                <label for="system_wait_time_sec" class="control-label inline-label">sec</label>
             </div>
             <div class="form-group">
-                <button type="button" class="btn btn-sm">Set to default</button>
+                <button type="button" class="btn btn-outline-light text-dark" id="btnResetSystemWaitTime">Reset</button>
             </div>
 
             @if ($errors->has('system_wait_time'))
@@ -79,7 +80,7 @@
 
     <div class="form-group">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </div>
     </div>
 </form>

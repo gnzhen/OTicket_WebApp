@@ -3,7 +3,9 @@
 @section('content')
 <div class="col-md-6 offset-3">
     
-    @include('forms.loginUser')
+	<div class="container">
+    	@include('forms.loginUser')
+    </div>
     
 </div>
 @endsection

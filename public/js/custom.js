@@ -120,6 +120,11 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#deleteBranchServiceModal'+id);
 	});
 
+	$('#btnResetSystemWaitTime').click(function() {
+		$('#systemWaitTimeHr').val(0);
+		$('#systemWaitTimeMin').val(0);
+		$('#systemWaitTimeSec').val(0);
+	});
 	
 });
 

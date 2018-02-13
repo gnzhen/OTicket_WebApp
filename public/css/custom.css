@@ -386,6 +386,9 @@ td select option {
     color: #636b6f;
 }
 
+input#systemWaitTimeHr, input#systemWaitTimeMin, input#systemWaitTimeSec{
+    max-width: 60px;
+}
 
 /* Display */
 

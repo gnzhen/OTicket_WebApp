@@ -1,4 +1,4 @@
-{!! Form::model($branchService, ['route' => ['branch.deleteService', $branchService->branch_id], 'method' => 'POST']) !!}
+{!! Form::model($branchService, ['route' => ['branch.deleteService', $branchService->id], 'method' => 'POST']) !!}
 
     <div class="form-group">
         <div class="col-md-12">
