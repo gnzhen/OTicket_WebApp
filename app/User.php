@@ -31,6 +31,31 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function isAdmin(){
+
+        if ($this->role->name == 'admin'){
+            return true;
+        }
+        return false;
+    }
+
+    public function isSuperAdmin(){
+
+        if ($this->role->name == 'superAdmin'){
+            return true;
+        }
+        return false;
+    }
+
+    public function isCounterStaff(){
+
+        if ($this->role->name == 'counterStaff'){
+            return true;
+        }
+        return false;
+    }
+
+
     /**
     * Get all the user for a role.
     */

@@ -22,6 +22,11 @@ label.inline-label {
     margin-bottom: 15px;
 }
 
+a.disabled {
+    pointer-events: none;
+    opacity:0.6; 
+}
+
 td .btn.btn-add {
     margin-bottom: 0;
 }

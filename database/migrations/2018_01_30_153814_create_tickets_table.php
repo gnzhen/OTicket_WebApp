@@ -23,6 +23,7 @@ class CreateTicketsTable extends Migration
             $table->integer('ppl_ahead');
             $table->string('customer_username');
             $table->integer('postponed');
+            $table->string('status');
             $table->timestamps();
         });
     }

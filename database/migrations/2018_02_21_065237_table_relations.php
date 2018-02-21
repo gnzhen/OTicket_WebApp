@@ -19,13 +19,15 @@ class TableRelations extends Migration
         });
 
         Schema::table('branch_services', function($table) {
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');;
-            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');;
+            $table->unique(['branch_id', 'service_id']);
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
         });
 
         Schema::table('branch_counters', function($table) {
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');;
-            $table->foreign('counter_id')->references('id')->on('counters')->onDelete('cascade');;
+            $table->unique(['branch_id', 'counter_id']);
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('counter_id')->references('id')->on('counters')->onDelete('cascade');
             $table->foreign('staff_username')->references('username')->on('users');
         });
 
@@ -44,12 +46,19 @@ class TableRelations extends Migration
             $table->foreign('branch_counter_id')->references('id')->on('branch_counters');
         });
 
+        Schema::table('callings', function($table) {
+            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->foreign('branch_counter_id')->references('id')->on('branch_counters');
+        });
+
         Schema::table('branch_counter_queue', function($table) {
+            $table->unique(['branch_counter_id', 'queue_id']);
             $table->foreign('branch_counter_id')->references('id')->on('branch_counters');
             $table->foreign('queue_id')->references('id')->on('queues');
         });
 
         Schema::table('ticket_change', function($table) {
+            $table->unique(['ticket_id', 'change_id']);
             $table->foreign('ticket_id')->references('id')->on('tickets');
             $table->foreign('change_id')->references('id')->on('changes');
         });

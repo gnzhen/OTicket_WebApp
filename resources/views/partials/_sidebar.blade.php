@@ -41,7 +41,9 @@
 
             <ul class="collapse list-unstyled" id="adminMenu">
                 <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configurations</a></li>
-                <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
+                @if(Auth::user()->isSuperAdmin() || Auth::user()->isAdmin())
+                    <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
+                @endif
                 <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
             </ul>
 

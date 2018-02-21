@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 
@@ -15,7 +16,9 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->middleware('admin');
+
+        // $this->middleware('superAdmin', ['only' => ['create', 'store', 'edit', 'delete']]);
     }
     
     /**
@@ -25,7 +28,6 @@ class UserController extends Controller
      */
     public function index()
     {
-
         $users = User::orderBy('username')->get();
 
         return view('user')->withUsers($users);
@@ -40,7 +42,7 @@ class UserController extends Controller
     {
         $user = new User();
 
-         return view('user.create', ['user' => $user,]);
+        return view('user.create', ['user' => $user,]);
     }
 
     /**

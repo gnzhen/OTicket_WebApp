@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
-    //
+    // const CREATED_AT = 'issue_time';
+    // const UPDATED_AT = 'status_change_time';
 
     public function queue(){
     	
