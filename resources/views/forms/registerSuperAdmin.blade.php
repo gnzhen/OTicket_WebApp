@@ -38,7 +38,7 @@
         <label for="role" class="col-md-10 control-label">User Role</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" name="role" value="2" required>
+            <input type="text" class="form-control" name="role" value="1" required>
         </div>
     </div>
 

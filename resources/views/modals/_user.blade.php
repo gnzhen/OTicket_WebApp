@@ -34,7 +34,27 @@
     </div>
 </div>
 
-<div class="modal fade modal-edit" id="editStaffModal">
+<div class="modal fade modal-add" id="registerSuperAdminModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Super Admin</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.registerSuperAdmin')
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@foreach($users as $user)
+<div class="modal fade modal-edit" id="updateStaffModal{{ $user->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -46,13 +66,15 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.editStaff')
+              @include('forms.updateStaff')
             </div>
         </div>
     </div>
 </div>
+@endforeach
 
-<div class="modal fade modal-edit" id="editAdminModal">
+@foreach($users as $user)
+<div class="modal fade modal-edit" id="updateAdminModal{{ $user->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -64,13 +86,15 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.editAdmin')
+              @include('forms.updateStaff')
             </div>
         </div>
     </div>
 </div>
+@endforeach
 
-<div class="modal fade modal-edit" id="editSuperAdminModal">
+@foreach($users as $user)
+<div class="modal fade modal-edit" id="updateSuperAdminModal{{ $user->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -82,44 +106,51 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.editSuperAdmin')
+              @include('forms.updateStaff')
             </div>
         </div>
     </div>
 </div>
+@endforeach
 
-<div class="modal fade" id="deleteStaffModal">
+@foreach($users as $user)
+<div class="modal fade" id="deleteStaffModal{{ $user->id }}">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             
             <!-- Modal body -->
             <div class="modal-body">
-                Are you sure you want to delete?
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+              @include('forms.deleteStaff')
             </div>
         </div>
     </div>
 </div>
+@endforeach
 
-<div class="modal fade" id="deleteAdminModal">
+@foreach($users as $user)
+<div class="modal fade" id="deleteAdminModal{{ $user->id }}">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-
+            
             <!-- Modal body -->
             <div class="modal-body">
-                Are you sure you want to delete?
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+              @include('forms.deleteAdmin')
             </div>
         </div>
     </div>
 </div>
+@endforeach
+
+@foreach($users as $user)
+<div class="modal fade" id="deleteSuperAdminModal{{ $user->id }}">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              @include('forms.deleteSuperAdmin')
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach

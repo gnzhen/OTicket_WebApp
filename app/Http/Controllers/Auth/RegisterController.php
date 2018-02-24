@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Traits\NullableFields;
 
 class RegisterController extends Controller
 {
@@ -38,7 +36,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -49,15 +47,11 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        var_dump($data);
-
-        // return Validator::make($data, [
-        //     'username' => 'required|string|max:255|unique:users',
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'role_id' => 'required|integer',
-        //     'branch_id' => 'string|max:255',
-        //     'password' => 'required|string|min:6|confirmed',
-        // ]);
+        return Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
     }
 
     /**
@@ -69,10 +63,8 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'username' => $data['username'],
+            'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => $data['role_id'],
-            'branch_id' => $this->nullIfEmpty($data['branch_id']),
             'password' => bcrypt($data['password']),
         ]);
     }

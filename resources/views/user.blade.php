@@ -50,11 +50,18 @@
                             <tr>
                                 <td><div>{{ $user->username }}</div></td>
                                 <td class="td-email"><div>{{ $user->email }}</div></td>
-                                <td class="td-branch"><div>{{ $user->branch != null ? $user->branch : '-' }}</div></td>
-                                {{-- <td class="td-password"><div>{{ $user->password }}</div></td> --}}
+                                <td class="td-branch">
+                                    <div>
+                                        @if( $user->branch != null )
+                                        {{ $user->branch->name }} ({{ $user->branch->code }}) 
+                                        @else
+                                        -
+                                        @endif
+                                    </div>
+                                </td>
                                 <td class="td-action">
-                                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                                    <button class="btn btn-secondary btn-sm" id="btnEditStaff" data-id="{{ $user->id }}"><span>Edit</span></button>
+                                    <button class="btn btn-danger btn-sm" id="btnDeleteStaff" data-id="{{ $user->id }}"><span>Delete</span></button>
                                 </td>
                             </tr>
                                 @endif
@@ -83,11 +90,18 @@
                             <tr>
                                  <td><div>{{ $user->username }}</div></td>
                                 <td class="td-email"><div>{{ $user->email }}</div></td>
-                                <td class="td-branch"><div>{{ $user->branch != null ? $user->branch : '-' }}</div></td>
-                                {{-- <td class="td-password"><div>{{ $user->password }}</div></td> --}}
+                                <td class="td-branch">
+                                    <div>
+                                        @if( $user->branch != null )
+                                        {{ $user->branch->name }} ({{ $user->branch->code }}) 
+                                        @else
+                                        -
+                                        @endif
+                                    </div>
+                                </td>
                                 <td class="td-action">
-                                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditStaff"><span>Edit</span></a>
-                                    <a href="#" class="btn btn-danger btn-sm" id="btnDeleteStaff"><span>Delete</span></a>
+                                    <button class="btn btn-secondary btn-sm" id="btnEditAdmin" data-id="{{ $user->id }}"><span>Edit</span></button>
+                                    <button class="btn btn-danger btn-sm" id="btnDeleteAdmin" data-id="{{ $user->id }}"><span>Delete</span></button>
                                 </td>
                                 </td>
                             </tr>
@@ -98,6 +112,9 @@
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="superAdmin">
+
+                    <button class="btn btn-info btn-add" id="btnAddSuperAdmin" data-target="#registerSuperAdminModal"><span>Add Super Admin</span></button>
+
                     <table id="superAdminTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -114,10 +131,18 @@
                             <tr>
                                 <td><div>{{ $user->username }}</div></td>
                                 <td class="td-email"><div>{{ $user->email }}</div></td>
-                                <td class="td-branch"><div>{{ $user->branch != null ? $user->branch : '-' }}</div></td>
-                                {{-- <td class="td-password"><div>{{ $user->password }}</div></td> --}}
+                                <td class="td-branch">
+                                    <div>
+                                        @if( $user->branch != null )
+                                        {{ $user->branch->name }} ({{ $user->branch->code }}) 
+                                        @else
+                                        -
+                                        @endif
+                                    </div>
+                                </td>
                                 <td class="td-action">
-                                    <a href="#" class="btn btn-secondary btn-sm" id="btnEditSuperAdmin"><span>Edit</span></a>
+                                    <button class="btn btn-secondary btn-sm" id="btnEditSuperAdmin" data-id="{{ $user->id }}"><span>Edit</span></button>
+                                    <button class="btn btn-danger btn-sm" id="btnDeleteSuperAdmin" data-id="{{ $user->id }}"><span>Delete</span></button>
                                 </td>
                             </tr>
                             @endif
@@ -130,3 +155,66 @@
     </div>
 </div> 
 @stop
+
+@section('javascript')
+
+    {{-- Re-open different modal to show error --}}
+    @if( Session::has('register_staff_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                $('#registerStaffModal').modal('show');
+            });
+            console.log('error');
+        </script>
+    @endif
+    @if( Session::has('update_staff_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('update_staff_error') }};
+                $('#updateStaffModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('register_admin_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                $('#registerAdminModal').modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('update_admin_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('update_admin_error') }};
+                $('#updateAdminModal'+id).modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('register_super_admin_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                $('#registerSuperAdminModal').modal('show');
+            });
+        </script>
+    @endif
+    @if( Session::has('update_super_admin_error'))
+        <script type="text/javascript">
+            $.noConflict();
+
+            jQuery( document ).ready(function( $ ) {
+                var id = {{ Session::get('update_super_admin_error') }};
+                $('#updateSuperAdminModal'+id).modal('show');
+            });
+        </script>
+    @endif
+@endsection

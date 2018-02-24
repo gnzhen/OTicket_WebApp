@@ -56,9 +56,7 @@ class CounterController extends Controller
 
         if ($validator->fails()) {
 
-            Session::flash('add_counter_error', 'Fail to add counter.');
-
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->with('add_counter_error', 'fail')->withInput();
         }
         else {
             $counter = new Counter;

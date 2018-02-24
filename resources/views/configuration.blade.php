@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Input;
 
 @section('content')
 
-<div class="container">
 @include('modals._config')
+
+<div class="container">
 
     <h3>Configurations</h3>
 

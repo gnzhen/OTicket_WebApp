@@ -1,11 +1,10 @@
-<form class="form-horizontal" method="POST" action="{{ route('user.store') }}">
-    {{ csrf_field() }}
-    
+{!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'PUT']) !!}
+
     <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
         <label for="username" class="col-md-10 control-label">Username</label>
 
         <div class="col-md-10">
-            <input type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+            <input type="text" class="form-control" name="username" value="{{ $user->username }}" required autofocus>
 
             @if ($errors->has('username'))
                 <span class="help-block">
@@ -20,13 +19,13 @@
 
         <div class="col-md-6">
             <select class="btn btn-dropdown dropdown-toggle" name="branch">
-                    <option value="">-</option>
+                    <option>-</option>
                     @foreach($branches as $branch)
                     <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                     @endforeach
             </select>
 
-            @if ($errors->has('branch'))
+            @if ($errors->has('branch_id'))
                 <span class="help-block">
                     <strong>{{ $errors->first('branch') }}</strong>
                 </span>
@@ -38,7 +37,15 @@
         <label for="role" class="col-md-10 control-label">User Role</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" name="role" value="2" required>
+            <select class="btn btn-dropdown dropdown-toggle" name="role" disabled>
+                <option value="{{ $user->role_id }}"></option>
+            </select>
+
+            @if ($errors->has('role'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('role') }}</strong>
+                </span>
+            @endif
         </div>
     </div>
 
@@ -46,7 +53,7 @@
         <label for="email" class="col-md-10 control-label">E-Mail Address</label>
 
         <div class="col-md-10">
-            <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+            <input type="email" class="form-control" name="email" value="{{ $user->email }}" required>
 
             @if ($errors->has('email'))
                 <span class="help-block">
@@ -56,31 +63,9 @@
         </div>
     </div>
 
-    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-        <label for="password" class="col-md-10 control-label">Password</label>
-
-        <div class="col-md-10">
-            <input type="password" class="form-control" name="password" required>
-
-            @if ($errors->has('password'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-            @endif
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="password-confirm" class="col-md-10 control-label">Confirm Password</label>
-
-        <div class="col-md-10">
-            <input type="password" class="form-control" name="password_confirmation" required>
-        </div>
-    </div>
-
     <div class="form-group">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             </button>
         </div>
     </div>

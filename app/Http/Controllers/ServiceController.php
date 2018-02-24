@@ -46,9 +46,7 @@ class ServiceController extends Controller
 
         if ($validator->fails()) {
 
-            Session::flash('add_service_error', 'Fail to add service.');
-
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->with('add_service_error', 'fail')->withInput();
         }
         else {
             $service = new Service;

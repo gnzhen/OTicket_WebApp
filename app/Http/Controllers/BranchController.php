@@ -50,10 +50,10 @@ class BranchController extends Controller
             'name' => 'required|max:255',
             'desc' => 'max:255'
         ]);
-
+        
         if ($validator->fails()) {
 
-            return back()->withErrors($validator)->with("add_branch_error", $id)->withInput();
+            return back()->withErrors($validator)->with('add_branch_error', 'fail')->withInput();
         }
         else {
             $branch = new Branch;
@@ -104,7 +104,8 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'code' => ['required', 'alpha_dash', 'max:255',
+            'code' => [
+                'required', 'alpha_dash', 'max:255',
                 Rule::unique('branches')->ignore($branch->id),
             ],
             'name' => 'required|max:255',
@@ -140,8 +141,6 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
 
         $branch->delete();
-
-        //delete branchService and branchCounter
 
         Session::flash('success', 'Branch is deleted!');
 

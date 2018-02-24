@@ -4,6 +4,7 @@ jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
 	setInitialSidebar();
+	// getAllSession();
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();
@@ -25,6 +26,7 @@ jQuery( document ).ready(function( $ ) {
 
 
     /* Show different modal form on button click */
+    /* Add */
     $('#btnAddStaff').click(function() {
 		showModal("#registerStaffModal");
 	});
@@ -33,16 +35,8 @@ jQuery( document ).ready(function( $ ) {
 		showModal("#registerAdminModal");
 	});
 
-	$('#btnEditStaff').click(function() {
-		showModal("#updateStaffModal");
-	});
-
-	$('#btnEditAdmin').click(function() {
-		showModal("#updateAdminModal");
-	});
-
-	$('#btnEditSuperAdmin').click(function() {
-		showModal("#updateSuperAdminModal");
+	$('#btnAddSuperAdmin').click(function() {
+		showModal("#registerSuperAdminModal");
 	});
 
 	$('#btnDeleteStaff').click(function() {
@@ -70,6 +64,23 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#addBranchServiceModal'+id);
 	});
 
+	/* Edit */
+
+	$('body').delegate('#btnEditStaff', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#updateStaffModal'+id);
+	});
+
+	$('body').delegate('#btnEditAdmin', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#updateAdminModal'+id);
+	});
+
+	$('body').delegate('#btnEditSuperAdmin', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#updateSuperAdminModal'+id);
+	});
+
 	$('body').delegate('#btnEditBranch', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#editBranchModal'+id);
@@ -93,6 +104,22 @@ jQuery( document ).ready(function( $ ) {
 	$('body').delegate('#btnEditBranchService', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#editBranchServiceModal'+id);
+	});
+
+	/* Delete */
+	$('body').delegate('#btnDeleteStaff', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteStaffModal'+id);
+	});
+
+	$('body').delegate('#btnDeleteAdmin', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteAdminModal'+id);
+	});
+
+	$('body').delegate('#btnDeleteSuperAdmin', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#deleteSuperAdminModal'+id);
 	});
 
 	$('body').delegate('#btnDeleteBranch', 'click', function() {

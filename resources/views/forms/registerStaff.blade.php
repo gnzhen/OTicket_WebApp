@@ -1,6 +1,6 @@
-<form class="form-horizontal" method="POST" action="{{ route('register') }}" >
+<form class="form-horizontal" method="POST" action="{{ route('user.store') }}">
     {{ csrf_field() }}
-
+    
     <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
         <label for="username" class="col-md-10 control-label">Username</label>
 
@@ -15,37 +15,30 @@
         </div>
     </div>
 
-    <div class="form-group{{ $errors->has('branch_id') ? ' has-error' : '' }}">
-        <label for="branch_id" class="col-md-10 control-label">Branch</label>
+    <div class="form-group{{ $errors->has('branch') ? ' has-error' : '' }}">
+        <label for="branch" class="col-md-10 control-label">Branch</label>
 
         <div class="col-md-6">
-            <select class="btn btn-dropdown dropdown-toggle" name="branch_id">
-                    <option>-</option>
-                    <option value="0">Ampang</option>
-                    <option value="1">Sunway</option>
+            <select class="btn btn-dropdown dropdown-toggle" name="branch">
+                    <option value="">-</option>
+                    @foreach($branches as $branch)
+                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                    @endforeach
             </select>
 
-            @if ($errors->has('branch_id'))
+            @if ($errors->has('branch'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('branch_id') }}</strong>
+                    <strong>{{ $errors->first('branch') }}</strong>
                 </span>
             @endif
         </div>
     </div>
-
-    <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}" style="display:none;">
-        <label for="role_id" class="col-md-10 control-label">User Role</label>
+    
+    <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}" style="display:none;">
+        <label for="role" class="col-md-10 control-label">User Role</label>
 
         <div class="col-md-6">
-            <select class="btn btn-dropdown dropdown-toggle" name="role_id">
-                    <option value="2">Counter Staff</option>
-            </select>
-
-            @if ($errors->has('role_id'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('role_id') }}</strong>
-                </span>
-            @endif
+            <input type="text" class="form-control" name="role" value="3" required>
         </div>
     </div>
 
