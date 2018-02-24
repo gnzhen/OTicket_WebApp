@@ -68,17 +68,17 @@ jQuery( document ).ready(function( $ ) {
 
 	$('body').delegate('#btnEditStaff', 'click', function() {
 		var id = $(this).data('id');
-		showModal('#updateStaffModal'+id);
+		showModal('#updateUserModal'+id);
 	});
 
 	$('body').delegate('#btnEditAdmin', 'click', function() {
 		var id = $(this).data('id');
-		showModal('#updateAdminModal'+id);
+		showModal('#updateUserModal'+id);
 	});
 
 	$('body').delegate('#btnEditSuperAdmin', 'click', function() {
 		var id = $(this).data('id');
-		showModal('#updateSuperAdminModal'+id);
+		showModal('#updateUserModal'+id);
 	});
 
 	$('body').delegate('#btnEditBranch', 'click', function() {

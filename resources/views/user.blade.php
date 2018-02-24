@@ -169,16 +169,6 @@
             console.log('error');
         </script>
     @endif
-    @if( Session::has('update_staff_error'))
-        <script type="text/javascript">
-            $.noConflict();
-
-            jQuery( document ).ready(function( $ ) {
-                var id = {{ Session::get('update_staff_error') }};
-                $('#updateStaffModal'+id).modal('show');
-            });
-        </script>
-    @endif
     @if( Session::has('register_admin_error'))
         <script type="text/javascript">
             $.noConflict();
@@ -188,32 +178,13 @@
             });
         </script>
     @endif
-    @if( Session::has('update_admin_error'))
+    @if( Session::has('update_user_error'))
         <script type="text/javascript">
             $.noConflict();
 
             jQuery( document ).ready(function( $ ) {
-                var id = {{ Session::get('update_admin_error') }};
-                $('#updateAdminModal'+id).modal('show');
-            });
-        </script>
-    @endif
-    @if( Session::has('register_super_admin_error'))
-        <script type="text/javascript">
-            $.noConflict();
-
-            jQuery( document ).ready(function( $ ) {
-                $('#registerSuperAdminModal').modal('show');
-            });
-        </script>
-    @endif
-    @if( Session::has('update_super_admin_error'))
-        <script type="text/javascript">
-            $.noConflict();
-
-            jQuery( document ).ready(function( $ ) {
-                var id = {{ Session::get('update_super_admin_error') }};
-                $('#updateSuperAdminModal'+id).modal('show');
+                var id = {{ Session::get('update_user_error') }};
+                $('#updateUserModal'+id).modal('show');
             });
         </script>
     @endif

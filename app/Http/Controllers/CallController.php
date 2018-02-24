@@ -26,11 +26,13 @@ class CallController extends Controller
     {
         $appController = new AppController;
         $user = Auth::user();
-        $branchServices = BranchService::where('branch', '=', $user->branch_id)->get();
+        $branch = Branch::where('id', '=', $user->branch_id)->get();
+        $branchServices = BranchService::where('branch_id', '=', $user->branch_id)->get();
+        $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
         $tickets = Ticket::get();
-        $queues = Queue::get();
+        $queues = Queue::where('active','=', 1)->get();
 
-        return view('call')->withTickets($tickets)->withQueues($queues);
+        return view('call')->withUser($user)->withTickets($tickets)->withQueues($queues)->withBranch($branch)->withBranchServices($branchServices)->withBranchCounters($branchCounters)->withAppController($appController);
     }
 
     /**

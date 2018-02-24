@@ -320,6 +320,14 @@ div.div-branch-service div.dataTables_wrapper div.dataTables_info {
     /*display: none;*/
 }
 
+div.hidePageOf div.dataTables_info {
+    display: none; 
+}
+
+div.hideSearch div.dataTables_filter {
+    display: none; 
+}
+
 /* Toggle switch */
 .switch {
   position: relative;

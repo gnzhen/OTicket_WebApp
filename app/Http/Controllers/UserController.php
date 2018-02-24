@@ -76,7 +76,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'role' => 'required|integer',
-            'branch' => 'required_if:role,==,3|integer',
+            'branch' => 'required_if:role,==,3',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -84,13 +84,13 @@ class UserController extends Controller
 
             $error = "";
 
-            if($request->role == '3'){
+            if($request->role == 3){
                 $error = 'register_staff_error';
             }
-            else if($request->role == '2'){
+            else if($request->role == 2){
                 $error = 'register_admin_error';
             }
-            else if($request->role == '1'){
+            else if($request->role == 1){
                 $error = 'register_super_admin_error';
             }
             else{
@@ -142,6 +142,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        if($request->branch == ""){
+            $request->branch == null;
+        }
+
         $validator = Validator::make($request->all(), [
             'username' => [
                 'required', 'string', 'max:255',
@@ -151,27 +155,16 @@ class UserController extends Controller
                 'required', 'string', 'email', 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'branch' => 'string|max:255|nullable'
+            'branch' => 'required_if:role,==,3'
         ]);
 
         if ($validator->fails()) {
 
-            $error = "";
+            $error = 'update_user_error';
 
-            if($request->role == '3'){
-                $error = 'update_staff_error';
-            }
-            else if($request->role == '2'){
-                $error = 'update_admin_error';
-            }
-            else if($request->role == '1'){
-                $error = 'update_super_admin_error';
-            }
-            else{
-                Session::flash('fail', 'Fail to register user.');
-            }
+            Session::flash('fail', 'Fail to update user.');
 
-            return back()->withErrors($validator)->with($error, 'fail')->withInput();
+            return back()->withErrors($validator)->with($error, $id)->withInput();
         }
         else {
             $user->username = $request->username;

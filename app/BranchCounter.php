@@ -26,4 +26,9 @@ class BranchCounter extends Model
     	
     	return $this->hasOne(User::class);
     }
+
+    public function callings(){
+        
+        return $this->hasMany(Calling::class);
+    }
 }

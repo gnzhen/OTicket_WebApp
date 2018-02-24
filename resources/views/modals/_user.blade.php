@@ -54,7 +54,7 @@
 
 
 @foreach($users as $user)
-<div class="modal fade modal-edit" id="updateStaffModal{{ $user->id }}">
+<div class="modal fade modal-edit" id="updateUserModal{{ $user->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
 

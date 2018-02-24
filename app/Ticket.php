@@ -28,4 +28,9 @@ class Ticket extends Model
     	
     	return $this->belongsToMany(Change::class);
     }
+
+    public function calling(){
+        
+        return $this->hasMany(Calling::class);
+    }
 }
