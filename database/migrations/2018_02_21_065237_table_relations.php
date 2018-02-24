@@ -28,7 +28,7 @@ class TableRelations extends Migration
             $table->unique(['branch_id', 'counter_id']);
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('counter_id')->references('id')->on('counters')->onDelete('cascade');
-            $table->foreign('staff_username')->references('username')->on('users');
+            $table->foreign('staff_id')->references('id')->on('users');
         });
 
         Schema::table('queues', function($table) {
@@ -37,12 +37,12 @@ class TableRelations extends Migration
 
         Schema::table('tickets', function($table) {
             $table->foreign('queue_id')->references('id')->on('queues');
-            $table->foreign('customer_username')->references('username')->on('mobile_users');
+            $table->foreign('mobile_user_id')->references('id')->on('mobile_users');
         });
 
         Schema::table('servings', function($table) {
             $table->foreign('ticket_id')->references('id')->on('tickets');
-            $table->foreign('staff_username')->references('username')->on('users');
+            $table->foreign('staff_id')->references('id')->on('users');
             $table->foreign('branch_counter_id')->references('id')->on('branch_counters');
         });
 

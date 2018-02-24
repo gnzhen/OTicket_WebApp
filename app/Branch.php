@@ -34,7 +34,7 @@ class Branch extends Model
     }
 
     public function counters(){
-        return $this->belongsToMany(Counter::class, 'branch_counters')->withPivot('id', 'staff_username');
+        return $this->belongsToMany(Counter::class, 'branch_counters')->withPivot('id', 'staff_id');
     }
 
     public function services(){

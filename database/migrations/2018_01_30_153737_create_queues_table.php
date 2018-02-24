@@ -20,9 +20,10 @@ class CreateQueuesTable extends Migration
             $table->unsignedInteger('branch_service_id');
             $table->integer('ticket_serving_now')->nullable();
             $table->integer('wait_time');
-            $table->bigInteger('start_time');
-            $table->bigInteger('end_time');
-            $table->string('status');
+            $table->integer('total_ticket');
+            $table->datetime('start_time');
+            $table->datetime('end_time')->nullable();
+            $table->integer('active');
             $table->text('ticket_ids')->nullable();
             $table->timestamps();
         });

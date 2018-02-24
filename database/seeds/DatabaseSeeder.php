@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             CountersTableSeeder::class,
             BranchServicesTableSeeder::class,
             BranchCountersTableSeeder::class,
+            QueuesTableSeeder::class,
+            MobileUsersTableSeeder::class,
+            TicketsTableSeeder::class,
         ]);
     }
 }

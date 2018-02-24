@@ -66,7 +66,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.updateStaff')
+              @include('forms.updateUser')
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.updateStaff')
+              @include('forms.updateUser')
             </div>
         </div>
     </div>
@@ -106,7 +106,7 @@
             
             <!-- Modal body -->
             <div class="modal-body">
-              @include('forms.updateStaff')
+              @include('forms.updateUser')
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@
             <select class="btn btn-dropdown dropdown-toggle" name="branch">
                     <option value="">-</option>
                     @foreach($branches as $branch)
-                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                    <option value={{ $branch->id }}>{{ $branch->name }}</option>
                     @endforeach
             </select>
 
@@ -38,7 +38,7 @@
         <label for="role" class="col-md-10 control-label">User Role</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" name="role" value="1" required>
+            <input type="text" class="form-control" name="role" value=1 required>
         </div>
     </div>
 

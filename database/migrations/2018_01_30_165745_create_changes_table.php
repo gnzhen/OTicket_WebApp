@@ -18,7 +18,7 @@ class CreateChangesTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
             $table->String('change');
-            $table->bigInteger('time');
+            $table->integer('time');
             $table->text('ticket_ids')->nullable();
             $table->timestamps();
         });

@@ -3,6 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\AppController;
+use Illuminate\Support\Facades\Auth;
+use App\Branch;
+use App\Service;
+use App\Counter;
+use App\BranchCounter;
+use App\BranchService;
+use App\Ticket;
+use App\Queue;
+use App\Serving;
+use App\User;
 
 class CallController extends Controller
 {
@@ -13,7 +24,13 @@ class CallController extends Controller
      */
     public function index()
     {
-        return view('call');
+        $appController = new AppController;
+        $user = Auth::user();
+        $branchServices = BranchService::where('branch', '=', $user->branch_id)->get();
+        $tickets = Ticket::get();
+        $queues = Queue::get();
+
+        return view('call')->withTickets($tickets)->withQueues($queues);
     }
 
     /**

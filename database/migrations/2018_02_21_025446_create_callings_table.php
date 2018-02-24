@@ -18,7 +18,7 @@ class CreateCallingsTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('ticket_id')->index();
             $table->unsignedInteger('branch_counter_id');
-            $table->bigInteger('call_time');
+            $table->datetime('call_time');
             $table->integer('times');
             $table->timestamps();
         });

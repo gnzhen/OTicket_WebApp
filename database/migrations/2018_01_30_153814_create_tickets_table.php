@@ -17,11 +17,11 @@ class CreateTicketsTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
             $table->string('ticket_no');
-            $table->bigInteger('issue_time');
+            $table->datetime('issue_time');
             $table->unsignedBigInteger('queue_id')->index();
             $table->integer('wait_time');
             $table->integer('ppl_ahead');
-            $table->string('customer_username');
+            $table->unsignedInteger('mobile_user_id');
             $table->integer('postponed');
             $table->string('status');
             $table->timestamps();

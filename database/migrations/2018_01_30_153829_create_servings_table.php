@@ -17,10 +17,10 @@ class CreateServingsTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('ticket_id')->index();
-            $table->string('staff_username');
+            $table->unsignedInteger('staff_id');
             $table->unsignedInteger('branch_counter_id');
-            $table->bigInteger('serve_time');
-            $table->bigInteger('done_time');
+            $table->datetime('serve_time');
+            $table->datetime('done_time');
             $table->timestamps();
         });
     }

@@ -15,25 +15,25 @@ class BranchCountersTableSeeder extends Seeder
         BranchCounter::create([
         	'branch_id' => 1,
             'counter_id' => 1,
-            'staff_username' => null,
+            'staff_id' => null,
         ]);
 
         BranchCounter::create([
         	'branch_id' => 1,
             'counter_id' => 2,
-            'staff_username' => null,
+            'staff_id' => null,
         ]);
 
         BranchCounter::create([
         	'branch_id' => 2,
             'counter_id' => 1,
-            'staff_username' => null,
+            'staff_id' => null,
         ]);
 
         BranchCounter::create([
         	'branch_id' => 2,
             'counter_id' => 2,
-            'staff_username' => null,
+            'staff_id' => null,
         ]);
     }
 }

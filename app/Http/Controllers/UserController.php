@@ -68,11 +68,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->branch == ""){
+            $request->branch == null;
+        }
+
          $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'role' => 'required|integer',
-            'branch' => 'string|max:255|nullable',
+            'branch' => 'required_if:role,==,3|integer',
             'password' => 'required|string|min:6|confirmed',
         ]);
 

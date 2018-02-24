@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MobileAppUser extends Model
+class MobileUser extends Model
 {
     //
     public function tickets(){

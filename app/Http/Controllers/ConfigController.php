@@ -45,7 +45,7 @@ class ConfigController extends Controller
                 'branch_counters.counter_id', 
                 'counters.code as counter_code',
                 'counters.name as counter_name',
-                'branch_counters.staff_username')
+                'branch_counters.staff_id')
             ->get();
 
         $branchServices = Branch::leftJoin('branch_services', 'branches.id', '=', 'branch_services.branch_id')

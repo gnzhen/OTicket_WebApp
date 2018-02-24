@@ -9,14 +9,17 @@
 
     <div class="col-sm-12"> 
         <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" href="#staff" role="tab" data-toggle="tab">Customer Service</a>
-          </li>
+            {{-- @foreach() --}}
+            <li class="nav-item">
+                <a class="nav-link active" href="#staff" role="tab" data-toggle="tab">Customer Service</a>
+            </li>
+            {{-- @endforeach --}}
+          {{-- </li>
           <li class="nav-item">
             <a class="nav-link" href="#admin" role="tab" data-toggle="tab">Loan Enquiry</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#superAdmin" role="tab" data-toggle="tab">Other Services</a>
+            <a class="nav-link" href="#superAdmin" role="tab" data-toggle="tab">Other Services</a> --}}
           </li>
         </ul>
 

@@ -19,6 +19,6 @@ class BranchService extends Model
 
     public function queue(){
 
-    	return $this->hasOne(Queue::class);
+    	return $this->hasMany(Queue::class);
     }
 }
