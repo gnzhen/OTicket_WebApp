@@ -15,6 +15,7 @@ label.inline-label {
 .alert {
     width: 300px;
     margin: auto;
+    margin-top: 5px;
 }
 
 .btn.btn-add {
@@ -22,7 +23,7 @@ label.inline-label {
     margin-bottom: 15px;
 }
 
-a.disabled {
+.disabled {
     pointer-events: none;
     opacity:0.6; 
 }
@@ -165,6 +166,18 @@ td.td-action {
 .card.card-report {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
 }
 
 .container {
@@ -320,11 +333,9 @@ div.div-branch-service div.dataTables_wrapper div.dataTables_info {
     /*display: none;*/
 }
 
-div.hidePageOf div.dataTables_info {
-    display: none; 
-}
-
-div.hideSearch div.dataTables_filter {
+div.hidePageOf div.dataTables_info,
+div.hideSearch div.dataTables_filter,
+div.hideEntries div.dataTables_length {
     display: none; 
 }
 

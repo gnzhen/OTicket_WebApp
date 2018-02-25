@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppController;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ use App\Ticket;
 use App\Queue;
 use App\Serving;
 use App\User;
+use Session;
 
 class CallController extends Controller
 {
@@ -87,7 +89,32 @@ class CallController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'branchCounter' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+
+            return back()->withErrors($validator)->withInput();
+        }
+        else {
+            $branchCounter = BranchCounter::findOrFail($request->branchCounter);
+
+            if($branchCounter->staff_id == null){
+
+                $branchCounter->staff_id = $id;
+                $branchCounter->status = 'ready';
+                $branchCounter->save();
+                        
+                Session::flash('success', 'Counter opened.');
+            }
+            else {
+
+                Session::flash('fail', 'The counter is not available now.');
+            }
+
+            return redirect()->route('call.index');
+        }
     }
 
     /**
@@ -98,6 +125,15 @@ class CallController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $branchCounter = BranchCounter::findOrFail($id);
+
+        $branchCounter->staff_id = null;
+        $branchCounter->status = null;
+
+        $branchCounter->save();
+
+        Session::flash('success', 'Counter closed.');
+
+        return redirect()->route('call.index');
     }
 }

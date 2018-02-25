@@ -4,7 +4,7 @@ jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
 	setInitialSidebar();
-	// getAllSession();
+	getAllSession();
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();
@@ -152,6 +152,23 @@ jQuery( document ).ready(function( $ ) {
 		$('#systemWaitTimeMin').val(0);
 		$('#systemWaitTimeSec').val(0);
 	});
+
+	/* Ticket Queue */
+	$('#btnCallNext').click(function() {
+		$(this).addClass('diabled');
+	});
+
+	$('#btnRecall').click(function() {
+		
+	});
+
+	$('#btnSkip').click(function() {
+		
+	});
+
+	$('#btnDone').click(function() {
+		
+	});
 	
 });
 
@@ -281,7 +298,17 @@ function setInitialSidebar(){
 function setSidebarSession(status){
 	$.get('setSidebarSession', {'sidebar':status})
 		.done(function(data) {
-			console.log("setsidebar" + data);
+			// console.log("set sidebar " + data);
+		})
+		.fail(function(xhr, status, error){
+			console.log(xhr);
+		});		
+}
+
+function setTabSession(status){
+	$.get('setTabSession', {'tab':status})
+		.done(function(data) {
+			// console.log("set tab " + data);
 		})
 		.fail(function(xhr, status, error){
 			console.log(xhr);

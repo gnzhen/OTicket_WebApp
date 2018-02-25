@@ -28,12 +28,9 @@
         {{-- Top Nav Bar--}}
         @include('partials._topbar')
 
-        {{-- <div class="container"> --}}
-
-            @include('partials._messages')
+        @include('partials._messages')
             
-            @yield('content')
-        {{-- </div> --}}
+        @yield('content')
 
         {{-- Sidebar --}}
 

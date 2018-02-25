@@ -49,7 +49,7 @@
                 <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
             </ul>
 
-        <li class="{{ Request::is('counter') ? "active" : "" }}"><a href="{{ route('call.index') }}">Ticket Queue</a></li>
+        <li class="{{ Request::is('call') ? "active" : "" }}"><a href="{{ route('call.index') }}">Ticket Queue</a></li>
         <li class="{{ Request::is('display') ? "active" : "" }}"><a href="{{ route('display.index') }}">Caller Display</a></li>
         <li class="{{ Request::is('printer') ? "active" : "" }}"><a href="{{ route('printer.index') }}">Ticket Printer</a></li>
     </ul>

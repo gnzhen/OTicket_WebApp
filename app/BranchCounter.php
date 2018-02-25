@@ -24,11 +24,15 @@ class BranchCounter extends Model
 
     public function user(){
     	
-    	return $this->hasOne(User::class);
+    	return $this->belongsTo(User::class);
     }
 
     public function callings(){
         
         return $this->hasMany(Calling::class);
+    }
+
+    public function queues(){
+        return $this->belongsToMany(Queue::class, 'branch_counter_queues')->withPivot('staff_id');
     }
 }

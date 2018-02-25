@@ -19,4 +19,9 @@ class Queue extends Model
     	
     	return $this->hasMany(Ticket::class);
     }
+
+    public function branchCounters(){
+
+        return $this->belongsToMany(branchCounter::class, 'branch_counter_queues')->withPivot('staff_id');
+    }
 }

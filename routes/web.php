@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
 	    'counter' => 'CounterController',
 	    'branchCounter' => 'BranchCounterController',
 	    'branchService' => 'BranchServiceController',
+	    'calling' => 'CallingController',
 	]);
 
 	Route::post('/branch/{id}/counter', 'BranchController@updateCounter')->name('branch.updateCounter');
@@ -36,7 +37,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
+	Route::get('getTabSession', 'AppController@getTabSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
+	Route::get('setTabSession', 'AppController@setTabSession');
 });
 
 

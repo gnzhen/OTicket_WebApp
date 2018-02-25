@@ -25,6 +25,18 @@ class AppController extends Controller
 		// return $request->session()->all();
 	}
 
+	public function getTabSession() {
+
+		return session('tab');
+	}
+
+	public function setTabSession(Request $request) {
+
+		session(['tab' => $request->tab]);
+
+		return $this->getTabSession();
+	}
+
 	public function getAllSession(Request $request){
 
 		return $request->session()->all();

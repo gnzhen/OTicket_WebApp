@@ -76,6 +76,6 @@ class User extends Authenticatable
 
     public function branchCounter(){
         
-        return $this->belongsTo(BranchCounter::class);
+        return $this->hasOne(BranchCounter::class, 'staff_id');
     }
 }
