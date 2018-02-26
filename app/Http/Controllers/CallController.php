@@ -32,7 +32,7 @@ class CallController extends Controller
         $branchServices = BranchService::where('branch_id', '=', $user->branch_id)->get();
         $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
         $tickets = Ticket::get();
-        $queues = Queue::where('active','=', 1)->get();
+        $queues = Queue::where('active','=', 1)->with('branchService')->get();
 
         return view('call')->withUser($user)->withTickets($tickets)->withQueues($queues)->withBranch($branch)->withBranchServices($branchServices)->withBranchCounters($branchCounters)->withAppController($appController);
     }
@@ -55,7 +55,32 @@ class CallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'branchCounter' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+
+            return back()->withErrors($validator)->withInput();
+        }
+        else {
+            $branchCounter = BranchCounter::findOrFail($request->branchCounter);
+
+            if($branchCounter->staff_id == null){
+
+                $branchCounter->staff_id = $request->user_id;
+                $branchCounter->status = 'ready';
+                $branchCounter->save();
+                        
+                Session::flash('success', 'Counter opened.');
+            }
+            else {
+
+                Session::flash('fail', 'The counter is not available now.');
+            }
+
+            return redirect()->route('call.index');
+        }
     }
 
     /**
@@ -89,32 +114,7 @@ class CallController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'branchCounter' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-
-            return back()->withErrors($validator)->withInput();
-        }
-        else {
-            $branchCounter = BranchCounter::findOrFail($request->branchCounter);
-
-            if($branchCounter->staff_id == null){
-
-                $branchCounter->staff_id = $id;
-                $branchCounter->status = 'ready';
-                $branchCounter->save();
-                        
-                Session::flash('success', 'Counter opened.');
-            }
-            else {
-
-                Session::flash('fail', 'The counter is not available now.');
-            }
-
-            return redirect()->route('call.index');
-        }
+        //
     }
 
     /**

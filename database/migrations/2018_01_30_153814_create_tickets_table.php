@@ -21,7 +21,7 @@ class CreateTicketsTable extends Migration
             $table->unsignedBigInteger('queue_id')->index();
             $table->integer('wait_time');
             $table->integer('ppl_ahead');
-            $table->unsignedInteger('mobile_user_id');
+            $table->unsignedInteger('mobile_user_id')->nullable();
             $table->integer('postponed');
             $table->string('status');
             $table->timestamps();

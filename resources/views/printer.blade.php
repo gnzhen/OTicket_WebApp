@@ -8,23 +8,19 @@
 
 <div class="container">
 	<h2 style="text-align:center; padding-bottom: 30px;">Welcome!!</h2>
-	<button type="button" class="btn btn-outline-primary btn-lg btn-block">Customer Service</button>
-  	<button type="button" class="btn btn-outline-primary btn-lg btn-block">Deposit</button>
-  	<button type="button" class="btn btn-outline-primary btn-lg btn-block">Withdraw</button>
-  	<button type="button" class="btn btn-outline-primary btn-lg btn-block">Loan Enquiry</button>
-  	<button type="button" class="btn btn-outline-danger btn-lg btn-block">Ask for help</button>
+  @foreach($branchServices as $branchService)
+		<button type="button" class="btn btn-outline-primary btn-lg btn-block" id="btnIssueTicket" data-id="{{ $branchService->id }}">{{ $branchService->service->name }}</button>
+	@endforeach
 </div>
 
 @endsection
 
 @section('javascript')
 <script type="text/javascript">
-    $.noConflict();
+	 $.noConflict();
 
-    jQuery( document ).ready(function( $ ) {
-        $('.btn.btn-lg').click(function() {
-			$('#issueTicketModal').modal('show');
-		});
-    });
+	 jQuery( document ).ready(function( $ ) {
+	 	//
+	 });
 </script>
 @endsection

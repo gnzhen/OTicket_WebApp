@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CallingController extends Controller
+class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,13 +34,7 @@ class CallingController extends Controller
      */
     public function store(Request $request)
     {
-         // $branchCounter = BranchCounter::findOrFail($request->branchCounter);
-
-         //    if($branchCounter->staff_id == null){
-
-         //        $branchCounter->staff_id = $id;
-         //        $branchCounter->status = 'ready';
-         //        $branchCounter->save();
+        //
     }
 
     /**

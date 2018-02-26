@@ -9,6 +9,11 @@ use Session;
 
 class AppController extends Controller
 {
+	public function checkAuth(){
+		
+		return (string)Auth::check();
+	}
+
     public function getSidebarSession() {
 
 		// return Session()->get('sidebar');

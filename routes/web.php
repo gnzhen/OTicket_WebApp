@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth']], function () {
 	    'branchCounter' => 'BranchCounterController',
 	    'branchService' => 'BranchServiceController',
 	    'calling' => 'CallingController',
+	    'ticket' => 'TicketController',
+	    'queue' => 'QueueController',
 	]);
 
 	Route::post('/branch/{id}/counter', 'BranchController@updateCounter')->name('branch.updateCounter');
@@ -47,6 +49,5 @@ Auth::routes();
 
 
 /* AppController */
-Route::get('authCheck', 'AppController@authCheck');
-Route::get('checkTimeout', 'AppController@checkTimeout');
+Route::get('checkAuth', 'AppController@checkAuth');
 Route::get('getAllSession', 'AppController@getAllSession');

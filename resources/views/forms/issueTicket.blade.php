@@ -1,16 +1,18 @@
-<form class="form-horizontal" method="POST" action="" >
+<form class="form-horizontal" method="POST" action="{{ route('printer.store') }}" >
     {{ csrf_field() }}
 
     <div class="form-group">
         <div class="col-md-12">
-            <p><strong>Confirm take ticket?</strong></p>
+            <p>Confirm take ticket for <strong>{{ $branchService->service->name }}</strong>?</p>
         </div>
+
+        <input type="hidden" class="form-control" name="branch_service_id" value="{{ $branchService->id }}">
     </div>
 
     <div class="form-group">
         <div class="col-md-12 offset-6">
             <button type="button" class="btn btn-light" data-dismiss="modal">No</button>
-            <button type="submit" class="btn btn-danger" data-dismiss="modal">Yes</button>
+            <button type="submit" class="btn btn-danger">Yes</button>
         </div>
     </div>
 </form>

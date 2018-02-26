@@ -64,6 +64,7 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#addBranchServiceModal'+id);
 	});
 
+
 	/* Edit */
 
 	$('body').delegate('#btnEditStaff', 'click', function() {
@@ -107,6 +108,7 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	/* Delete */
+
 	$('body').delegate('#btnDeleteStaff', 'click', function() {
 		var id = $(this).data('id');
 		showModal('#deleteStaffModal'+id);
@@ -154,20 +156,67 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	/* Ticket Queue */
-	$('#btnCallNext').click(function() {
-		$(this).addClass('diabled');
+
+	$('body').delegate('#btnCallNext', 'click', function() {
+		var id = $(this).data('id');
+		startTimer(id);
+		console.log(id);
 	});
 
-	$('#btnRecall').click(function() {
-		
+	$('body').delegate('#btnRecall', 'click', function() {
+		var id = $(this).data('id');
+		stopTimer();
+		console.log(id);
 	});
 
-	$('#btnSkip').click(function() {
-		
+	$('body').delegate('#btnSkip', 'click', function() {
+		var id = $(this).data('id');
+		stopTimer();
+		console.log(id);
 	});
 
-	$('#btnDone').click(function() {
-		
+	$('body').delegate('#btnDone', 'click', function() {
+		var id = $(this).data('id');
+		stopTimer();
+		console.log(id);
+	});
+
+
+	/* Timer */
+	var count = 0;
+	var timer;
+	var timerOn = 0;
+
+	function startTimer(id) {
+		count ++;
+		$('#timer'+id).text(secToStr(count));
+	    timer = setTimeout(function(){ startTimer(id) }, 1000);
+	}
+
+	function stopTimer(){
+		clearTimeout(timer);
+		count = 0;
+	}
+
+	function secToStr(sec){
+		var hours = Math.floor(sec / 3600);
+  		var minutes = Math.floor((sec / 60) % 60);
+  		var seconds = sec % 60;
+
+  		if(hours < 10)
+  			hours = '0' + hours;
+  		if(minutes < 10)
+  			minutes = '0' + minutes;
+  		if(seconds < 10)
+  			seconds = '0' + seconds;
+  
+  		return hours + ':' + minutes + ':' + seconds;
+	}
+
+	/* Issue ticket */
+	$('body').delegate('#btnIssueTicket', 'click', function() {
+		var id = $(this).data('id');
+		showModal('#issueTicketModal'+id);
 	});
 	
 });
@@ -277,6 +326,16 @@ function showModal(id){
 
 function hideModal(id){
 	jQuery(id).modal('hide');
+}
+
+function checkAuth(){
+	$.get('checkAuth')
+		.done(function(data) {
+    		return data;
+		})	
+		.fail(function(xhr, status, error){
+			console.log(xhr);
+		});	
 }
 
 function setInitialSidebar(){

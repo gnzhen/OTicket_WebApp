@@ -1,4 +1,5 @@
-<div class="modal fade" id="issueTicketModal">
+@foreach($branchServices as $branchService)
+<div class="modal fade" id="issueTicketModal{{ $branchService->id }}">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             
@@ -9,3 +10,4 @@
         </div>
     </div>
 </div>
+@endforeach
