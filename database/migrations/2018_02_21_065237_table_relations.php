@@ -29,6 +29,7 @@ class TableRelations extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('counter_id')->references('id')->on('counters')->onDelete('cascade');
             $table->foreign('staff_id')->references('id')->on('users');
+            $table->foreign('serving_queue')->references('id')->on('queues');
         });
 
         Schema::table('queues', function($table) {

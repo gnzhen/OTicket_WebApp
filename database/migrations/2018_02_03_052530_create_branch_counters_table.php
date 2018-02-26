@@ -19,7 +19,7 @@ class CreateBranchCountersTable extends Migration
             $table->unsignedInteger('branch_id');
             $table->unsignedInteger('counter_id');
             $table->unsignedInteger('staff_id')->nullable();
-            $table->string('status')->nullable();
+            $table->unsignedBigInteger('serving_queue')->nullable();
             $table->timestamps();
         });
     }

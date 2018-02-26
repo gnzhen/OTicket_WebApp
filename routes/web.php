@@ -18,7 +18,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resources([
 	    'config' => 'ConfigController',
 	    'user' => 'UserController',
-	    'call' => 'CallController',
 	    'report' => 'ReportController',
 	    'display' => 'DisplayController',
 	    'printer' => 'PrinterController',
@@ -30,12 +29,16 @@ Route::group(['middleware' => ['auth']], function () {
 	    'calling' => 'CallingController',
 	    'ticket' => 'TicketController',
 	    'queue' => 'QueueController',
+	    'call' => 'CallController',
 	]);
 
 	Route::post('/branch/{id}/counter', 'BranchController@updateCounter')->name('branch.updateCounter');
 	Route::post('/branch/{id}/service/store', 'BranchController@addService')->name('branch.addService');
 	Route::post('/branch/service/{id}/update', 'BranchController@updateService')->name('branch.updateService');
 	Route::post('/branch/service/{id}/destroy', 'BranchController@deleteService')->name('branch.deleteService');
+	Route::post('/call/open', 'CallController@openCounter')->name('call.openCounter');
+	Route::post('/call/close/{id}', 'CallController@closeCounter')->name('call.closeCounter');
+	Route::post('/call/call', 'CallController@call')->name('call.call');
 
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');

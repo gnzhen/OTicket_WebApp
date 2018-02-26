@@ -1,6 +1,6 @@
 <div class="card margin-bottom-15">
     <div class="card-body">
-        {!! Form::open(['route' => ['call.store'], 'method' => 'POST', 'class'=>'form-horizontal']) !!}
+        {!! Form::open(['route' => ['call.openCounter'], 'method' => 'POST', 'class'=>'form-horizontal']) !!}
 
             <input type="hidden" class="form-control" name="user_id" value="{{ $user->id }}">
 

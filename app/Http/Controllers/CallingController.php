@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Queue;
+use App\BranchService;
+use App\Calling;
+use App\Traits\QueueManager;
+use App\Traits\TicketManager;
+use Session;
 
 class CallingController extends Controller
 {
+    use QueueManager, TicketManager;
+
     /**
      * Display a listing of the resource.
      *
@@ -34,13 +43,24 @@ class CallingController extends Controller
      */
     public function store(Request $request)
     {
-         // $branchCounter = BranchCounter::findOrFail($request->branchCounter);
+        // $queue = Queue::findOrFail($request->queue_id);
 
-         //    if($branchCounter->staff_id == null){
+        // //Manage Ticket
+        // $ticket = $queue->tickets->where('status', '=', 'waiting')->first();
 
-         //        $branchCounter->staff_id = $id;
-         //        $branchCounter->status = 'ready';
-         //        $branchCounter->save();
+        // $this->serveTicket($ticket);
+
+        // //Manage Calling
+        // $calling = new Calling();
+        // $calling->ticket_id = $ticket->id;
+        // $calling->branch_counter_id = $user->branchCounter->id;
+        // $calling->ticket_id = $ticket->id;
+        // $calling->save();
+
+        // //Manage Queue
+        // $this->updateTicketServingNow($queue, $ticket->id);
+    
+        // return redirect()->route('call.index');
     }
 
     /**

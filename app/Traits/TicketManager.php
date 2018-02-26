@@ -24,4 +24,9 @@ trait TicketManager {
         return $ticket;
     }
 
+    public function serveTicket($ticket){
+        $ticket->status = 'serving';
+        $ticket->save();
+    }
+
 }

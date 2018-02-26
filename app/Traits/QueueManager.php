@@ -22,4 +22,11 @@ trait QueueManager {
         return $queue;
     }
 
+    public function updateTicketServingNow($queue, $ticket_id){
+        
+        $queue->ticket_serving_now = $ticket_id;
+        
+        $queue->save();
+    }
+
 }

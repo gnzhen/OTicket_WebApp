@@ -155,37 +155,35 @@ jQuery( document ).ready(function( $ ) {
 		$('#systemWaitTimeSec').val(0);
 	});
 
-	/* Ticket Queue */
-
-	$('body').delegate('#btnCallNext', 'click', function() {
-		var id = $(this).data('id');
-		startTimer(id);
-		console.log(id);
-	});
-
-	$('body').delegate('#btnRecall', 'click', function() {
-		var id = $(this).data('id');
-		stopTimer();
-		console.log(id);
-	});
-
-	$('body').delegate('#btnSkip', 'click', function() {
-		var id = $(this).data('id');
-		stopTimer();
-		console.log(id);
-	});
-
-	$('body').delegate('#btnDone', 'click', function() {
-		var id = $(this).data('id');
-		stopTimer();
-		console.log(id);
-	});
-
 
 	/* Timer */
+
+	// $('body').delegate('#btnCallNext', 'click', function() {
+	// 	var id = $(this).data('id');
+	// 	startTimer(id);
+	// 	console.log(id);
+	// });
+
+	// $('body').delegate('#btnRecall', 'click', function() {
+	// 	var id = $(this).data('id');
+	// 	stopTimer();
+	// 	console.log(id);
+	// });
+
+	// $('body').delegate('#btnSkip', 'click', function() {
+	// 	var id = $(this).data('id');
+	// 	stopTimer();
+	// 	console.log(id);
+	// });
+
+	// $('body').delegate('#btnDone', 'click', function() {
+	// 	var id = $(this).data('id');
+	// 	stopTimer();
+	// 	console.log(id);
+	// });
+
 	var count = 0;
 	var timer;
-	var timerOn = 0;
 
 	function startTimer(id) {
 		count ++;
