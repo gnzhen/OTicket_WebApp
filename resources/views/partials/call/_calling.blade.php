@@ -44,13 +44,13 @@
                 <div class="col-md-6">
                     {!! Form::open(['route'=>['calling.store']]) !!}
                         <input type="hidden" name="queue_id" value="{{ $queue->id }}">
-                        <button type="submit" id="btnRecall" data-id="{{ $queue->id }}" class="btn btn-success btn-block {{ $user->branchCounter->serving_queue != null ? '' : 'disabled' }}">Recall</button>
+                        <button type="submit" id="btnRecall" data-id="{{ $queue->id }}" class="btn btn-success btn-block {{ $user->branchCounter->serving_queue == $queue->id  ? '' : 'disabled' }}">Recall</button>
                     {!! Form::close() !!}
                 </div>
                 <div class="col-md-6">
                     {!! Form::open(['route'=>['calling.store']]) !!}
                         <input type="hidden" name="queue_id" value="{{ $queue->id }}">
-                        <button type="submit" id="btnSkip" data-id="{{ $queue->id }}" class="btn btn-secondary btn-block {{ $user->branchCounter->serving_queue != null ? '' : 'disabled' }}">Skip</button>
+                        <button type="submit" id="btnSkip" data-id="{{ $queue->id }}" class="btn btn-secondary btn-block {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Skip</button>
                     {!! Form::close() !!}
                 </div>
             </div>
@@ -59,7 +59,7 @@
         <div class="col-md-12 margin-bottom-10">
             {!! Form::open(['route'=>['calling.store']]) !!}
                 <input type="hidden" name="queue_id" value="{{ $queue->id }}">
-                <button type="submit" id="btnDone" data-id="{{ $queue->id }}" class="btn btn-dark btn-block btn-lg {{ $user->branchCounter->serving_queue != null ? '' : 'disabled' }}">Done</button>
+                <button type="submit" id="btnDone" data-id="{{ $queue->id }}" class="btn btn-dark btn-block btn-lg {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Done</button>
             {!! Form::close() !!}
         </div>
     </div>
