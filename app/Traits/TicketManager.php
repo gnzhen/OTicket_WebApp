@@ -24,13 +24,31 @@ trait TicketManager {
         return $ticket;
     }
 
+    public function waitTicket($ticket){
+        $ticket->status = 'waiting';
+        $ticket->save();
+    }
+
     public function serveTicket($ticket){
         $ticket->status = 'serving';
         $ticket->save();
     }
 
+    public function skipTicket($ticket){
+        $ticket->status = 'skipped';
+        $ticket->disposed_time = Carbon::now();
+        $ticket->save();
+    }
+
+    public function doneTicket($ticket){
+        $ticket->status = 'done';
+        $ticket->disposed_time = Carbon::now();
+        $ticket->save();
+    }
+
+
     public function ticketNoGenerator($serviceId, $totalTicket){
-        
+
         return $serviceId . $totalTicket;
     }
 

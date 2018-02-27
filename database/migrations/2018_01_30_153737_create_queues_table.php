@@ -24,7 +24,7 @@ class CreateQueuesTable extends Migration
             $table->datetime('start_time');
             $table->datetime('end_time')->nullable();
             $table->integer('active');
-            $table->text('ticket_ids')->nullable();
+            $table->integer('avg_wait_time')->nullable();
             $table->timestamps();
         });
     }

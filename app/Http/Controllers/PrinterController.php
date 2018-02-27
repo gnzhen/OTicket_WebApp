@@ -86,11 +86,11 @@ class PrinterController extends Controller
 
             if($queue == null){
                 
-                //create new queue
+                //Create Queue
                 $queue = $this->storeQueue($branchService->id);
             }
 
-            //create new ticket
+            //Create Ticket
             $request->replace([
                 'queue_id' => $queue->id, 
                 'ticket_no' => $this->ticketNoGenerator($branchService->service_id, $queue->total_ticket),

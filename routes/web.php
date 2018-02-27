@@ -39,6 +39,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/call/open', 'CallController@openCounter')->name('call.openCounter');
 	Route::post('/call/close/{id}', 'CallController@closeCounter')->name('call.closeCounter');
 	Route::post('/call/call', 'CallController@call')->name('call.call');
+	Route::post('/call/recall', 'CallController@recall')->name('call.recall');
+	Route::post('/call/skip', 'CallController@skip')->name('call.skip');
+	Route::post('/call/done', 'CallController@done')->name('call.done');
 
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');

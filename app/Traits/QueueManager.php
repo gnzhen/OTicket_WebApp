@@ -22,11 +22,34 @@ trait QueueManager {
         return $queue;
     }
 
-    public function updateQueue($queue, $ticket_id){
+    public function updateQueueServingNow($queue, $ticket_id){
         
         $queue->ticket_serving_now = $ticket_id;
 
         $queue->save();
+
+        return $queue;
+    }
+
+    public function refreshQueue($queue){
+        //Calculate total ticket
+
+        //Close queue if total ticket = 0;
+
+        //Else Calculate wait time
+
+        //Update affected ticket
+
+    }
+
+    public function closeQueue($queue){
+
+        //set active = 0
+
+        //set end_time
+
+        //calculate avg_wait_time of queue
+
     }
 
 }

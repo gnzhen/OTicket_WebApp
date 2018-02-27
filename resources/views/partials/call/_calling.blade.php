@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-md-4">Ticket :</div>
 
-                <div class="col-md-auto" id="status"><strong>{{ $calling->ticket->ticket_no }}</strong></div>
+                <div class="col-md-auto" id="ticket"><strong>{{ $user->branchCounter->serving_queue == $queue->id ? $calling->ticket->ticket_no : '-' }}</strong></div>
             </div>
         </div>
         @endif
@@ -44,13 +44,13 @@
         <div class="col-md-12 margin-bottom-10">
             <div class="row">
                 <div class="col-md-6">
-                    {!! Form::open(['route'=>['calling.store']]) !!}
+                    {!! Form::open(['route'=>['call.recall']]) !!}
                         <input type="hidden" name="queue_id" value="{{ $queue->id }}">
                         <button type="submit" id="btnRecall" data-id="{{ $queue->id }}" class="btn btn-success btn-block {{ $user->branchCounter->serving_queue == $queue->id  ? '' : 'disabled' }}">Recall</button>
                     {!! Form::close() !!}
                 </div>
                 <div class="col-md-6">
-                    {!! Form::open(['route'=>['calling.store']]) !!}
+                    {!! Form::open(['route'=>['call.skip']]) !!}
                         <input type="hidden" name="queue_id" value="{{ $queue->id }}">
                         <button type="submit" id="btnSkip" data-id="{{ $queue->id }}" class="btn btn-secondary btn-block {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Skip</button>
                     {!! Form::close() !!}
@@ -59,8 +59,13 @@
         </div>
 
         <div class="col-md-12 margin-bottom-10">
-            {!! Form::open(['route'=>['calling.store']]) !!}
+            {!! Form::open(['route'=>['call.done']]) !!}
                 <input type="hidden" name="queue_id" value="{{ $queue->id }}">
+                <input type="hidden" name="branch_counter_id" value="{{ $user->branchCounter->id }}">
+                @if($calling != null)
+                    <input type="hidden" name="calling_id" value="{{ $calling->id }}">
+                @endif
+                <input type="hidden" name="user_id" value="{{ $user->id }}">
                 <button type="submit" id="btnDone" data-id="{{ $queue->id }}" class="btn btn-dark btn-block btn-lg {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Done</button>
             {!! Form::close() !!}
         </div>
@@ -78,7 +83,7 @@
                 var count = {{ $timer }};
                 var timer;
 
-                startTimer({{ $queue->id }});
+                startTimer({{ $user->branchCounter->serving_queue }});
 
                 function startTimer(id) {
                     count ++;
