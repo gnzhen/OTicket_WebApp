@@ -29,4 +29,9 @@ trait TicketManager {
         $ticket->save();
     }
 
+    public function ticketNoGenerator($serviceId, $totalTicket){
+        
+        return $serviceId . $totalTicket;
+    }
+
 }

@@ -5,6 +5,7 @@
 @section('content')
 
 <div class="container-fluid">
+
     <h3>Ticket Queue</h3>
 
     @if(!$branchServices->isEmpty())

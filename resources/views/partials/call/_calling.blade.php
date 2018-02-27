@@ -23,13 +23,15 @@
             </div>
         </div>
 
-        {{-- <div class="col-md-12 margin-bottom-15">
+        @if($calling != null)
+        <div class="col-md-12 margin-bottom-15">
             <div class="row">
-                <div class="col-md-4">Status :</div>
+                <div class="col-md-4">Ticket :</div>
 
-                <div class="col-md-auto" id="status" style="color:red;"><strong>-</strong></div>
+                <div class="col-md-auto" id="status"><strong>{{ $calling->ticket->ticket_no }}</strong></div>
             </div>
-        </div> --}}
+        </div>
+        @endif
 
         <div class="col-md-12 margin-bottom-10">
             {!! Form::open(['route'=>['call.call']]) !!}
@@ -66,14 +68,14 @@
 </div>
 
 @section('javascript')
-    @if($user->branchCounter->serving_queue != null)
+    @if($calling != null && $timer != null)
         <script type="text/javascript">
             $.noConflict();
 
             jQuery( document ).ready(function( $ ) {
 
                 /* Timer */
-                var count = 0;
+                var count = {{ $timer }};
                 var timer;
 
                 startTimer({{ $queue->id }});

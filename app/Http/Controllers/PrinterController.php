@@ -93,7 +93,7 @@ class PrinterController extends Controller
             //create new ticket
             $request->replace([
                 'queue_id' => $queue->id, 
-                'ticket_no' => $branchService->id,
+                'ticket_no' => $this->ticketNoGenerator($branchService->service_id, $queue->total_ticket),
                 'issue_time' => Carbon::now(),
                 'wait_time' => $queue->wait_time,
                 'ppl_ahead' => $queue->total_ticket,
