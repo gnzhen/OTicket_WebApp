@@ -297,6 +297,11 @@ ul ul a {
     margin: 20px;
 }
 
+.div-table-queue {
+    margin: 20px;
+    margin-top: 0px;
+}
+
 .div-table {
     position: relative;
 }

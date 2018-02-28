@@ -39,7 +39,7 @@ class CallController extends Controller
         $branchServices = BranchService::where('branch_id', '=', $user->branch_id)->get();
         $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
         $tickets = Ticket::where('status','=','waiting')->get();
-        $queues = Queue::where('active','=', 1)->with('branchService')->get();
+        $queues = Queue::where('active','=', 1)->with('branchService')->with('tickets')->get();
         $calling = null;
         $timer = null;
 
@@ -83,6 +83,9 @@ class CallController extends Controller
             return redirect()->route('call.index')->with('fail', 'No more ticket in queue.');
         }
 
+        //Update Queue
+        $queue = $this->refreshQueue($queue);
+
         //Update Ticket
         $this->serveTicket($ticket);
 
@@ -94,9 +97,6 @@ class CallController extends Controller
             'active' => 1,
         ]);
         $calling = $this->storeCalling($request);
-
-        //Update Queue
-        $queue = $this->updateQueueServingNow($queue, $ticket->id);
 
         //Update Branch Counter
         $branchCounter->serving_queue = $queue->id;
@@ -143,6 +143,8 @@ class CallController extends Controller
         $branchCounter->serving_queue = null;
         $branchCounter->save(); 
 
+        $request->session()->forget('tab');
+
         return redirect()->route('call.index');
     }
 
@@ -155,7 +157,26 @@ class CallController extends Controller
 
     public function recall(Request $request){
 
-        //
+        $calling = Calling::findOrFail($request->calling_id);
+
+        if($calling == null){
+
+            return redirect()->route('call.index')->with('fail', 'Please call next.');
+        }
+
+        $calling = $this->stopCalling($calling);
+
+        //Create Calling
+        $request->replace([
+            'ticket_id' => $calling->ticket_id, 
+            'branch_counter_id' => $calling->branch_counter_id,
+            'call_time' => Carbon::now(),
+            'active' => 1,
+        ]);
+
+        $calling = $this->storeCalling($request);
+    
+        return redirect()->route('call.index');
     }
 
     /**
@@ -168,18 +189,6 @@ class CallController extends Controller
     public function skip(Request $request){
 
         // 
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     public function openCounter(Request $request)
@@ -216,7 +225,7 @@ class CallController extends Controller
         $branchCounter = BranchCounter::findOrFail($id);
 
         $branchCounter->staff_id = null;
-        $branchCounter->status = null;
+        $branchCounter->serving_queue = null;
 
         $branchCounter->save();
 
@@ -224,4 +233,60 @@ class CallController extends Controller
 
         return redirect()->route('call.index');
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show()
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
 }

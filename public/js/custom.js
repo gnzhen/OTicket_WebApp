@@ -182,35 +182,6 @@ jQuery( document ).ready(function( $ ) {
 	// 	console.log(id);
 	// });
 
-	var count = 0;
-	var timer;
-
-	function startTimer(id) {
-		count ++;
-		$('#timer'+id).text(secToStr(count));
-	    timer = setTimeout(function(){ startTimer(id) }, 1000);
-	}
-
-	function stopTimer(){
-		clearTimeout(timer);
-		count = 0;
-	}
-
-	function secToStr(sec){
-		var hours = Math.floor(sec / 3600);
-  		var minutes = Math.floor((sec / 60) % 60);
-  		var seconds = sec % 60;
-
-  		if(hours < 10)
-  			hours = '0' + hours;
-  		if(minutes < 10)
-  			minutes = '0' + minutes;
-  		if(seconds < 10)
-  			seconds = '0' + seconds;
-  
-  		return hours + ':' + minutes + ':' + seconds;
-	}
-
 	/* Issue ticket */
 	$('body').delegate('#btnIssueTicket', 'click', function() {
 		var id = $(this).data('id');

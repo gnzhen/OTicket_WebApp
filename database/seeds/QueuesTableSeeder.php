@@ -23,23 +23,23 @@ class QueuesTableSeeder extends Seeder
         // $table->integer('active');
         // $table->text('ticket_ids')->nullable();
 
-    	Queue::create([
-        	'branch_service_id' => 1,
-        	'ticket_serving_now' => 1,
-            'wait_time' => 800,
-            'total_ticket' => 4,
-            'start_time' => Carbon::now(),
-            'active' => 1,
-        ]);
+    	// Queue::create([
+     //    	'branch_service_id' => 1,
+     //    	'ticket_serving_now' => null,
+     //        'wait_time' => 800,
+     //        'total_ticket' => 4,
+     //        'start_time' => Carbon::now(),
+     //        'active' => 1,
+     //    ]);
 
-        Queue::create([
-            'branch_service_id' => 2,
-            'ticket_serving_now' => 5,
-            'wait_time' => 800,
-            'total_ticket' => 4,
-            'start_time' => Carbon::now(),
-            'active' => 1,
-        ]);
+     //    Queue::create([
+     //        'branch_service_id' => 2,
+     //        'ticket_serving_now' => null,
+     //        'wait_time' => 800,
+     //        'total_ticket' => 4,
+     //        'start_time' => Carbon::now(),
+     //        'active' => 1,
+     //    ]);
         
     }
 }

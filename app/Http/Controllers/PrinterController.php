@@ -75,14 +75,9 @@ class PrinterController extends Controller
         }
         else {
 
-            $branchService = BranchService::findOrFail($request->branch_service_id)->first();
+            $branchService = BranchService::findOrFail($request->branch_service_id);
 
             $queue = $branchService->active_queue->first();
-
-            // $branchServiceWithQueue = BranchService::findOrFail($request->branch_service_id)->with('active_queues')->get();
-
-
-            // $queues = Queue::where('active','=', 1)->get();
 
             if($queue == null){
                 
@@ -102,7 +97,10 @@ class PrinterController extends Controller
             ]);
 
             $ticket = $this->storeTicket($request);
-            
+
+            //Update Queue
+            $total_ticket = $this->refreshQueue($queue);
+
             Session::flash('success', 'Ticket issued!');
 
             return redirect()->route('printer.index');

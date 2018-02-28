@@ -49,6 +49,11 @@ trait TicketManager {
 
     public function ticketNoGenerator($serviceId, $totalTicket){
 
+        if($serviceId < 10)
+            $serviceId = 0 . $serviceId;
+        if($totalTicket < 10)
+            $totalTicket = 0 . $totalTicket;
+
         return $serviceId . $totalTicket;
     }
 
