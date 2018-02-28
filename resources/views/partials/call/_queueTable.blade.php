@@ -8,15 +8,13 @@
         </tr>
     </thead>
     <tbody>
-    @foreach ($queue->tickets as $i => $ticket)
-        @if($ticket->status == 'waiting' || $ticket->status == 'serving')
+    @foreach ($queue->tickets->whereIn('status', ['serving', 'waiting']) as $i => $ticket)
         <tr>
             <td><div>{{ $i + 1 }}</div></td>
             <td><div>{{ $ticket->ticket_no }}</div></td>
             <td><div>{{ $appController->secToString($ticket->wait_time) }}</div></td>
             <td><div>{{ $ticket->status }}</div></td>
         </tr>
-        @endif
     @endforeach
     </tbody>
 </table>

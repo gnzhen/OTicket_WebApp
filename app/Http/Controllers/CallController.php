@@ -24,7 +24,17 @@ use App\Traits\CallingManager;
 
 class CallController extends Controller
 {
-    use QueueManager, TicketManager, CallingManager;
+    use QueueManager { 
+        calAvgWaitTime as protected calAvgWaitTimeQueue; 
+        calTotalWaitTime as protected calTotalWaitTimeQueue;
+        getAvgWaitTime as protected getAvgWaitTimeQueue;
+    } 
+    use TicketManager { 
+        calAvgWaitTime as protected calAvgWaitTimeTicket; 
+        calTotalWaitTime as protected calTotalWaitTimeTicket;
+        getAvgWaitTime as protected getAvgWaitTimeTicket;
+    }
+    use CallingManager;
 
     /**
      * Display a listing of the resource.
@@ -57,9 +67,6 @@ class CallController extends Controller
             }
         }
 
-        // foreach($queuestickets as $ticket)
-        //     $this->waitTicket($ticket);
-
         return view('call')->withUser($user)->withTickets($tickets)->withQueues($queues)->withBranch($branch)->withBranchServices($branchServices)->withBranchCounters($branchCounters)->withAppController($appController)->withCalling($calling)->withTimer($timer);
     }
 
@@ -83,11 +90,11 @@ class CallController extends Controller
             return redirect()->route('call.index')->with('fail', 'No more ticket in queue.');
         }
 
-        //Update Queue
-        $queue = $this->refreshQueue($queue);
-
         //Update Ticket
         $this->serveTicket($ticket);
+
+        //Update Queue
+        $queue = $this->refreshQueue($queue);
 
         //Create Calling
         $request->replace([
@@ -142,8 +149,6 @@ class CallController extends Controller
         //Update Branch Counter
         $branchCounter->serving_queue = null;
         $branchCounter->save(); 
-
-        $request->session()->forget('tab');
 
         return redirect()->route('call.index');
     }
@@ -232,6 +237,24 @@ class CallController extends Controller
         Session::flash('success', 'Counter closed.');
 
         return redirect()->route('call.index');
+    }
+
+    public function calAvgWaitTime($totalTime, $totalTicket){
+
+        $this->calAvgWaitTimeQueue($totalTime, $totalTicket);
+        $this->calAvgWaitTimeTicket($totalTime, $totalTicket);
+    }
+
+    public function calTotalWaitTime($avgWaitTime, $totalTicket){
+
+        $this->calAvgWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calAvgWaitTimeTicket($avgWaitTime, $totalTicket);
+    }
+
+    public function getAvgWaitTime($queue){
+
+        $this->calAvgWaitTimeQueue($queue);
+        $this->calAvgWaitTimeTicket($queue);
     }
 
     /**

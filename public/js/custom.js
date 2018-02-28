@@ -156,32 +156,6 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 
-	/* Timer */
-
-	// $('body').delegate('#btnCallNext', 'click', function() {
-	// 	var id = $(this).data('id');
-	// 	startTimer(id);
-	// 	console.log(id);
-	// });
-
-	// $('body').delegate('#btnRecall', 'click', function() {
-	// 	var id = $(this).data('id');
-	// 	stopTimer();
-	// 	console.log(id);
-	// });
-
-	// $('body').delegate('#btnSkip', 'click', function() {
-	// 	var id = $(this).data('id');
-	// 	stopTimer();
-	// 	console.log(id);
-	// });
-
-	// $('body').delegate('#btnDone', 'click', function() {
-	// 	var id = $(this).data('id');
-	// 	stopTimer();
-	// 	console.log(id);
-	// });
-
 	/* Issue ticket */
 	$('body').delegate('#btnIssueTicket', 'click', function() {
 		var id = $(this).data('id');
@@ -193,7 +167,7 @@ jQuery( document ).ready(function( $ ) {
 
 /* Code that uses other library's $ can follow here. */
 // $( document ).ready(function() {
-
+	
     //close alert
 	window.setTimeout(function() {
     	$(".alert").fadeTo(3000, 0).slideUp(3000, function(){
@@ -223,46 +197,6 @@ jQuery( document ).ready(function( $ ) {
 	    "columnDefs": [{ "orderable": false, "targets": [2] }],
       	"rowsGroup": [0, 2]
 	 });
-
-	
-    /* Custom filtering function which will search data in column four between two values */
-	var table = $('.dataTable').DataTable();
-     
-    // Event listener to the two range filtering inputs to redraw on input
-    $('#min, #max').keyup( function() {
-        table.draw();
-    } );
-
-	$.fn.dataTable.ext.search.push(
-	    function( settings, data, dataIndex ) {
-	        var min = parseInt( $('#min').val(), 10 );
-	        var max = parseInt( $('#max').val(), 10 );
-	        var age = parseFloat( data[3] ) || 0; // use data for the age column
-	 
-	        if ( ( isNaN( min ) && isNaN( max ) ) ||
-	             ( isNaN( min ) && age <= max ) ||
-	             ( min <= age   && isNaN( max ) ) ||
-	             ( min <= age   && age <= max ) )
-	        {
-	            return true;
-	        }
-	        return false;
-	    }
-	);
-
-	//table checker
-	$("#mytable #checkall").click(function () {
-        if ($("#mytable #checkall").is(':checked')) {
-            $("#mytable input[type=checkbox]").each(function () {
-                $(this).prop("checked", true);
-            });
-
-        } else {
-            $("#mytable input[type=checkbox]").each(function () {
-                $(this).prop("checked", false);
-            });
-        }
-    });
 
 // });
 

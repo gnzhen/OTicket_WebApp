@@ -17,7 +17,7 @@
                         @include('partials.call._openCounter')
                 </div>
             @endif
-            
+
             <div class="col-md-12"> 
                 <ul class="nav nav-tabs" role="tablist">
                     @foreach($queues as $i => $queue)
@@ -49,6 +49,11 @@
                 </div>
             </div>
         @else
+            @if($user->branchCounter != null)
+                <div class="col-md-5">
+                    @include('partials.call._closeCounter')
+                </div>
+            @endif
             <div>
                 <p>All queues are empty.</p>
             </div>
@@ -70,6 +75,7 @@
             $.noConflict();
 
             jQuery( document ).ready(function( $ ) {
+
                 $('.nav-link-0').addClass('active');
                 $('.tab-pane-0').addClass('active');
                 $('.tab-pane-0').addClass('show');
@@ -81,11 +87,13 @@
 
     {{-- Timer --}}
 
-    @if($calling != null && $timer != null)
+    @if($calling != null)
         <script type="text/javascript">
-            $.noConflict();
+            // $.noConflict();
 
-            jQuery( document ).ready(function( $ ) {
+            $( document ).ready(function( $ ) {
+
+                console.log('timer');
 
                 var count = {{ $timer }};
                 var timer;
@@ -96,11 +104,6 @@
                     count ++;
                     $('#timer'+id).text(secToStr(count));
                     timer = setTimeout(function(){ startTimer(id) }, 1000);
-                }
-
-                function stopTimer(){
-                    clearTimeout(timer);
-                    count = 0;
                 }
 
                 function secToStr(sec){
@@ -119,6 +122,14 @@
                 }
             });
         </script>
+    @else
+    <script type="text/javascript">
+            // $.noConflict();
 
+            $( document ).ready(function( $ ) {
+
+                console.log('no timer');
+            });
+        </script>
     @endif
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
+use Session;
 use App\Queue;
 use Carbon\Carbon;
 use App\Traits\WaitTimeManager;
@@ -16,8 +17,8 @@ trait QueueManager {
 
         $queue->branch_service_id = $branchServiceId;
         $queue->wait_time = 0;
-        $queue->total_ticket = 1;
-        $queue->waiting_ticket = 1;
+        $queue->total_ticket = 0;
+        $queue->pending_ticket = 0;
         $queue->start_time = Carbon::now();
         $queue->active = 1;
 
@@ -35,23 +36,23 @@ trait QueueManager {
         return $queue;
     }
 
-    public function getTicketServingNow($queue){
-        
-        $ticket_serving_now = $queue->tickets->where('status','=','serving')->sortByDesc('id')->first();
-
-        return $ticket_serving_now;
-    }
-
     public function refreshQueue($queue){
 
-        $waitingTicket = $queue->tickets->where('status','=','waiting')->count();
-
         //Update waiting ticket
-        $queue->waiting_ticket = $waitingTicket;
+        $waitingTicketNo = $this->getWaitingTicket($queue)->count();
+
+        $queue->pending_ticket = $waitingTicketNo;
+
+        //Update total ticket
+        $totalTicket = $queue->tickets->count();
+        $queue->total_ticket = $totalTicket;
+
+        //Update pending ticket
+        $pendingTicket = $this->calPendingTicketNo($queue);
 
         //Update queue wait time
-        $waitTime = $this->calQueueWaitTime($queue);
-        $queue->wait_time = $waitTime;
+        $queueWaitTime = $this->calQueueWaitTime($queue);
+        $queue->wait_time = $queueWaitTime;
 
         //Update ticket serving now
         $queue->ticket_serving_now = $this->getTicketServingNow($queue);
@@ -60,16 +61,21 @@ trait QueueManager {
 
 
         //Check whether to close 
-        $servingTicket = $queue->tickets->where('status','serving')->count();
 
-        if(($waitingTicket + $servingTicket) < 1){
+        if($this->calPendingTicketNo($queue) < 1){
             $this->closeQueue($queue);
+
+            Session::forget('tab');
         }
 
         //Update affected ticket
-        //
+        $tickets = $queue->tickets;
 
+        foreach($tickets as $ticket){
+            $ticket = $this->refreshTicket($queue, $ticket);
+        }
 
+        return $queue;
     }
 
     public function closeQueue($queue){
@@ -81,4 +87,40 @@ trait QueueManager {
 
     }
 
+    public function getTicketServingNow($queue){
+        
+        $ticketServingNow = $queue->tickets->where('status','=','serving')->sortByDesc('id')->first();
+
+        return $ticketServingNow != null ? $ticketServingNow->id : null;
+    }
+
+    public function getWaitingTicket($queue){
+
+        return $queue->tickets->where('status','=','waiting');
+    }
+
+    public function getServingTicket($queue){
+
+        return $queue->tickets->where('status','serving');
+    }
+
+    public function calPendingTicketNo($queue){
+
+        $waitingTicketNo = $this->getWaitingTicket($queue)->count();
+        $servingTicketNo = $this->getServingTicket($queue)->count();
+
+        return $waitingTicketNo + $servingTicketNo;
+    }
+
+    public function calQueueWaitTime($queue){
+
+        $avgWaitTime = $this->getAvgWaitTimeQueue($queue);
+
+        $waitingTicketNo = $this->getWaitingTicket($queue)->count();
+        $servingTicketNo = $this->getServingTicket($queue)->count();
+
+        $totalTicket = $servingTicketNo < 1 ? $waitingTicketNo : ($waitingTicketNo + 1);
+
+        return $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+    }
 }

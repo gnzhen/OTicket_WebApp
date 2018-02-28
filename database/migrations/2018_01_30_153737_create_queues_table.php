@@ -21,7 +21,7 @@ class CreateQueuesTable extends Migration
             $table->integer('ticket_serving_now')->nullable();
             $table->integer('wait_time');
             $table->integer('total_ticket');
-            $table->integer('waiting_ticket');
+            $table->integer('pending_ticket');
             $table->datetime('start_time');
             $table->datetime('end_time')->nullable();
             $table->integer('active');

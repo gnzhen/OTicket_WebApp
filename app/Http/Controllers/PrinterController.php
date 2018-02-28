@@ -17,7 +17,16 @@ use App\Traits\TicketManager;
 
 class PrinterController extends Controller
 {
-    use QueueManager, TicketManager;
+    use QueueManager { 
+        calAvgWaitTime as protected calAvgWaitTimeQueue; 
+        calTotalWaitTime as protected calTotalWaitTimeQueue;
+        getAvgWaitTime as protected getAvgWaitTimeQueue;
+    } 
+    use TicketManager { 
+        calAvgWaitTime as protected calAvgWaitTimeTicket; 
+        calTotalWaitTime as protected calTotalWaitTimeTicket;
+        getAvgWaitTime as protected getAvgWaitTimeTicket;
+    }
 
     /**
      * Create a new controller instance.
@@ -85,11 +94,10 @@ class PrinterController extends Controller
                 $queue = $this->storeQueue($branchService->id);
             }
 
-            //Create Ticket
             $request->replace([
-                'queue_id' => $queue->id, 
-                'ticket_no' => $this->ticketNoGenerator($branchService->service_id, $queue->total_ticket),
+                'ticket_no' => $this->ticketNoGenerator($queue),
                 'issue_time' => Carbon::now(),
+                'queue_id' => $queue->id, 
                 'wait_time' => $queue->wait_time,
                 'ppl_ahead' => $queue->total_ticket,
                 'postponed' => 0,
@@ -106,6 +114,25 @@ class PrinterController extends Controller
             return redirect()->route('printer.index');
         }
     }
+
+    public function calAvgWaitTime($totalTime, $totalTicket){
+
+        $this->calAvgWaitTimeQueue($totalTime, $totalTicket);
+        $this->calAvgWaitTimeTicket($totalTime, $totalTicket);
+    }
+
+    public function calTotalWaitTime($avgWaitTime, $totalTicket){
+
+        $this->calAvgWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calAvgWaitTimeTicket($avgWaitTime, $totalTicket);
+    }
+
+    public function getAvgWaitTime($queue){
+
+        $this->calAvgWaitTimeQueue($queue);
+        $this->calAvgWaitTimeTicket($queue);
+    }
+
 
     /**
      * Display the specified resource.

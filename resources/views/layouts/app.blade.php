@@ -37,6 +37,7 @@
         @include('partials._sidebar')
     </div>
 
+    
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
@@ -53,8 +54,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/custom.js') }}"></script>
-    <script src="{{ asset('js/parsley.min.js') }}"></script>
 
     @yield('javascript')
+
 </body>
 </html>
