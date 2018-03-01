@@ -84,7 +84,8 @@ trait QueueManager {
         $queue->end_time = Carbon::now();
 
         $queue->save();
-
+        
+        return $queue;
     }
 
     public function getTicketServingNow($queue){

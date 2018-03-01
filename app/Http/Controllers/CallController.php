@@ -66,15 +66,12 @@ class CallController extends Controller
                 $timer = $now->diffInSeconds($callTime);
             }
         }
-
+        
         return view('call')->withUser($user)->withTickets($tickets)->withQueues($queues)->withBranch($branch)->withBranchServices($branchServices)->withBranchCounters($branchCounters)->withAppController($appController)->withCalling($calling)->withTimer($timer);
     }
 
      /**
      * Manage ticket calling
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
 
     public function call(Request $request){
@@ -91,7 +88,7 @@ class CallController extends Controller
         }
 
         //Update Ticket
-        $this->serveTicket($ticket);
+        $ticket = $this->serveTicket($ticket);
 
         //Update Queue
         $queue = $this->refreshQueue($queue);
@@ -106,17 +103,73 @@ class CallController extends Controller
         $calling = $this->storeCalling($request);
 
         //Update Branch Counter
-        $branchCounter->serving_queue = $queue->id;
-        $branchCounter->save();  
+        $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
+
+        Session::flash('success', 'Calling ' . $calling->ticket->ticket_no . '.');
+    
+        return redirect()->route('call.index');
+    }
+
+    /**
+     * Manage ticket recall
+     */
+
+    public function recall(Request $request){
+
+        $calling = Calling::findOrFail($request->calling_id);
+
+        if($calling->active == 0){
+
+            return redirect()->route('call.index')->with('fail', 'Please call next.');
+        }
+
+        $calling = $this->stopCalling($calling);
+
+        //Create Calling
+        $request->replace([
+            'ticket_id' => $calling->ticket_id, 
+            'branch_counter_id' => $calling->branch_counter_id,
+            'call_time' => Carbon::now(),
+            'active' => 1,
+        ]);
+
+        $calling = $this->storeCalling($request);
+
+        Session::flash('success', 'Recalling ' . $calling->ticket->ticket_no . '.');
+    
+        return redirect()->route('call.index');
+    }
+
+    /**
+     * Manage ticket skip
+     */
+
+    public function skip(Request $request){
+
+        $calling = Calling::findOrFail($request->calling_id);
+        $queue = Queue::findOrFail($request->queue_id);
+        $branchCounter = BranchCounter::findOrFail($request->branch_counter_id);
+
+        //Update Ticket
+        $ticket = Ticket::findOrFail($calling->ticket_id);
+        $ticket = $this->skipTicket($ticket);
+
+        //Update Queue
+        $queue = $this->refreshQueue($queue);
+
+        //Update Calling
+        $calling = $this->stopCalling($calling);
+
+        //Update Branch Counter
+        $branchCounter = $this->branchCounterStopCalling($branchCounter);
+
+        Session::flash('success', 'Skip ' . $calling->ticket->ticket_no . '.');
     
         return redirect()->route('call.index');
     }
 
     /**
      * Manage done of a serving
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
 
     public function done(Request $request){
@@ -147,55 +200,25 @@ class CallController extends Controller
         $serving->save();
 
         //Update Branch Counter
-        $branchCounter->serving_queue = null;
-        $branchCounter->save(); 
+        $branchCounter = $this->branchCounterStopCalling($branchCounter);
+
+
+        //Send serving duration to index
+        $serveTime = Carbon::parse($serving->serve_time);
+        $doneTime = Carbon::parse($serving->done_time);
+        $servingDuration = $doneTime->diffInSeconds($serveTime);
+
+        Session::flash('success', 'Done serving ' . $serving->ticket->ticket_no . '.');
 
         return redirect()->route('call.index');
     }
 
     /**
-     * Manage ticket recall
+     * Manage open of counter
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
-    public function recall(Request $request){
-
-        $calling = Calling::findOrFail($request->calling_id);
-
-        if($calling == null){
-
-            return redirect()->route('call.index')->with('fail', 'Please call next.');
-        }
-
-        $calling = $this->stopCalling($calling);
-
-        //Create Calling
-        $request->replace([
-            'ticket_id' => $calling->ticket_id, 
-            'branch_counter_id' => $calling->branch_counter_id,
-            'call_time' => Carbon::now(),
-            'active' => 1,
-        ]);
-
-        $calling = $this->storeCalling($request);
-    
-        return redirect()->route('call.index');
-    }
-
-    /**
-     * Manage ticket skip
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-    public function skip(Request $request){
-
-        // 
-    }
-
     public function openCounter(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -225,6 +248,12 @@ class CallController extends Controller
         }
     }
 
+     /**
+     * Manage close of counter
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function closeCounter($id)
     {
         $branchCounter = BranchCounter::findOrFail($id);

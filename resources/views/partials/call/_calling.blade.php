@@ -56,6 +56,10 @@
                 <div class="col-md-6">
                     {!! Form::open(['route'=>['call.skip']]) !!}
                         <input type="hidden" name="queue_id" value="{{ $queue->id }}">
+                        <input type="hidden" name="branch_counter_id" value="{{ $user->branchCounter->id }}">
+                         @if($calling != null)
+                            <input type="hidden" name="calling_id" value="{{ $calling->id }}">
+                        @endif
                         <button type="submit" id="btnSkip" data-id="{{ $queue->id }}" class="btn btn-secondary btn-block {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Skip</button>
                     {!! Form::close() !!}
                 </div>

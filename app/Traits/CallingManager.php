@@ -30,4 +30,19 @@ trait CallingManager {
         return $calling;
     }
 
+    public function branchCounterCalling($branchCounter, $queue){
+
+        $branchCounter->serving_queue = $queue->id;
+        $branchCounter->save(); 
+
+        return $branchCounter;
+    }
+
+    public function branchCounterStopCalling($branchCounter){
+
+        $branchCounter->serving_queue = null;
+        $branchCounter->save(); 
+
+        return $branchCounter;
+    }
 }
