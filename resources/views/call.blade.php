@@ -91,8 +91,6 @@
 
             $( document ).ready(function( $ ) {
 
-                console.log('timer');
-
                 var count = {{ $timer }};
                 var timer;
 
@@ -120,14 +118,4 @@
                 }
             });
         </script>
-    @else
-    <script type="text/javascript">
-            // $.noConflict();
-
-            $( document ).ready(function( $ ) {
-
-                console.log('no timer');
-            });
-        </script>
-    @endif
 @endsection

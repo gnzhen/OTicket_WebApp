@@ -15,12 +15,17 @@
 
 @endsection
 
-@section('javascript')
-<script type="text/javascript">
-	 $.noConflict();
 
-	 jQuery( document ).ready(function( $ ) {
-	 	//
-	 });
-</script>
+@section('javascript')
+    <script type="text/javascript">
+        
+        $(document).ready(function( $ ) {
+
+            $(document).keypress(function(e) {
+
+                $( "#topbar" ).slideToggle( "slow" );
+            });
+            
+        });
+    </script>
 @endsection

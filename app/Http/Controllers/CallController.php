@@ -66,7 +66,7 @@ class CallController extends Controller
                 $timer = $now->diffInSeconds($callTime);
             }
         }
-        
+
         return view('call')->withUser($user)->withTickets($tickets)->withQueues($queues)->withBranch($branch)->withBranchServices($branchServices)->withBranchCounters($branchCounters)->withAppController($appController)->withCalling($calling)->withTimer($timer);
     }
 
@@ -257,6 +257,14 @@ class CallController extends Controller
     public function closeCounter($id)
     {
         $branchCounter = BranchCounter::findOrFail($id);
+
+        //Reject close counter during serving
+        if($branchCounter->serving_queue != null){
+
+            Session::flash('fail', 'Counter cannot be closed during serving.');
+
+            return redirect()->route('call.index');
+        }
 
         $branchCounter->staff_id = null;
         $branchCounter->serving_queue = null;

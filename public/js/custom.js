@@ -4,7 +4,7 @@ jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
 	setInitialSidebar();
-	getAllSession();
+	// getAllSession();
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();

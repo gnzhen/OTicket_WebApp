@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light" id="topbar">
     <!-- Collapsed Hamburger -->
     <div class="navbar-header">
          @auth
