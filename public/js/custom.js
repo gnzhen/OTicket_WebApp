@@ -3,6 +3,23 @@ $.noConflict();
 jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
+	// require('./bootstrap');
+
+	// window.Vue = require('vue');
+
+	// Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
+	// const app = new Vue({
+	// el: '#app',
+	// created(){
+	// 	Echo.channel('channel-event')
+	// 		.listen('eventTrigger', (e) => {
+	// 			alert('The event has been triggered.');
+	// 		});
+	// 	}
+	// });
+
+
 	setInitialSidebar();
 	// getAllSession();
 
@@ -161,7 +178,7 @@ jQuery( document ).ready(function( $ ) {
 		var id = $(this).data('id');
 		showModal('#issueTicketModal'+id);
 	});
-	
+
 });
 
 
@@ -197,6 +214,7 @@ jQuery( document ).ready(function( $ ) {
 	    "columnDefs": [{ "orderable": false, "targets": [2] }],
       	"rowsGroup": [0, 2]
 	 });
+
 
 // });
 

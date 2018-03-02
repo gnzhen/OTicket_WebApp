@@ -118,4 +118,5 @@
                 }
             });
         </script>
+    @endif
 @endsection

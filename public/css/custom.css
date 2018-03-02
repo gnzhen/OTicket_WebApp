@@ -14,6 +14,23 @@ body {
     display: block;
 }
 
+.chart {
+    background-color: white;
+}
+
+.margin-15 {
+    margin: 15px;
+}
+
+.padding-15 {
+    padding: 15px;
+}
+
+.margin-horizontal-10 {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 .margin-right-15 {
     margin-right: 15px;
 }

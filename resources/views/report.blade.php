@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="container">
+
     <div class="row">   
         <div class="col-sm-12 col-md-6">    
             <div class="dataTables_length" id="example_length"> 
@@ -16,8 +17,7 @@
         <div class="col-sm-6"> 
             <div class="card card-report">
                 <div class="card-body">
-                    <form class="form-horizontal" method="POST" action="" >
-                        {{ csrf_field() }}
+                    {!! Form::open(['route' => ['report.result'], 'method' => 'POST']) !!}
 
                         <div class="form-group{{ $errors->has('reportOption') ? ' has-error' : '' }} row">
                             <label for="reportOption" class="col-md-4 col-form-label">Report Option:</label>
@@ -55,12 +55,12 @@
                         
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-primary">
-                                    Generate
-                                </button>
+
+                                {!! Form::submit('Generate', ['class' => 'btn btn-primary']) !!}
                             </div>
                         </div>
-                    </form>
+                    
+                    {!! Form::close() !!}
                 </div>
         </div>
         </div>
@@ -552,5 +552,8 @@
             </table>
         </div>
     </div> 
+
+    
+
 </div>
 @stop

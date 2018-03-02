@@ -105,6 +105,9 @@ class CallController extends Controller
         //Update Branch Counter
         $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
 
+        //Trigger display
+        
+
         Session::flash('success', 'Calling ' . $calling->ticket->ticket_no . '.');
     
         return redirect()->route('call.index');

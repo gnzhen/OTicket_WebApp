@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Queue;
+use App\Calling;
+use App\Ticket;
+use Carbon\Carbon;
 
 class DisplayController extends Controller
 {
@@ -23,6 +28,10 @@ class DisplayController extends Controller
      */
     public function index()
     {
+        $callings = Calling::get();
+        $queues = Queue::get();
+        $tickets = Ticket::get();
+
         return view('display');
     }
 

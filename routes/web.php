@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\DisplayEvent;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,6 +44,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/call/recall', 'CallController@recall')->name('call.recall');
 	Route::post('/call/skip', 'CallController@skip')->name('call.skip');
 	Route::post('/call/done', 'CallController@done')->name('call.done');
+	Route::post('/report/download', 'ReportController@download')->name('report.download');
+	Route::post('/report', 'ReportController@back')->name('report.back');
+	Route::post('/report/result', 'ReportController@result')->name('report.result');
 
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
@@ -57,3 +62,8 @@ Auth::routes();
 /* AppController */
 Route::get('checkAuth', 'AppController@checkAuth');
 Route::get('getAllSession', 'AppController@getAllSession');
+
+/* Events */
+Route::get('/event', function() {
+	event(new DisplayEvent('testing'));
+});
