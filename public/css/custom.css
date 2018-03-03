@@ -18,6 +18,10 @@ body {
     background-color: white;
 }
 
+text {
+    margin: auto;
+}
+
 .margin-15 {
     margin: 15px;
 }
@@ -37,6 +41,9 @@ body {
 
 .margin-left-15 {
     margin-left: 15px;
+}
+.margin-top-5 {
+    margin-top: 5px;
 }
 
 label.inline-label {

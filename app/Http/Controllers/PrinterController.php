@@ -96,7 +96,7 @@ class PrinterController extends Controller
 
             $request->replace([
                 'ticket_no' => $this->ticketNoGenerator($queue),
-                'issue_time' => Carbon::now(),
+                'issue_time' => Carbon::now('Asia/Kuala_Lumpur'),
                 'queue_id' => $queue->id, 
                 'wait_time' => $queue->wait_time,
                 'ppl_ahead' => $queue->total_ticket,

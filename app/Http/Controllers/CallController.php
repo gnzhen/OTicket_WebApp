@@ -61,8 +61,8 @@ class CallController extends Controller
             if($calling != null){
 
                 //Calculate timer
-                $callTime = Carbon::parse($calling->call_time);
-                $now = Carbon::now();
+                $callTime = Carbon::parse($calling->call_time, 'Asia/Kuala_Lumpur');
+                $now = Carbon::now('Asia/Kuala_Lumpur');
                 $timer = $now->diffInSeconds($callTime);
             }
         }
@@ -97,7 +97,7 @@ class CallController extends Controller
         $request->replace([
             'ticket_id' => $ticket->id, 
             'branch_counter_id' => $request->branch_counter_id,
-            'call_time' => Carbon::now(),
+            'call_time' => Carbon::now('Asia/Kuala_Lumpur'),
             'active' => 1,
         ]);
         $calling = $this->storeCalling($request);
@@ -132,7 +132,7 @@ class CallController extends Controller
         $request->replace([
             'ticket_id' => $calling->ticket_id, 
             'branch_counter_id' => $calling->branch_counter_id,
-            'call_time' => Carbon::now(),
+            'call_time' => Carbon::now('Asia/Kuala_Lumpur'),
             'active' => 1,
         ]);
 
@@ -198,7 +198,7 @@ class CallController extends Controller
         $serving->staff_id = $request->user_id;
         $serving->branch_counter_id = $calling->branch_counter_id;
         $serving->serve_time = $calling->call_time;
-        $serving->done_time = Carbon::now();
+        $serving->done_time = Carbon::now('Asia/Kuala_Lumpur');
 
         $serving->save();
 
@@ -207,8 +207,8 @@ class CallController extends Controller
 
 
         //Send serving duration to index
-        $serveTime = Carbon::parse($serving->serve_time);
-        $doneTime = Carbon::parse($serving->done_time);
+        $serveTime = Carbon::parse($serving->serve_time, 'Asia/Kuala_Lumpur');
+        $doneTime = Carbon::parse($serving->done_time, 'Asia/Kuala_Lumpur');
         $servingDuration = $doneTime->diffInSeconds($serveTime);
 
         Session::flash('success', 'Done serving ' . $serving->ticket->ticket_no . '.');

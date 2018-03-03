@@ -8,7 +8,7 @@
 
     <h3>Ticket Queue</h3>
 
-    @if(!$branchServices->isEmpty())
+    @if(!$branchServices->isEmpty() && $user->branch_id != null)
 
         @if(!$queues->isEmpty())
 
@@ -57,9 +57,15 @@
             </div>
         @endif
     @else
-        <div>
-            <p>This user does not belongs to any branch.</p>
-        </div>
+        @if($user->branch_id == null)
+            <div>
+                <p>This user does not belongs to any branch.</p>
+            </div>
+        @elseif($branchServices->isEmpty())
+            <div>
+                <p>There are no service in this branch.</p>
+            </div>
+        @endif
     @endif
 </div>
 @endsection

@@ -19,7 +19,7 @@ trait QueueManager {
         $queue->wait_time = 0;
         $queue->total_ticket = 0;
         $queue->pending_ticket = 0;
-        $queue->start_time = Carbon::now();
+        $queue->start_time = Carbon::now('Asia/Kuala_Lumpur');
         $queue->active = 1;
 
         $queue->save();
@@ -81,7 +81,7 @@ trait QueueManager {
     public function closeQueue($queue){
 
         $queue->active = 0;
-        $queue->end_time = Carbon::now();
+        $queue->end_time = Carbon::now('Asia/Kuala_Lumpur');
 
         $queue->save();
         
@@ -123,5 +123,20 @@ trait QueueManager {
         $totalTicket = $servingTicketNo < 1 ? $waitingTicketNo : ($waitingTicketNo + 1);
 
         return $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+    }
+
+
+    public function calQueueAvgWaitTime($queue){
+
+        if($queue->end_time == null) 
+            return 0;
+
+        $start = Carbon::parse($queue->start_time, 'Asia/Kuala_Lumpur');
+        $end = Carbon::parse($queue->end_time, 'Asia/Kuala_Lumpur');
+        $totalTime = $end->diffInSeconds($start);
+
+        $totalTicket = $queue->tickets->count();
+
+        return $this->calAvgWaitTime($totalTime, $totalTicket);
     }
 }

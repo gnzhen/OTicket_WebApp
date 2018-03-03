@@ -45,7 +45,7 @@ trait TicketManager {
     public function skipTicket($ticket){
         $ticket->status = 'skipped';
         $ticket->ppl_ahead = 0;
-        $ticket->disposed_time = Carbon::now();
+        $ticket->disposed_time = Carbon::now('Asia/Kuala_Lumpur');
         $ticket->save();
 
         return $ticket;
@@ -53,7 +53,7 @@ trait TicketManager {
 
     public function doneTicket($ticket){
         $ticket->status = 'done';
-        $ticket->disposed_time = Carbon::now();
+        $ticket->disposed_time = Carbon::now('Asia/Kuala_Lumpur');
         $ticket->save();
 
         return $ticket;

@@ -19,8 +19,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/parsley.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -37,14 +37,14 @@
         @include('partials._sidebar')
     </div>
 
-    
-    <script src="{{ asset('js/app.js') }}"></script>
 
+    <script src="{{ asset('js/app.js') }}"></script>
+    
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
     {{-- Sorting Table --}}
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.rawgit.com/ashl1/datatables-rowsgroup/fbd569b8768155c7a9a62568e66a64115887d7d0/dataTables.rowsGroup.js"></script>
@@ -55,9 +55,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
-    <!-- Scripts -->
+    <!-- Custom Scripts -->
     <script src="{{ asset('js/custom.js') }}"></script>
-    {{-- <script src="{{ asset('js/table.js') }}"></script> --}}
 
     @yield('javascript')
 

@@ -11,6 +11,9 @@ trait WaitTimeManager {
 
     public function calAvgWaitTime($totalTime, $totalTicket){
 
+        if($totalTicket == 0)
+            return 0;
+
         return round($totalTime / $totalTicket);
     }
 

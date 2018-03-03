@@ -3,23 +3,6 @@ $.noConflict();
 jQuery( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
-	// require('./bootstrap');
-
-	// window.Vue = require('vue');
-
-	// Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
-	// const app = new Vue({
-	// el: '#app',
-	// created(){
-	// 	Echo.channel('channel-event')
-	// 		.listen('eventTrigger', (e) => {
-	// 			alert('The event has been triggered.');
-	// 		});
-	// 	}
-	// });
-
-
 	setInitialSidebar();
 	// getAllSession();
 
@@ -184,6 +167,39 @@ jQuery( document ).ready(function( $ ) {
 
 /* Code that uses other library's $ can follow here. */
 // $( document ).ready(function() {
+
+	/* Datepicker */
+	var dateFormat = "dd/mm/yy";
+  	
+  	var dateFrom = $( "#datepickerFrom" )
+  			.datepicker({
+		  		dateFormat: 'dd/mm/yy',
+		  		maxDate: '0'
+		    })
+			.on( "change", function() {
+				dateTo.datepicker( "option", "minDate", getDate( this ) );
+			});
+			
+	var dateTo = $( "#datepickerTo" )
+			.datepicker({
+    			dateFormat: 'dd/mm/yy',
+  				maxDate: '0'
+    		})
+			.on( "change", function() {
+				dateFrom.datepicker( "option", "maxDate", getDate( this ) );
+			});
+
+    function getDate( element ) {
+		var date;
+
+		try {
+			date = $.datepicker.parseDate( dateFormat, element.value );
+		} catch( error ) {
+			date = null;
+		}
+
+		return date;
+    }
 	
     //close alert
 	window.setTimeout(function() {
