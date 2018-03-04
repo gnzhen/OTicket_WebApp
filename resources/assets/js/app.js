@@ -22,7 +22,7 @@ el: '#app',
 created(){
 	Echo.channel('displayChannel')
 		.listen('displayEvent', (e) => {
-			//
+			alert('hi test');
 		});
 	}
 });

@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use App\Queue;
-use App\BranchService;
-use App\Calling;
-use App\Traits\QueueManager;
-use App\Traits\TicketManager;
-use Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Mailtrap;
 
-class CallingController extends Controller
+class MailController extends Controller
 {
-    use QueueManager, TicketManager;
-
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +15,7 @@ class CallingController extends Controller
      */
     public function index()
     {
-        //
+        Mail::to('mioyazhen1996@gmail.com')->send(new Mailtrap());
     }
 
     /**
@@ -43,24 +36,7 @@ class CallingController extends Controller
      */
     public function store(Request $request)
     {
-        // $queue = Queue::findOrFail($request->queue_id);
-
-        // //Manage Ticket
-        // $ticket = $queue->tickets->where('status', '=', 'waiting')->first();
-
-        // $this->serveTicket($ticket);
-
-        // //Manage Calling
-        // $calling = new Calling();
-        // $calling->ticket_id = $ticket->id;
-        // $calling->branch_counter_id = $user->branchCounter->id;
-        // $calling->ticket_id = $ticket->id;
-        // $calling->save();
-
-        // //Manage Queue
-        // $this->updateTicketServingNow($queue, $ticket->id);
-    
-        // return redirect()->route('call.index');
+        //
     }
 
     /**

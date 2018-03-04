@@ -42,8 +42,13 @@ text {
 .margin-left-15 {
     margin-left: 15px;
 }
+
 .margin-top-5 {
     margin-top: 5px;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
 }
 
 label.inline-label {

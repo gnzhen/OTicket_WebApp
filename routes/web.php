@@ -28,7 +28,6 @@ Route::group(['middleware' => ['auth']], function () {
 	    'counter' => 'CounterController',
 	    'branchCounter' => 'BranchCounterController',
 	    'branchService' => 'BranchServiceController',
-	    'calling' => 'CallingController',
 	    'ticket' => 'TicketController',
 	    'queue' => 'QueueController',
 	    'call' => 'CallController',
@@ -55,6 +54,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('setTabSession', 'AppController@setTabSession');
 });
 
+Route::resources([
+	'mail' => 'MailController',
+]);
+// Route::get('/password/reset/{token}/{email}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
 Auth::routes();
 
@@ -65,5 +68,5 @@ Route::get('getAllSession', 'AppController@getAllSession');
 
 /* Events */
 Route::get('/event', function() {
-	event(new DisplayEvent('testing'));
+	event(new DisplayEvent('hi'));
 });
