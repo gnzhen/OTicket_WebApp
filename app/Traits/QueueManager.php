@@ -131,25 +131,25 @@ trait QueueManager {
 
     public function calQueueAvgWaitTime($queue){
 
-        if($queue->end_time == null) 
-            return 0;
-
         $start = Carbon::parse($queue->start_time, 'Asia/Kuala_Lumpur');
         $end = Carbon::parse($queue->end_time, 'Asia/Kuala_Lumpur');
         $totalTime = $end->diffInSeconds($start);
 
         $totalTicket = $queue->tickets->count();
 
-        return $this->calAvgWaitTimeQueue($totalTime, $totalTicket);
+        $avgWaitTime = $this->calAvgWaitTimeQueue($totalTime, $totalTicket);
+
+        return $avgWaitTime;
     }
 
     public function calQueuesAvgWaitTime($queues){
+        
         $totalAvgWaitTimeOfQueue = 0;
         $numberOfQueue = 0;
 
         foreach($queues as $queue){
 
-            $avgWaitTimeOfQueue = $this->calQueueAvgWaitTime($queue);
+            $avgWaitTimeOfQueue = $queue->avg_wait_time;
 
             if($avgWaitTimeOfQueue > 0){
 
@@ -158,7 +158,7 @@ trait QueueManager {
 
             }
         }
-        
+
         return $this->calAvgWaitTimeQueue($totalAvgWaitTimeOfQueue, $numberOfQueue);
     }
 }

@@ -6,7 +6,7 @@
 
 <div class="container">
 
-    <h3>Ticket Queue</h3>
+    <h3>Ticket Queue <small>- {{ $user->branch->name }}({{ $user->branch->code }})</small></h3>
 
     @if(!$branchServices->isEmpty() && $user->branch_id != null)
 

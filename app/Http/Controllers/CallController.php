@@ -50,7 +50,9 @@ class CallController extends Controller
         $branchServices = BranchService::where('branch_id', '=', $user->branch_id)->get();
         $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
         $tickets = Ticket::where('status','=','waiting')->get();
-        $queues = Queue::where('active','=', 1)->with('branchService')->with('tickets')->get();
+
+        $queues = Queue::whereIn('branch_service_id', [$branchServices])->where('active', 1)->with('branchService')->with('tickets')->get();
+
         $calling = null;
         $timer = null;
 
@@ -277,7 +279,7 @@ class CallController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         else {
-            
+
             DB::beginTransaction();
 
             try {
