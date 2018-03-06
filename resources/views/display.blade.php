@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="container-fluid">
-    {{-- <div class="fill"> --}}
+    <div id="display">
         <div class="box shadow">
             <div class="box-content">
-                <p style="font-size: 180px">0001</p>
+                <p id="mainTicket" style="font-size: 180px">0001</p>
                 <p style="font-size: 100px">Counter 1</p>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-    {{-- </div> --}}
+    </div>
 </div>
 @endsection 
 

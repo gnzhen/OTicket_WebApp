@@ -310,6 +310,7 @@ td.td-action {
 #sidebar ul li a {
     text-decoration: none;
     padding: 10px;
+    padding-left: 15px;
     font-size: 16px;
     display: block;
     color: #636b6f !important;
@@ -331,7 +332,7 @@ td.td-action {
 
 ul ul a {
     font-size: 15px !important;
-    padding-left: 30px !important;
+    padding-left: 40px !important;
     background: white;
 }
 

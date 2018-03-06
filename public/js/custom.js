@@ -286,9 +286,9 @@ function setInitialSidebar(){
 			console.log(xhr);
 		});	
 
-	if($('#adminDropdownMenu').hasClass('active')){
-		openMenu('#adminMenu', 'open');
-	}
+	// if($('#adminDropdownMenu').hasClass('active')){
+	// 	openMenu('#adminMenu', 'open');
+	// }
 }
 
 function setSidebarSession(status){

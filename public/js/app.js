@@ -990,10 +990,11 @@ window.Vue = __webpack_require__(37);
 Vue.component('example-component', __webpack_require__(40));
 
 var app = new Vue({
-	el: '#app',
+
+	el: '#display',
 	created: function created() {
-		Echo.channel('displayChannel').listen('displayEvent', function (e) {
-			alert('hi test');
+		Echo.channel('displayChannel').listen('DisplayEvent', function (e) {
+			console.log(e);
 		});
 	}
 });

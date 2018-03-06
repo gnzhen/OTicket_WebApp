@@ -39,9 +39,8 @@ trait QueueManager {
     public function refreshQueue($queue){
 
         //Update waiting ticket
-        $waitingTicketNo = $this->getWaitingTicket($queue)->count();
-
-        $queue->pending_ticket = $waitingTicketNo;
+        // $waitingTicketNo = $this->getWaitingTicket($queue)->count();
+        // $queue->pending_ticket = $waitingTicketNo;
 
         //Update total ticket
         $totalTicket = $queue->tickets->count();
@@ -49,6 +48,7 @@ trait QueueManager {
 
         //Update pending ticket
         $pendingTicket = $this->calPendingTicketNo($queue);
+        $queue->pending_ticket = $pendingTicket;
 
         //Update queue wait time
         $queueWaitTime = $this->calQueueWaitTime($queue);

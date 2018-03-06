@@ -18,11 +18,12 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
-el: '#app',
+
+el: '#display',
 created(){
 	Echo.channel('displayChannel')
-		.listen('displayEvent', (e) => {
-			alert('hi test');
+		.listen('DisplayEvent', (e) => {
+			console.log(e);
 		});
 	}
 });

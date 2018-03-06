@@ -104,13 +104,20 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'code' => [
-                'required', 'alpha_dash', 'max:255',
-                Rule::unique('branches')->ignore($branch->id),
-            ],
+            'code' => 'required|alpha_dash|max:255|unique:branches,code,'.$branch->id,
             'name' => 'required|max:255',
             'desc' => 'max:255'
         ]);
+
+        // $validator = Validator::make($request->all(), [
+        //     'code' => [
+        //         'required', 'alpha_dash', 'max:255',
+        //         Rule::unique('branches')->ignore($branch->id),
+        //     ],
+        //     'name' => 'required|max:255',
+        //     'desc' => 'max:255'
+        // ]);
+
 
         if ($validator->fails()) {
 

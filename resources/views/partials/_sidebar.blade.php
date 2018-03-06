@@ -31,27 +31,33 @@
     <!-- Sidebar Links -->
     <div class="sidebar-body">
         <ul class="list-unstyled components" role="button">
-        <li class="{{ Request::is('home') ? "active" : "" }}"><a href="{{ route('home') }}">Home</a></li>
+            <li class="{{ Request::is('home') ? "active" : "" }}"><a href="{{ route('home') }}">Home</a></li>
 
-        <!-- Link with dropdown items -->
-        <li class="{{ (Request::is('config')||Request::is('user')||Request::is('report')) ? "active" : "" }}" id="adminDropdownMenu">
-             <a href="#" class="dropdown-toggle" id="adminDropdown" data-target="#adminMenu" data-toggle="collapse" aria-expanded="false">Admin &nbsp; 
-                <span class="caret"></span>
-            </a> 
+             @if(Auth::check())
+                @if(Auth::user()->isSuperAdmin() || Auth::user()->isAdmin())
 
-            <ul class="collapse list-unstyled" id="adminMenu">
-                <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configurations</a></li>
-                @if(Auth::check())
-                    @if(Auth::user()->isSuperAdmin() || Auth::user()->isAdmin())
-                        <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
-                    @endif
+                    <!-- Link with dropdown items -->
+                    <li class="{{ (Request::is('config')||Request::is('user')||Request::is('report')) ? "active" : "" }}" id="adminDropdownMenu">
+                         {{-- <a href="#" class="dropdown-toggle" data-toggle="collapse"  data-target="#adminMenu" aria-expanded="false">Admin &nbsp; 
+                            <span class="caret"></span>
+                        </a>  --}}
+            
+                        <a href="#">Admin &nbsp; 
+                            <span class="caret"></span>
+                        </a> 
+
+                        <ul class="list-unstyled" id="adminMenu">
+                            <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configurations</a></li>
+                            <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
+                            <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
+                        </ul>
+                    </li>
                 @endif
-                <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
-            </ul>
+            @endif
 
-        <li class="{{ Request::is('call') ? "active" : "" }}"><a href="{{ route('call.index') }}">Ticket Calling</a></li>
-        <li class="{{ Request::is('printer') ? "active" : "" }}"><a href="{{ route('printer.index') }}">Ticket Machine</a></li>
-        <li class="{{ Request::is('display') ? "active" : "" }}"><a href="{{ route('display.index') }}">Display</a></li>
-    </ul>
+            <li class="{{ Request::is('call') ? "active" : "" }}"><a href="{{ route('call.index') }}">Ticket Calling</a></li>
+            <li class="{{ Request::is('printer') ? "active" : "" }}"><a href="{{ route('printer.index') }}">Ticket Machine</a></li>
+            <li class="{{ Request::is('display') ? "active" : "" }}"><a href="{{ route('display.index') }}">Display</a></li>
+        </ul>
     </div>
 </nav>
