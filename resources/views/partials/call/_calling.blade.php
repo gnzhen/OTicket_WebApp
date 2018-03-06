@@ -26,9 +26,9 @@
         @if($calling != null)
         <div class="col-md-12 margin-bottom-15">
             <div class="row">
-                <div class="col-md-4">Serving Ticket:</div>
+                <div class="col-md-4" style="margin-top: auto">Serving Ticket:</div>
 
-                <div class="col-md-auto" id="ticket"><strong>{{ $user->branchCounter->serving_queue == $queue->id ? $calling->ticket->ticket_no : '-' }}</strong></div>
+                <div class="col-md-auto" id="ticket" style="font-size: 30px"><strong>{{ $user->branchCounter->serving_queue == $queue->id ? $calling->ticket->ticket_no : '-' }}</strong></div>
             </div>
         </div>
         @endif

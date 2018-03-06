@@ -12,6 +12,7 @@ use App\Queue;
 use App\User;
 use Carbon\Carbon;
 use Session;
+use DB;
 use App\Traits\QueueManager;
 use App\Traits\TicketManager;
 
@@ -84,34 +85,45 @@ class PrinterController extends Controller
         }
         else {
 
-            $branchService = BranchService::findOrFail($request->branch_service_id);
+            DB::beginTransaction();
 
-            $queue = $branchService->active_queue->first();
+            try {
 
-            if($queue == null){
-                
-                //Create Queue
-                $queue = $this->storeQueue($branchService->id);
+                $branchService = BranchService::findOrFail($request->branch_service_id);
+
+                $queue = $branchService->active_queue->first();
+
+                if($queue == null){
+                    
+                    //Create Queue
+                    $queue = $this->storeQueue($branchService->id);
+                }
+
+                $request->replace([
+                    'ticket_no' => $this->ticketNoGenerator($queue),
+                    'issue_time' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'queue_id' => $queue->id, 
+                    'wait_time' => $queue->wait_time,
+                    'ppl_ahead' => $queue->total_ticket,
+                    'postponed' => 0,
+                    'status' => 'waiting'
+                ]);
+
+                $ticket = $this->storeTicket($request);
+
+                //Update Queue
+                $total_ticket = $this->refreshQueue($queue);
+
+                DB::commit();
+
+                return redirect()->route('printer.index')->with('success', 'Ticket issued!');
+
+            } catch (\Exception $e) {
+
+                DB::rollback();
+
+                throw $e;
             }
-
-            $request->replace([
-                'ticket_no' => $this->ticketNoGenerator($queue),
-                'issue_time' => Carbon::now('Asia/Kuala_Lumpur'),
-                'queue_id' => $queue->id, 
-                'wait_time' => $queue->wait_time,
-                'ppl_ahead' => $queue->total_ticket,
-                'postponed' => 0,
-                'status' => 'waiting'
-            ]);
-
-            $ticket = $this->storeTicket($request);
-
-            //Update Queue
-            $total_ticket = $this->refreshQueue($queue);
-
-            Session::flash('success', 'Ticket issued!');
-
-            return redirect()->route('printer.index');
         }
     }
 
@@ -123,14 +135,14 @@ class PrinterController extends Controller
 
     public function calTotalWaitTime($avgWaitTime, $totalTicket){
 
-        $this->calAvgWaitTimeQueue($avgWaitTime, $totalTicket);
-        $this->calAvgWaitTimeTicket($avgWaitTime, $totalTicket);
+        $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calTotalWaitTimeTicket($avgWaitTime, $totalTicket);
     }
 
     public function getAvgWaitTime($queue){
 
-        $this->calAvgWaitTimeQueue($queue);
-        $this->calAvgWaitTimeTicket($queue);
+        $this->getAvgWaitTimeQueue($queue);
+        $this->getAvgWaitTimeTicket($queue);
     }
 
 

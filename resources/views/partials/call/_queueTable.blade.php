@@ -11,7 +11,7 @@
     @foreach ($queue->tickets->whereIn('status', ['serving', 'waiting']) as $ticket)
         <tr>
             <td><div>{{ $loop->iteration }}</div></td>
-            <td><div style="font-size: 18px">{{ $ticket->ticket_no }}</div></td>
+            <td><div><strong>{{ $ticket->ticket_no }}</strong></div></td>
             <td><div>{{ $appController->secToString($ticket->wait_time) }}</div></td>
             <td><div>{{ $ticket->status }}</div></td>
         </tr>

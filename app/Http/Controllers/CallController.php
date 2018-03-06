@@ -344,14 +344,14 @@ class CallController extends Controller
 
     public function calTotalWaitTime($avgWaitTime, $totalTicket){
 
-        $this->calAvgWaitTimeQueue($avgWaitTime, $totalTicket);
-        $this->calAvgWaitTimeTicket($avgWaitTime, $totalTicket);
+        $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calTotalWaitTimeTicket($avgWaitTime, $totalTicket);
     }
 
     public function getAvgWaitTime($queue){
 
-        $this->calAvgWaitTimeQueue($queue);
-        $this->calAvgWaitTimeTicket($queue);
+        $this->getAvgWaitTimeQueue($queue);
+        $this->getAvgWaitTimeTicket($queue);
     }
 
     /**

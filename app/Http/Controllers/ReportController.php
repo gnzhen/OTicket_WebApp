@@ -9,6 +9,7 @@ use App\Queue;
 use App\Branch;
 use App\Service;
 use App\BranchService;
+use App\Traits\QueueManager;
 use App\Traits\WaitTimeManager;
 use Carbon\Carbon;
 use Charts;
@@ -17,7 +18,16 @@ use DB;
 
 class ReportController extends Controller
 {
-    use WaitTimeManager;
+    use QueueManager { 
+        calAvgWaitTime as protected calAvgWaitTimeQueue; 
+        calTotalWaitTime as protected calTotalWaitTimeQueue;
+        getAvgWaitTime as protected getAvgWaitTimeQueue;
+    }
+    use WaitTimeManager{ 
+        calAvgWaitTime as protected calAvgWaitTimeWT; 
+        calTotalWaitTime as protected calTotalWaitTimeWT;
+        getAvgWaitTime as protected getAvgWaitTimeWT;
+    }
     
     /**
      * Display a listing of the resource.
@@ -115,9 +125,10 @@ class ReportController extends Controller
 
                         $branchServiceTotalTicket = 0;
 
-                        $queues = $branchService->queues;
+                        // $queues = $branchService->queues;
+                        $branchServiceQueues = $queues->where('branch_service_id', $branchService->id);
 
-                        $value += $queues->sum('total_ticket');
+                        $value += $branchServiceQueues->sum('total_ticket');
                     }
                 
 
@@ -151,9 +162,10 @@ class ReportController extends Controller
 
                         $branchServiceTotalTicket = 0;
 
-                        $queues = $branchService->queues;
+                        // $queues = $branchService->queues;
+                        $branchServiceQueues = $queues->where('branch_service_id', $branchService->id);
 
-                        $value += $queues->sum('total_ticket');
+                        $value += $branchServiceQueues->sum('total_ticket');
                     }
                 
 
@@ -217,26 +229,28 @@ class ReportController extends Controller
                 foreach($branches as $branch){
 
                     $branchServices = $branch->branchServices;
-                    $branchServiceInBranchAvgWaitTime = 0;
+                    $totalBranchServiceAvgWaitTime = 0;
+                    $noOfBranchServices = 0;
                     $value = 0;
 
                     foreach($branchServices as $branchService){
 
                         $branchServiceAvgWaitTime = 0;
 
-                        $queues = $branchService->queues;
+                        $branchServiceQueues = $queues->where('branch_service_id', $branchService->id);
 
                         if($queues != null){
-                            $branchServiceAvgWaitTime = $this->calAvgWaitTimeOfQueues($queues);
-                            $branchServiceInBranchAvgWaitTime += $branchServiceAvgWaitTime;
-                        }
 
+                            $branchServiceAvgWaitTime = $this->calQueuesAvgWaitTime($branchServiceQueues);
+
+                            $totalBranchServiceAvgWaitTime += $branchServiceAvgWaitTime;
+
+                            $noOfBranchServices++;
+                        }
                     }
 
                     $label = $branch->name . ' (' . $branch->code . ')';
-
-                    $noOfBranchServices = $branchServices->count();
-                    $value = $this->calAvgWaitTime($branchServiceInBranchAvgWaitTime, $noOfBranchServices);
+                    $value = $this->calAvgWaitTimeWT($totalBranchServiceAvgWaitTime, $noOfBranchServices);
 
                     array_push($labels, $label);
                     array_push($values, round(($value/60), 2));
@@ -260,25 +274,27 @@ class ReportController extends Controller
                 foreach($services as $service){
 
                     $branchServices = $service->branchServices;
-                    $branchServiceInBranchAvgWaitTime = 0;
+                    $totalBranchServiceAvgWaitTime = 0;
+                    $noOfBranchServices = 0;
                     $value = 0;
 
                     foreach($branchServices as $branchService){
 
                         $branchServiceAvgWaitTime = 0;
 
-                        $queues = $branchService->queues;
+                        $branchServiceQueues = $queues->where('branch_service_id', $branchService->id);
 
                         if($queues != null){
-                            $branchServiceAvgWaitTime = $this->calAvgWaitTimeOfQueues($queues);
-                            $branchServiceInBranchAvgWaitTime += $branchServiceAvgWaitTime;
+
+                            $branchServiceAvgWaitTime = $this->calQueuesAvgWaitTime($branchServiceQueues);
+                            $totalBranchServiceAvgWaitTime += $branchServiceAvgWaitTime;
+
+                            $noOfBranchServices++;
                         }
                     }
                 
                     $label = $service->name . ' (' . $service->code . ')';
-
-                    $noOfBranchServices = $branchServices->count();
-                    $value = $this->calAvgWaitTime($branchServiceInBranchAvgWaitTime, $noOfBranchServices);
+                    $value = $this->calAvgWaitTimeWT($totalBranchServiceAvgWaitTime, $noOfBranchServices);
 
                     array_push($labels, $label);
                     array_push($values, round(($value/60), 2));
@@ -304,7 +320,7 @@ class ReportController extends Controller
 
                 foreach($queuesByDays as $day => $queuesOfDay){
                     
-                    $value = $this->calAvgWaitTimeOfQueues($queuesOfDay);
+                    $value = $this->calQueuesAvgWaitTime($queuesOfDay);
 
                     $dateObj   = Carbon::createFromFormat('d', $day);
                     $label = $dateObj->format('d F Y'); 
@@ -333,7 +349,7 @@ class ReportController extends Controller
 
                 foreach($queuesByMonths as $month => $queuesOfMonth){
 
-                    $value = $this->calAvgWaitTimeOfQueues($queuesOfMonth);
+                    $value = $this->calQueuesAvgWaitTime($queuesOfMonth);
 
                     $dateObj   = Carbon::createFromFormat('m', $month);
                     $label = $dateObj->format('F'); 
@@ -411,31 +427,28 @@ class ReportController extends Controller
         return $queues;
     }
 
-    public function calAvgWaitTimeOfQueues($queues){
-        $totalTime = 0;
-        $totalTicket = 0;
-
-        foreach($queues as $queue){
-
-            if($queue->end_time != null) {
-
-                $start = Carbon::parse($queue->start_time, 'Asia/Kuala_Lumpur');
-                $end = Carbon::parse($queue->end_time, 'Asia/Kuala_Lumpur');
-                $queueDuration = $end->diffInSeconds($start);
-
-                $totalTime += $queueDuration;
-
-                $totalTicket += $queue->tickets->count();
-            }
-        }
-
-        return $this->calAvgWaitTime($totalTime, $totalTicket);
-    }
-
 
     public function back() {
 
         return redirect()->route('report.index');
+    }
+
+    public function calAvgWaitTime($totalTime, $totalTicket){
+
+        $this->calAvgWaitTimeQueue($totalTime, $totalTicket);
+        $this->calAvgWaitTimeWT($totalTime, $totalTicket);
+    }
+
+    public function calTotalWaitTime($avgWaitTime, $totalTicket){
+
+        $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calTotalWaitTimeWT($avgWaitTime, $totalTicket);
+    }
+
+    public function getAvgWaitTime($queue){
+
+        $this->getAvgWaitTimeQueue($queue);
+        $this->getAvgWaitTimeWT($queue);
     }
 
     /**
