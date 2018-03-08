@@ -24,8 +24,8 @@ class DisplayEventListener
      * @param  displayEvent  $event
      * @return void
      */
-    public function handle(EventDisplay $event)
+    public function handle(DisplayEvent $event)
     {
-        //
+        return $event;
     }
 }

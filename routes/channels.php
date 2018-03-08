@@ -15,7 +15,16 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('displayChannel', function () {
-    return true;
+Broadcast::channel('displayChannel', function ($user) {
+
+	return $user;
 });
+
+// Broadcast::channel('displayChannel.{branchId}', function ($messages, $user, $branchId) {
+
+// 	if($user->branch_id === $branchId){
+
+// 		return $messages;
+// 	}
+// });
 

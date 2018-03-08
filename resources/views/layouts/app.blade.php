@@ -24,7 +24,7 @@
 
 </head>
 <body>
-    <div class="wrapper">   
+    <div class="wrapper" id="app">   
         {{-- Top Nav Bar--}}
         @include('partials._topbar')
 

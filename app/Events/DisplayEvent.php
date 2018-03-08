@@ -33,6 +33,6 @@ class DisplayEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('displayChannel');
+        return new PresenceChannel('displayChannel');
     }
 }

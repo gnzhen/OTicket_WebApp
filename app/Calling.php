@@ -11,7 +11,7 @@ class Calling extends Model
     	return $this->belongsTo(Ticket::class);
     }
 
-	public function branchCounters(){
+	public function branchCounter(){
     	
     	return $this->belongsTo(BranchCounter::class);
     }

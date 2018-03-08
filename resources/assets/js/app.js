@@ -8,25 +8,54 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.VueRouter = require('vue-router').default;
+window.VueAxios = require('vue-axios').default;
+window.Axios = require('axios').default;
+
+// let AppLayout = require('./components/Display.vue');
+
+// // register Modules
+// Vue.use(VueRouter, VueAxios, axios);
+
+// const router = new VueRouter({ mode: 'history', routes: routes });
+
+// new Vue(
+// 	Vue.util.extend(
+// 		{ router },
+// 		AppLayout
+// 		)
+// 	).$mount('#app');
+
+
 
 /**
-* Next, we will create a fresh Vue application instance and attach it to
-* the page. Then, you may begin adding components to this application
-* or customize the JavaScript scaffolding to fit your unique needs.
-*/
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('display', require('./components/Display.vue'));
 
 const app = new Vue({
-
-el: '#display',
-created(){
-	Echo.channel('displayChannel')
-		.listen('DisplayEvent', (e) => {
-			console.log(e);
-		});
-	}
+    el: '#app',
+    data:{
+    	messages: []
+    },
+    created() {
+  //   	Echo.channel('displayChannel')
+		// .listen('DisplayEvent', (e) => {
+		// 	console.log(e);
+		// });
+    	Echo.join('displayChannel')
+    		// .here()
+    		// .joining()
+    		// .leaving()
+    		.listen('DisplayEvent', (e) => {
+    			this.messages = [];
+    			this.messages.push({
+    				message: e.message
+    			});
+    		});
+    }
 });
-
-
-

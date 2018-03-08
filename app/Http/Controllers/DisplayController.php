@@ -28,9 +28,6 @@ class DisplayController extends Controller
      */
     public function index()
     {
-        $callings = Calling::get();
-        $queues = Queue::get();
-        $tickets = Ticket::get();
 
         return view('display');
     }

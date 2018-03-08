@@ -16,12 +16,14 @@ use App\Queue;
 use App\Serving;
 use App\Calling;
 use App\User;
+use App\MobileUser;
 use Carbon\Carbon;
 use Session;
 use DB;
 use App\Traits\QueueManager;
 use App\Traits\TicketManager;
 use App\Traits\CallingManager;
+use App\Events\DisplayEvent;
 
 class CallController extends Controller
 {
@@ -51,10 +53,17 @@ class CallController extends Controller
         $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
         $tickets = Ticket::where('status','=','waiting')->get();
 
-        $queues = Queue::whereIn('branch_service_id', [$branchServices])->where('active', 1)->with('branchService')->with('tickets')->get();
+        $branchServicesId = $branchServices->pluck('id');
 
+        $queues = null;
         $calling = null;
         $timer = null;
+
+        if(!$branchServicesId->isEmpty()){
+            $queues = Queue::whereIn('branch_service_id', [$branchServicesId])->with('branchService')->with('tickets')->get();
+
+            $queues = Queue::where('active', 1)->get();
+        }
 
         //get current calling of branch counter
         if($user->branchCounter != null){
@@ -92,6 +101,23 @@ class CallController extends Controller
                 return redirect()->route('call.index')->with('fail', 'No more ticket in queue.');
             }
 
+            //Check ticket user serving by other ticket or not
+            if($ticket->mobile_user_id != null){
+
+                $mobileUser = MobileUser::findOrFail($ticket->mobile_user_id);
+
+                $tickets = $mobileUser->tickets;
+
+                foreach($tickets as $ticket){
+                    if($ticket->status == 'serving'){
+                        
+                        //postpone ticket
+
+                        return redirect()->route('call.index')->with('fail', 'User is busy now.');
+                    }
+                }
+            }
+
             //Update Ticket
             $ticket = $this->serveTicket($ticket);
 
@@ -113,11 +139,12 @@ class CallController extends Controller
 
             $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
 
-            DB::commit();
 
             //Trigger display
+            $this->triggerDisplay();
 
-        
+            DB::commit();
+
             return redirect()->route('call.index')->with('success', 'Calling ' . $calling->ticket->ticket_no . '.');
 
         } catch (\Exception $e) {
@@ -125,6 +152,9 @@ class CallController extends Controller
             DB::rollback();
 
             throw $e;
+
+            return redirect()->route('call.index')->with('fail', 'Cannot call ticket');
+
         }
     }
 
@@ -155,6 +185,9 @@ class CallController extends Controller
             ]);
 
             $calling = $this->storeCalling($request);
+
+            //Trigger display
+            $this->triggerDisplay();
 
             DB::commit();
         
@@ -260,6 +293,17 @@ class CallController extends Controller
 
             throw $e;
         }
+    }
+
+    public function triggerDisplay(){
+        $user = Auth::user();
+        $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
+        $branchCountersId = $branchCounters->pluck('id');
+        $callings = Calling::select('id', 'ticket_id', 'branch_counter_id', 'call_time')->whereIn('branch_counter_id', [$branchCountersId])->whereDate('call_time', '>=', Carbon::today('Asia/Kuala_Lumpur'))->orderBy('call_time', 'desc')->get();
+
+        $callMessages = $this->generateDisplayMessage($callings);
+
+        $messages = $this->displayCalling($callMessages);
     }
 
     /**
