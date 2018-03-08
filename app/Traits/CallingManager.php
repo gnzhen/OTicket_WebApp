@@ -126,8 +126,7 @@ trait CallingManager {
                     && $count == 3);
             }
         }
-
-
+        
         return $callMessages;
     }
 }

@@ -60,9 +60,7 @@ class CallController extends Controller
         $timer = null;
 
         if(!$branchServicesId->isEmpty()){
-            $queues = Queue::whereIn('branch_service_id', [$branchServicesId])->with('branchService')->with('tickets')->get();
-
-            $queues = Queue::where('active', 1)->get();
+            $queues = Queue::where('active', 1)->whereIn('branch_service_id', $branchServicesId)->with('branchService')->with('tickets')->get();
         }
 
         //get current calling of branch counter
@@ -110,7 +108,7 @@ class CallController extends Controller
 
                 foreach($tickets as $ticket){
                     if($ticket->status == 'serving'){
-                        
+
                         //postpone ticket
 
                         return redirect()->route('call.index')->with('fail', 'User is busy now.');
@@ -187,8 +185,8 @@ class CallController extends Controller
             $calling = $this->storeCalling($request);
 
             //Trigger display
-            $this->triggerDisplay();
-
+            $messages = $this->triggerDisplay();
+            
             DB::commit();
         
             return redirect()->route('call.index')->with('success', 'Recalling ' . $calling->ticket->ticket_no . '.');
@@ -299,11 +297,15 @@ class CallController extends Controller
         $user = Auth::user();
         $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
         $branchCountersId = $branchCounters->pluck('id');
-        $callings = Calling::select('id', 'ticket_id', 'branch_counter_id', 'call_time')->whereIn('branch_counter_id', [$branchCountersId])->whereDate('call_time', '>=', Carbon::today('Asia/Kuala_Lumpur'))->orderBy('call_time', 'desc')->get();
+        $callings = Calling::select('id', 'ticket_id', 'branch_counter_id', 'call_time')->whereIn('branch_counter_id', $branchCountersId)->whereDate('call_time', '>=', Carbon::today('Asia/Kuala_Lumpur'))->orderBy('call_time', 'desc')->get();
+
+        echo $callings;
 
         $callMessages = $this->generateDisplayMessage($callings);
 
         $messages = $this->displayCalling($callMessages);
+
+        return $messages;
     }
 
     /**

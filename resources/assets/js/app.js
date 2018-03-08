@@ -56,6 +56,9 @@ const app = new Vue({
     			this.messages.push({
     				message: e.message
     			});
+
+    			console.log(e.message);
     		});
+
     }
 });
