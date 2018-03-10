@@ -15,6 +15,7 @@ use Session;
 use DB;
 use App\Traits\QueueManager;
 use App\Traits\TicketManager;
+use App\Events\NewQueueEvent;
 
 class PrinterController extends Controller
 {
@@ -97,6 +98,9 @@ class PrinterController extends Controller
                     
                     //Create Queue
                     $queue = $this->storeQueue($branchService->id);
+
+                    //Infrom staff
+                    event(new NewQueueEvent($branchService->branch->id, $branchService->service->name));
                 }
 
                 $request->replace([

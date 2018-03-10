@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('getTabSession', 'AppController@getTabSession');
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
 	Route::get('setTabSession', 'AppController@setTabSession');
+	Route::get('testFunction', 'AppController@testFunction');
 });
 
 Route::resources([
@@ -65,8 +66,3 @@ Auth::routes();
 /* AppController */
 Route::get('checkAuth', 'AppController@checkAuth');
 Route::get('getAllSession', 'AppController@getAllSession');
-
-/* Events */
-Route::get('/event', function() {
-	event(new DisplayEvent('hi'));
-});

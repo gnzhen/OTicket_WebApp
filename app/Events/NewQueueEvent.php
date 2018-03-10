@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,24 +10,22 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class DisplayEvent implements ShouldBroadcast
+class NewQueueEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
-    public $user;
     public $branchId;
+    public $serviceName;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($message, User $user, $branchId)
+    public function __construct($branchId, $serviceName)
     {
-        $this->message = $message;
-        $this->user = $user;
         $this->branchId = $branchId;
+        $this->serviceName = $serviceName;
     }
 
     /**
@@ -38,6 +35,7 @@ class DisplayEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('displayChannel.'.$this->branchId);
+        return new PresenceChannel('newQueueChannel.'.$this->branchId);
     }
+
 }

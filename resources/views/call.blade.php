@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container" id="call">
 
     <h3>Ticket Queue</h3>
 
@@ -21,7 +21,8 @@
             <ul class="nav nav-tabs" role="tablist">
                 @foreach($queues as $i => $queue)
                 <li class="nav-item">
-                    <a class="nav-link nav-link-{{ $i }} {{ $appController->getTabSession() == $queue->id ? 'active' : '' }}" href="#tab{{ $queue->id }}" role="tab" data-toggle="tab" onmousedown="setTabSession({{ $queue->id }})">{{ $queue->branchService->service->name }}</a>
+                    <a class="nav-link nav-link-{{ $i }} {{ $appController->getTabSession() == $queue->id ? 'active' : '' }}" href="#tab{{ $queue->id }}" role="tab" data-toggle="tab" id="queueTab" data-id={{ $queue->id }}>{{ $queue->branchService->service->name }}</a>
+                    {{-- <a class="nav-link nav-link-{{ $i }} {{ $appController->getTabSession() == $queue->id ? 'active' : '' }}" href="#tab{{ $queue->id }}" role="tab" data-toggle="tab" onmousedown="setTabSession({{ $queue->id }})">{{ $queue->branchService->service->name }}</a> --}}
                 </li>
                 @endforeach
             </ul>
@@ -72,11 +73,13 @@
 
 @section('javascript')
 
+    <script src="{{ asset('js/app.js') }}"></script>
+
     {{-- Tab --}}
 
     @if(!Session::has('tab'))
         <script type="text/javascript">
-            $.noConflict();
+            // $.noConflict();
 
             jQuery( document ).ready(function( $ ) {
 
@@ -95,7 +98,7 @@
         <script type="text/javascript">
             // $.noConflict();
 
-            $( document ).ready(function( $ ) {
+            jQuery( document ).ready(function( $ ) {
 
                 var count = {{ $timer }};
                 var timer;

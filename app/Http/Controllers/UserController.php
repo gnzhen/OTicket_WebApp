@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use App\Traits\NullableFields;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\AppController;
 use App\User;
 use App\Branch;
 use App\Role;
@@ -37,6 +38,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $appController = new AppController;
         $users = User::orderBy('username')->get();
         $branches = Branch::get();
         $roles = Role::get();

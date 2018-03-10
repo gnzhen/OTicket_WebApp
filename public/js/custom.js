@@ -1,14 +1,15 @@
 $.noConflict();
 
-jQuery( document ).ready(function( $ ) {
+$( document ).ready(function( $ ) {
   // Code that uses jQuery's $ can follow here.
 
-	setInitialSidebar();
+	// setInitialSidebar();
 	// getAllSession();
+
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();
-    	setSidebarSession(checkSidebar());
+    	// setSidebarSession(checkSidebar());
     });
 
     /* Clear modal input on closed */
@@ -162,13 +163,89 @@ jQuery( document ).ready(function( $ ) {
 		showModal('#issueTicketModal'+id);
 	});
 
+	/* Set Tab Session */
+	$('body').delegate('#queueTab', 'click', function() {
+		var id = $(this).data('id');
+		setTabSession(id);
+	});
+
+
+	/* Functions */
+
+	function toggleSidebar(){
+	    $('#sidebar').toggleClass('active');
+	    $('.wrapper').toggleClass('active');
+	}
+
+	function showModal(id){
+		jQuery(id).modal('show');
+	}
+
+	function hideModal(id){
+		jQuery(id).modal('hide');
+	}
+
+	function setTabSession(status){
+		$.get('setTabSession', {'tab':status})
+			.done(function(data) {
+				// console.log("set tab " + data);
+			})
+			.fail(function(xhr, status, error){
+				console.log(xhr);
+			});			
+	}
+
+	function getAllSession(status){
+		$.get('getAllSession')
+			.done(function(data) {
+				console.log(data);
+			})
+			.fail(function(xhr, status, error){
+				console.log(xhr);
+			});		
+	}
+	
+
+	//close alert
+	window.setTimeout(function() {
+    	$(".alert").fadeTo(3000, 0).slideUp(3000, function(){
+        	$(this).remove(); 
+    	});
+	}, 1000);
+	
+
 });
 
 
-/* Code that uses other library's $ can follow here. */
-// $( document ).ready(function() {
 
-	/* Datepicker */
+	// $( document ).ready(function($) {
+	
+    
+
+    /* Initialize datatables */
+
+    $('.dataTable').dataTable({
+	    "iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
+	 });
+
+    $('#branchServiceTable').dataTable({
+    	destroy: true,
+    	"iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
+	    "columnDefs": [{ "orderable": false, "targets": [2,3,4,5] }],
+      	"rowsGroup": [0, 5]
+	 });
+
+    $('#branchCounterTable').dataTable({
+    	destroy: true,
+    	"iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
+	    "columnDefs": [{ "orderable": false, "targets": [2] }],
+      	"rowsGroup": [0, 2]
+	 });
+
+/* Datepicker */
 	var dateFormat = "dd/mm/yy";
   	
   	var dateFrom = $( "#datepickerFrom" )
@@ -201,122 +278,59 @@ jQuery( document ).ready(function( $ ) {
 		return date;
     }
 	
-    //close alert
-	window.setTimeout(function() {
-    	$(".alert").fadeTo(3000, 0).slideUp(3000, function(){
-        	$(this).remove(); 
-    	});
-	}, 1000);
-
-    /* Initialize datatables */
-
-    $('.dataTable').dataTable({
-	    "iDisplayLength": 5,
-	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
-	 });
-
-    $('#branchServiceTable').dataTable({
-    	destroy: true,
-    	"iDisplayLength": 5,
-	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
-	    "columnDefs": [{ "orderable": false, "targets": [2,3,4,5] }],
-      	"rowsGroup": [0, 5]
-	 });
-
-    $('#branchCounterTable').dataTable({
-    	destroy: true,
-    	"iDisplayLength": 5,
-	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
-	    "columnDefs": [{ "orderable": false, "targets": [2] }],
-      	"rowsGroup": [0, 2]
-	 });
-
 
 // });
 
-/* Functions */
 
-function checkSidebar(){
-	if($('#sidebar').hasClass('active'))
-		return "open";
-	else
-		return "close";
-}
 
-function toggleSidebar(){
-    $('#sidebar').toggleClass('active');
-    $('.wrapper').toggleClass('active');
-}
+// function checkSidebar(){
+// 	if($('#sidebar').hasClass('active'))
+// 		return "open";
+// 	else
+// 		return "close";
+// }
 
-function openMenu(menu, status){
-	if(status == 'open'){
-		$(menu).addClass('show');
-	}
-	else{
-		$(menu).removeClass('show');
-	}
-}
+// function openMenu(menu, status){
+// 	if(status == 'open'){
+// 		$(menu).addClass('show');
+// 	}
+// 	else{
+// 		$(menu).removeClass('show');
+// 	}
+// }
+//
+// function checkAuth(){
+// 	$.get('checkAuth')
+// 		.done(function(data) {
+//     		return data;
+// 		})	
+// 		.fail(function(xhr, status, error){
+// 			console.log(xhr);
+// 		});	
+// }
 
-function showModal(id){
-	jQuery(id).modal('show');
-}
+// function setInitialSidebar(){
+// 	//get sidebar open/closed
+// 	$.get('getSidebarSession')
+// 		.done(function(data) {
+//     		if(data == 'open')
+//     			toggleSidebar();
+// 		})	
+// 		.fail(function(xhr, status, error){
+// 			console.log(xhr);
+// 		});	
 
-function hideModal(id){
-	jQuery(id).modal('hide');
-}
+// 	// if($('#adminDropdownMenu').hasClass('active')){
+// 	// 	openMenu('#adminMenu', 'open');
+// 	// }
+// }
 
-function checkAuth(){
-	$.get('checkAuth')
-		.done(function(data) {
-    		return data;
-		})	
-		.fail(function(xhr, status, error){
-			console.log(xhr);
-		});	
-}
-
-function setInitialSidebar(){
-	//get sidebar open/closed
-	$.get('getSidebarSession')
-		.done(function(data) {
-    		if(data == 'open')
-    			toggleSidebar();
-		})	
-		.fail(function(xhr, status, error){
-			console.log(xhr);
-		});	
-
-	// if($('#adminDropdownMenu').hasClass('active')){
-	// 	openMenu('#adminMenu', 'open');
-	// }
-}
-
-function setSidebarSession(status){
-	$.get('setSidebarSession', {'sidebar':status})
-		.done(function(data) {
-			// console.log("set sidebar " + data);
-		})
-		.fail(function(xhr, status, error){
-			console.log(xhr);
-		});		
-}
-
-function setTabSession(status){
-	$.get('setTabSession', {'tab':status})
-		.done(function(data) {
-			// console.log("set tab " + data);
-		})
-		.fail(function(xhr, status, error){
-			console.log(xhr);
-		});		
-}
-
-function getAllSession(status){
-	$.get('getAllSession')
-		.done(function(data) {
-			console.log(data);
-		})
-		.fail(function(xhr, status, error){
-			console.log(xhr);
-		});		
-}
+// function setSidebarSession(status){
+// 	$.get('setSidebarSession', {'sidebar':status})
+// 		.done(function(data) {
+// 			// console.log("set sidebar " + data);
+// 		})
+// 		.fail(function(xhr, status, error){
+// 			console.log(xhr);
+// 		});		
+// }

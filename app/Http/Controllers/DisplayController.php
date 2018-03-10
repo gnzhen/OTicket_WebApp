@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\AppController;
+use Illuminate\Support\Facades\Auth;
 use App\Queue;
 use App\Calling;
 use App\Ticket;
 use Carbon\Carbon;
+use JavaScript;
+use Session;
 
+use App\Traits\CallingManager;
 class DisplayController extends Controller
 {
+    use CallingManager;
+
     /**
      * Create a new controller instance.
      *
@@ -28,8 +35,14 @@ class DisplayController extends Controller
      */
     public function index()
     {
+        $appController = new AppController;
+        $user = Auth::user();
 
-        return view('display');
+        JavaScript::put([
+            'branchId' => $user->branch_id
+        ]);
+        
+        return view('display')->withAppController($appController);
     }
 
     /**

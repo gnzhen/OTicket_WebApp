@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\BranchCounter;
 use App\Calling;
 use Carbon\Carbon;
 use App\Events\DisplayEvent;
@@ -47,9 +49,16 @@ trait CallingManager {
         return $branchCounter;
     }
 
-    public function displayCalling($messages){
+    public function triggerDisplay(){
+        $user = Auth::user();
+        $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
+        $branchCountersId = $branchCounters->pluck('id');
+        $callings = Calling::select('id', 'ticket_id', 'branch_counter_id', 'call_time')->whereIn('branch_counter_id', $branchCountersId)->whereDate('call_time', '>=', Carbon::today('Asia/Kuala_Lumpur'))->orderBy('call_time', 'desc')->get();
 
-        event(new DisplayEvent($messages));
+
+        $callMessages = $this->generateDisplayMessage($callings);
+
+        $messages = $this->displayCalling($callMessages, $user, $user->branch_id);
 
         return $messages;
     }
@@ -59,6 +68,11 @@ trait CallingManager {
         $callMessages = [];
         $count = 0;
         $callingNo = 0;
+
+        for($i = 1; $i < 5; $i++){
+            $callMessages['ticket'.$i] = "-";
+            $callMessages['counter'.$i] = "-";
+        }
 
         while($count < 4 && $callingNo < count($callings)){
             if($count == 0){
@@ -126,7 +140,14 @@ trait CallingManager {
                     && $count == 3);
             }
         }
-        
+
         return $callMessages;
+    }
+
+    public function displayCalling($message, $user, $branchId){
+
+        event(new DisplayEvent($message, $user, $branchId));
+
+        return $message;
     }
 }

@@ -9,6 +9,7 @@ use App\Queue;
 use App\Branch;
 use App\Service;
 use App\BranchService;
+use App\Http\Controllers\AppController;
 use App\Traits\QueueManager;
 use App\Traits\WaitTimeManager;
 use Carbon\Carbon;
@@ -36,6 +37,7 @@ class ReportController extends Controller
      */
     public function index()
     {
+        $appController = new AppController;
         return view('report');
     }
 

@@ -1123,7 +1123,7 @@ window.Axios = __webpack_require__(3).default;
 Vue.component('example-component', __webpack_require__(43));
 Vue.component('display', __webpack_require__(46));
 
-var app = new Vue({
+var display = new Vue({
     el: '#app',
     data: {
         messages: []
@@ -1131,21 +1131,29 @@ var app = new Vue({
     created: function created() {
         var _this = this;
 
-        //   	Echo.channel('displayChannel')
-        // .listen('DisplayEvent', (e) => {
-        // 	console.log(e);
-        // });
-        Echo.join('displayChannel')
-        // .here()
-        // .joining()
-        // .leaving()
-        .listen('DisplayEvent', function (e) {
+        Echo.join('displayChannel.' + branchId).listen('DisplayEvent', function (e) {
             _this.messages = [];
             _this.messages.push({
                 message: e.message
             });
 
             console.log(e.message);
+        });
+    }
+});
+
+var call = new Vue({
+    el: '#call',
+    data: {
+        messages: []
+    },
+    created: function created() {
+        Echo.join('newQueueChannel.' + branchId).listen('NewQueueEvent', function (e) {
+            console.log(window.location.pathname);
+            if (window.location.pathname == "/call") {
+                alert("New queue coming in at " + e.serviceName);
+                window.location.reload(true);
+            }
         });
     }
 });
@@ -50906,14 +50914,9 @@ var render = function() {
   return _c("div", { attrs: { id: "display" } }, [
     _c("div", { staticClass: "box shadow" }, [
       _c("div", { staticClass: "box-content" }, [
-        _c(
-          "p",
-          {
-            staticStyle: { "font-size": "180px" },
-            attrs: { id: "mainTicket" }
-          },
-          [_vm._v(_vm._s(_vm.messages[0].message.ticket1))]
-        ),
+        _c("p", { staticStyle: { "font-size": "180px" } }, [
+          _vm._v(_vm._s(_vm.messages[0].message.ticket1))
+        ]),
         _vm._v(" "),
         _c("p", { staticStyle: { "font-size": "100px" } }, [
           _vm._v(_vm._s(_vm.messages[0].message.counter1))

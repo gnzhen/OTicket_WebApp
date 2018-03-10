@@ -2,7 +2,7 @@
     <div id="display">
         <div class="box shadow">
             <div class="box-content">
-                <p id="mainTicket" style="font-size: 180px">{{ messages[0].message.ticket1 }}</p>
+                <p style="font-size: 180px">{{ messages[0].message.ticket1 }}</p>
                 <p style="font-size: 100px">{{ messages[0].message.counter1 }}</p>
             </div>
         </div>

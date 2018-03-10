@@ -149,7 +149,7 @@ use Illuminate\Support\Facades\Input;
                     <th rowspan="2">Branch</th>
                     <th colspan="3">Service</th>
                     <th rowspan="2" class="th-action">Action (Service)</th>
-                    <th rowspan="2" style="max-width:200px;"">Action (Branch)</th>
+                    <th rowspan="2" style="max-width:200px;">Action (Branch)</th>
                 </tr>
                 <tr>
                     <th>Name</th>

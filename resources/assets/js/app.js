@@ -37,28 +37,37 @@ window.Axios = require('axios').default;
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('display', require('./components/Display.vue'));
 
-const app = new Vue({
+const display = new Vue({
     el: '#app',
     data:{
     	messages: []
     },
     created() {
-  //   	Echo.channel('displayChannel')
-		// .listen('DisplayEvent', (e) => {
-		// 	console.log(e);
-		// });
-    	Echo.join('displayChannel')
-    		// .here()
-    		// .joining()
-    		// .leaving()
+		Echo.join('displayChannel.' + branchId)
     		.listen('DisplayEvent', (e) => {
     			this.messages = [];
     			this.messages.push({
     				message: e.message
     			});
 
-    			console.log(e.message);
+                console.log(e.message);
     		});
+    }
+});
 
+const call = new Vue({
+    el: '#call',
+    data:{
+        messages: []
+    },
+    created() {
+        Echo.join('newQueueChannel.' + branchId)
+        .listen('NewQueueEvent', (e) => {
+            console.log(window.location.pathname);
+            if(window.location.pathname == "/call"){
+                alert("New queue coming in at " + e.serviceName)
+                window.location.reload(true);
+            }
+        });
     }
 });

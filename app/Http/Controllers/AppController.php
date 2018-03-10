@@ -6,9 +6,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Session;
+use JavaScript;
 
 class AppController extends Controller
 {
+	public function __construct()
+    {
+    	// $user = Auth::user();
+
+    	// JavaScript::put([
+	    //     'branchId' => $user->branch_id
+	    // ]);
+    }
+
+    public function setBranchId(){
+    	$user = Auth::user();
+
+    	JavaScript::put([
+	        'branchId' => $user->branch_id
+	    ]);
+    }
+
 	public function checkAuth(){
 		
 		return (string)Auth::check();
@@ -33,6 +51,11 @@ class AppController extends Controller
 	public function getTabSession() {
 
 		return session('tab');
+	}
+
+	public function testFunction(){
+
+		 return "test";
 	}
 
 	public function setTabSession(Request $request) {

@@ -18,13 +18,13 @@
         <div class="col-sm-12"> 
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" href="#staff" role="tab" data-toggle="tab">Counter Staff</a>
+                <a class="nav-link active" href="#staff" role="tab" data-toggle="tab" id="tabStaff" data-id="0">Counter Staff</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {{ Auth::user()->isSuperAdmin() ? "" : "disabled" }}" href="#admin" role="tab" data-toggle="tab">Admin</a>
+                <a class="nav-link {{ Auth::user()->isSuperAdmin() ? "" : "disabled" }}" href="#admin" role="tab" data-toggle="tab" id="tabAdmin" data-id="1">Admin</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {{ Auth::user()->isSuperAdmin() ? "" : "disabled" }}" href="#superAdmin" role="tab" data-toggle="tab">Super Admin</a>
+                <a class="nav-link {{ Auth::user()->isSuperAdmin() ? "" : "disabled" }}" href="#superAdmin" role="tab" data-toggle="tab" id="tabSuperAdmin" data-id="2">Super Admin</a>
               </li>
             </ul>
 
@@ -37,11 +37,11 @@
                     <table id="staffTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Username</th>
-                                <th class="sorting th-email" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Email</th>
-                                <th class="sorting th-branch" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Branch</th>
-                                {{-- <th class="sorting th-password" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Password</th> --}}
-                                <th class="sorting th-action" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
+                                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Username</th>
+                                <th class="sorting th-email" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Email</th>
+                                <th class="sorting th-branch" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Branch</th>
+                                {{-- <th class="sorting th-password" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Password</th> --}}
+                                <th class="sorting th-action" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,11 +77,11 @@
                     <table id="adminTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Username</th>
-                                <th class="sorting th-email" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Email</th>
-                                <th class="sorting th-branch" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Branch</th>
-                                {{-- <th class="sorting th-password" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Password</th> --}}
-                                <th class="sorting th-action" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
+                                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Username</th>
+                                <th class="sorting th-email" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Email</th>
+                                <th class="sorting th-branch" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Branch</th>
+                                {{-- <th class="sorting th-password" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Password</th> --}}
+                                <th class="sorting th-action" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,11 +118,11 @@
                     <table id="superAdminTable" class="table table-bordered dataTable" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="sorting" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Username</th>
-                                <th class="sorting th-email" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Email</th>
-                                <th class="sorting th-branch" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Branch</th>
-                                {{-- <th class="sorting th-password" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Password</th> --}}
-                                <th class="sorting th-action" tabindex="0", aria-controls="example" rowspan="1" colspan="1">Action</th>
+                                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Username</th>
+                                <th class="sorting th-email" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Email</th>
+                                <th class="sorting th-branch" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Branch</th>
+                                {{-- <th class="sorting th-password" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Password</th> --}}
+                                <th class="sorting th-action" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Action</th>
                             </tr>
                         </thead>
                         <tbody>
