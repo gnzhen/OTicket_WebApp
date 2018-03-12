@@ -119,14 +119,14 @@ trait QueueManager {
 
     public function calQueueWaitTime($queue){
 
-        $avgWaitTime = $this->getAvgWaitTimeQueue($queue);
+        $avgWaitTime = $this->getCurrentAvgWaitTimeQueue($queue);
 
         $waitingTicketNo = $this->getWaitingTicket($queue)->count();
         $servingTicketNo = $this->getServingTicket($queue)->count();
 
         $totalTicket = $servingTicketNo < 1 ? $waitingTicketNo : ($waitingTicketNo + 1);
 
-        return $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+        return $this->calCurrentTotalWaitTimeQueue($avgWaitTime, $totalTicket);
     }
 
     public function calQueueAvgWaitTime($queue){

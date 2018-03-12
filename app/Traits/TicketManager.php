@@ -102,11 +102,11 @@ trait TicketManager {
 
     public function calTicketWaitTime($queue, $ticket){
 
-        $avgWaitTime = $this->getAvgWaitTimeTicket($queue);
+        $avgWaitTime = $this->getCurrentAvgWaitTimeTicket($queue);
         
         $pplAhead = $this->calPplAhead($queue, $ticket);
 
-        return $this->calTotalWaitTimeTicket($avgWaitTime, $pplAhead);
+        return $this->calCurrentTotalWaitTimeTicket($avgWaitTime, $pplAhead);
     }
 
 }

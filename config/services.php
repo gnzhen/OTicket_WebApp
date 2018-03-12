@@ -35,4 +35,12 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'firebase' => [
+        'api_key' => env('FIREBASE_API_KEY'),
+        'auth_domain' => env('FIREBASE_AUTH_DOMAIN'),
+        'database_url' => env('FIREBASE_DB_URL'),
+        'secret' => env('FIREBASE_SECRET'),
+        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'),
+    ],
+
 ];

@@ -245,6 +245,13 @@ $( document ).ready(function( $ ) {
       	"rowsGroup": [0, 2]
 	 });
 
+    $('#homeTable').dataTable({
+    	destroy: true,
+    	"iDisplayLength": 5,
+	    "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
+      	"rowsGroup": [0, 2]
+	 });
+
 /* Datepicker */
 	var dateFormat = "dd/mm/yy";
   	

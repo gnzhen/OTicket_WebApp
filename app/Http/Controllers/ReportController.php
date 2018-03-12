@@ -21,13 +21,13 @@ class ReportController extends Controller
 {
     use QueueManager { 
         calAvgWaitTime as protected calAvgWaitTimeQueue; 
-        calTotalWaitTime as protected calTotalWaitTimeQueue;
-        getAvgWaitTime as protected getAvgWaitTimeQueue;
+        calCurrentTotalWaitTime as protected calCurrentTotalWaitTimeQueue;
+        getCurrentAvgWaitTime as protected getCurrentAvgWaitTimeQueue;
     }
     use WaitTimeManager{ 
         calAvgWaitTime as protected calAvgWaitTimeWT; 
-        calTotalWaitTime as protected calTotalWaitTimeWT;
-        getAvgWaitTime as protected getAvgWaitTimeWT;
+        calCurrentTotalWaitTime as protected calCurrentTotalWaitTimeWT;
+        getCurrentAvgWaitTime as protected getCurrentAvgWaitTimeWT;
     }
     
     /**
@@ -441,16 +441,16 @@ class ReportController extends Controller
         $this->calAvgWaitTimeWT($totalTime, $totalTicket);
     }
 
-    public function calTotalWaitTime($avgWaitTime, $totalTicket){
+    public function calCurrentTotalWaitTime($avgWaitTime, $totalTicket){
 
-        $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
-        $this->calTotalWaitTimeWT($avgWaitTime, $totalTicket);
+        $this->calCurrentTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calCurrentTotalWaitTimeWT($avgWaitTime, $totalTicket);
     }
 
-    public function getAvgWaitTime($queue){
+    public function getCurrentAvgWaitTime($queue){
 
-        $this->getAvgWaitTimeQueue($queue);
-        $this->getAvgWaitTimeWT($queue);
+        $this->getCurrentAvgWaitTimeQueue($queue);
+        $this->getCurrentAvgWaitTimeWT($queue);
     }
 
     /**

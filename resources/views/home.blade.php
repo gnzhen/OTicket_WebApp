@@ -10,17 +10,17 @@
             <div class="row">   
                 <div class="card card-dashboard">
                     <div class="card-header">Total tickets</div>
-                    <div class="card-body">15210</div>
+                    <div class="card-body">{{ $totalTickets }}</div>
                 </div>
 
                 <div class="card card-dashboard">
                     <div class="card-header">Tickets yesterday</div>
-                    <div class="card-body">720</div>
+                    <div class="card-body">{{ $totalTicketsYtd }}</div>
                 </div>
 
                 <div class="card card-dashboard">
                     <div class="card-header">Avg Wait Time</div>
-                    <div class="card-body">45min</div>
+                    <div class="card-body">{{ $avgWaitTimeString }}</div>
                 </div>
             </div>
         </div>
@@ -39,59 +39,22 @@
                             <th>Avg Wait Time</th>
                         </tr>
                     </thead>
-                    {{-- <tfoot>
-                        <tr>
-                            <th>Branch</th>
-                            <th>Service</th>
-                            <th>Avg Wait Time</th>
-                        </tr>
-                    </tfoot> --}}
                     <tbody>
+                    @foreach ($branchServices as $branchService)
                         <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>35 min</td>
+                            <td>{{ $branchService->branch->name }} ({{ $branchService->branch->code }})</td>
+                            <td>
+                                {{ $branchService->service->name }} ({{ $branchService->service->code }}) 
+                            </td>
+                            <td>
+                                @if( $branchService->system_wait_time > 0 || $branchService->system_wait_time != null)
+                                    {{ $appController->secToString($branchService->system_wait_time) }}
+                                @else
+                                    {{ $appController->secToString($branchService->default_wait_time) }} (default)
+                                @endif
+                            </td>
                         </tr>
-                        <tr>
-                            <td>Ampang</td>
-                            <td>Customer Service</td>
-                            <td>35 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>35 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>35 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>39 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Other Service</td>
-                            <td>35 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>35 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>30 min</td>
-                        </tr>
-                        <tr>
-                            <td>Kepong</td>
-                            <td>Customer Service</td>
-                            <td>35 min</td>
-                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

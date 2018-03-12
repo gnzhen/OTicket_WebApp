@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
+
+
+/* Mobile User */
+Route::get('test', 'Api\MobileUserController@test')->name('mobile.test');
+Route::post('registerMobileUser', 'Api\MobileUserController@registerMobileUser')->name('mobile.register');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
+
     return $request->user();
 });

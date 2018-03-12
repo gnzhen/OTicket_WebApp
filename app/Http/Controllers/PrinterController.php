@@ -21,13 +21,13 @@ class PrinterController extends Controller
 {
     use QueueManager { 
         calAvgWaitTime as protected calAvgWaitTimeQueue; 
-        calTotalWaitTime as protected calTotalWaitTimeQueue;
-        getAvgWaitTime as protected getAvgWaitTimeQueue;
+        calCurrentTotalWaitTime as protected calCurrentTotalWaitTimeQueue;
+        getCurrentAvgWaitTime as protected getCurrentAvgWaitTimeQueue;
     } 
     use TicketManager { 
         calAvgWaitTime as protected calAvgWaitTimeTicket; 
-        calTotalWaitTime as protected calTotalWaitTimeTicket;
-        getAvgWaitTime as protected getAvgWaitTimeTicket;
+        calCurrentTotalWaitTime as protected calCurrentTotalWaitTimeTicket;
+        getCurrentAvgWaitTime as protected getCurrentAvgWaitTimeTicket;
     }
 
     /**
@@ -137,16 +137,16 @@ class PrinterController extends Controller
         $this->calAvgWaitTimeTicket($totalTime, $totalTicket);
     }
 
-    public function calTotalWaitTime($avgWaitTime, $totalTicket){
+    public function calCurrentTotalWaitTime($avgWaitTime, $totalTicket){
 
-        $this->calTotalWaitTimeQueue($avgWaitTime, $totalTicket);
-        $this->calTotalWaitTimeTicket($avgWaitTime, $totalTicket);
+        $this->calCurrentTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+        $this->calCurrentTotalWaitTimeTicket($avgWaitTime, $totalTicket);
     }
 
-    public function getAvgWaitTime($queue){
+    public function getCurrentAvgWaitTime($queue){
 
-        $this->getAvgWaitTimeQueue($queue);
-        $this->getAvgWaitTimeTicket($queue);
+        $this->getCurrentAvgWaitTimeQueue($queue);
+        $this->getCurrentAvgWaitTimeTicket($queue);
     }
 
 

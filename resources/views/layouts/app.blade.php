@@ -38,6 +38,29 @@
     </div>
 
 
+    {{-- Firebase --}}
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCvHc55d1mDCFWGm4Gxe-bxRq_AMwqBnM0",
+            authDomain: "oticket-fa080.firebaseapp.com",
+            databaseURL: "https://oticket-fa080.firebaseio.com",
+            projectId: "oticket-fa080",
+            storageBucket: "oticket-fa080.appspot.com",
+            messagingSenderId: "508395572323"
+        };
+
+        firebase.initializeApp(config);
+    </script>
+
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     
     <!-- JQuery -->

@@ -17,12 +17,12 @@ trait WaitTimeManager {
         return round($totalTime / $totalTicket);
     }
 
-    public function calTotalWaitTime($avgWaitTime, $totalTicket){
+    public function calCurrentTotalWaitTime($avgWaitTime, $totalTicket){
 
         return $avgWaitTime * $totalTicket;
     }
 
-    public function getAvgWaitTime($queue){
+    public function getCurrentAvgWaitTime($queue){
         $branchService = $queue->branchService;
         $avgWaitTime = $branchService->system_wait_time;
 

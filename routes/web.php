@@ -58,10 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
 Route::resources([
 	'mail' => 'MailController',
 ]);
-// Route::get('/password/reset/{token}/{email}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
 Auth::routes();
-
 
 /* AppController */
 Route::get('checkAuth', 'AppController@checkAuth');
