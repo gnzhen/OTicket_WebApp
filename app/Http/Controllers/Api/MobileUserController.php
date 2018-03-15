@@ -20,41 +20,34 @@ class MobileUserController extends Controller
 
 	public function test(Request $request){
 
-		return 'test';
+		return response()->json(['test' => 'test']);
 	}
 
     public function registerMobileUser(Request $request) {
 
-    	$this->validate($request, [
-            'username' => 'required|unique:mobile_users',
+    	$validator = Validator::make($request->all(), [
+            'name' => 'required',
     		'email' => 'required|email|unique:mobile_users',
-    		'password' => 'required|min:6|confirmed'
+    		'phone' => 'required|regex:/[0-9]{9,12}/',
+    		'password' => 'required|min:8|confirmed'
         ]);
 
-        $mobileUser = new MobileUser;
+        if ($validator->fails()) {
+			
+            return response()->json($validator->messages());
 
-        $mobileUser->username = $request->username;
-        $mobileUser->email = $request->email;
-        $mobileUser->password = bcrypt('password');
-        
-        // $mobileUser->save();
+        } else {
+        	$mobileUser = new MobileUser;
 
-        $params = [
-    		'grant_type' => 'password',
-    		'client_id' => $this->client->id,
-    		'client_secret' => $this->client->secret,
-    		'username' => request('username'),
-    		'email' => request('email'),
-    		'password' => request('password'),
-    		'scope' => '*'
-    	];
+	        $mobileUser->name = $request->name;
+	        $mobileUser->email = $request->email;
+	        $mobileUser->phone = $request->phone;
+	        $mobileUser->password = bcrypt('password');
 
-    	$request->request->add($params);
+        	$mobileUser->save();
 
-    	$proxy = Request::create('oauth/token', 'POST');
-
-    	return Route::dispatch($proxy);
-    	// return $proxy;
+    		return response()->json(["success" => "Register Success!"]);
+        }
     	
     }
 }

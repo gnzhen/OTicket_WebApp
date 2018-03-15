@@ -16,8 +16,9 @@ class CreateMobileUsersTable extends Migration
         Schema::create('mobile_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->unique();
-            $table->string('username')->unique();
+            $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone');
             $table->string('password');
             $table->timestamps();
         });
