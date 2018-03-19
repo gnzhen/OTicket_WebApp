@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
         	'email' => 'mioyazhen1@gmail.com',
             'password' => bcrypt('qweqwe'),
             'role_id' => 2,
-            'branch_id' => null,
+            'branch_id' => 1,
         ]);
 
         User::create([
@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
         	'email' => 'mioyazhen2@gmail.com',
             'password' => bcrypt('qweqwe'),
             'role_id' => 3,
-            'branch_id' => null,
+            'branch_id' => 1,
         ]);
     }
 }

@@ -25,3 +25,8 @@ Broadcast::channel('newQueueChannel.*', function ($branchId) {
 	return $branchId;
 });
 
+Broadcast::channel('closeQueueChannel.*', function ($branchId) {
+
+	return $branchId;
+});
+

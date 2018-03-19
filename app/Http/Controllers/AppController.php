@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+use App\Traits\WaitTimeManager;
+use App\BranchService;
+use App\Queue;
 use Session;
 use JavaScript;
+use DB;
 
 class AppController extends Controller
 {
+	use WaitTimeManager; 
+
 	public function __construct()
     {
     	// $user = Auth::user();
@@ -17,6 +24,10 @@ class AppController extends Controller
     	// JavaScript::put([
 	    //     'branchId' => $user->branch_id
 	    // ]);
+    }
+
+    public function test(){
+    	//
     }
 
     public function setBranchId(){
@@ -81,6 +92,11 @@ class AppController extends Controller
   		$seconds = $seconds % 60;
   
   		return $hours > 0 ? "$hours hr $minutes min" : ($minutes > 0 ? "$minutes min $seconds sec" : "$seconds sec");
+	}
+
+	public function formatTime($datetime)
+	{
+	    return Carbon::parse($datetime, 'Asia/Kuala_Lumpur')->format('g:i A');    
 	}
 
 	public static function secToTime($seconds) {

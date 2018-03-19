@@ -56,18 +56,17 @@ class HomeController extends Controller
     public function calGlobalAvgWaitTime(){
 
         $branchServices = BranchService::get();
-        $totalBranchService = BranchService::count();
+        $totalBranchService = 0;
         $totalAvgWaitTime = 0;
         $globalAvgWaitTime = 0;
 
-        if($totalBranchService == 0)
-            return 0;
-
         foreach($branchServices as $branchService){
-            if($branchService->system_wait_time != null || $branchService->system_wait_time > 0)
+            if($branchService->system_wait_time != null || $branchService->system_wait_time > 0){
                 $totalAvgWaitTime += $branchService->system_wait_time;
-            else
-                $totalAvgWaitTime += $branchService->default_wait_time;
+                $totalBranchService++;
+            }
+            // else
+            //     $totalAvgWaitTime += $branchService->default_wait_time;
         }
 
         $globalAvgWaitTime = $this->calAvgWaitTime($totalAvgWaitTime, $totalBranchService);

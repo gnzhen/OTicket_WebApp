@@ -69,5 +69,14 @@ const call = new Vue({
                 window.location.reload(true);
             }
         });
+
+        Echo.join('closeQueueChannel.' + branchId)
+        .listen('NewQueueEvent', (e) => {
+            console.log(window.location.pathname);
+            if(window.location.pathname == "/call"){
+                alert(e.serviceName + "queue closed.")
+                window.location.reload(true);
+            }
+        });
     }
 });

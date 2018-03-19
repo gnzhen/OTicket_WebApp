@@ -34,6 +34,7 @@ class TableRelations extends Migration
 
         Schema::table('queues', function($table) {
             $table->foreign('branch_service_id')->references('id')->on('branch_services');
+            $table->foreign('ticket_serving_now')->references('id')->on('tickets');
         });
 
         Schema::table('tickets', function($table) {

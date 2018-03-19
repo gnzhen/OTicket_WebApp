@@ -18,7 +18,7 @@ class CreateQueuesTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unique();
             $table->unsignedInteger('branch_service_id');
-            $table->integer('ticket_serving_now')->nullable();
+            $table->unsignedBigInteger('ticket_serving_now')->nullable();
             $table->integer('wait_time');
             $table->integer('total_ticket');
             $table->integer('pending_ticket');

@@ -47,7 +47,7 @@
                                 {{ $branchService->service->name }} ({{ $branchService->service->code }}) 
                             </td>
                             <td>
-                                @if( $branchService->system_wait_time > 0 || $branchService->system_wait_time != null)
+                                @if($branchService->system_wait_time > 0 || $branchService->system_wait_time != null)
                                     {{ $appController->secToString($branchService->system_wait_time) }}
                                 @else
                                     {{ $appController->secToString($branchService->default_wait_time) }} (default)

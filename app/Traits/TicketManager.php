@@ -19,6 +19,7 @@ trait TicketManager {
         $ticket->issue_time = $request->issue_time;
         $ticket->wait_time = $request->wait_time;
         $ticket->ppl_ahead = $request->ppl_ahead;
+        $ticket->mobile_user_id = $request->mobile_user_id;
         $ticket->postponed = $request->postponed;
         $ticket->status = $request->status;
 

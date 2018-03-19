@@ -295,6 +295,9 @@ class CallController extends Controller
 
             DB::commit();
 
+            if($queue->active == 0)
+                return redirect()->route('call.index')->with('success', 'Done! Queue close!');
+
             return redirect()->route('call.index')->with('success', 'Done serving ' . $serving->ticket->ticket_no . '.');
 
         } catch (\Exception $e) {

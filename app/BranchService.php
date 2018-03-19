@@ -26,4 +26,9 @@ class BranchService extends Model
 
     	return $this->hasMany(Queue::class)->where('active','=', 1);
     }
+
+    public function inactive_queue(){
+
+        return $this->hasMany(Queue::class)->where('active','=', 0);
+    }
 }

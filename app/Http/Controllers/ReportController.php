@@ -46,8 +46,8 @@ class ReportController extends Controller
         $validator = Validator::make($request->all(), [
             'reportOption' => 'required|digits_between:0,1',
             'groupBy' => 'required|digits_between:0,3',
-            'dateFrom' => 'nullable|date',
-            'dateTo' => 'nullable|date',
+            'dateFrom' => 'nullable',
+            'dateTo' => 'nullable',
         ]);
         
         if ($validator->fails()) {

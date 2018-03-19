@@ -75,7 +75,7 @@ class PrinterController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'branch_service_id' => 'required|integer',
+            'branchServiceId' => 'required|integer',
         ]);
         
         if ($validator->fails()) {
@@ -90,9 +90,9 @@ class PrinterController extends Controller
 
             try {
 
-                $branchService = BranchService::findOrFail($request->branch_service_id);
+                $branchService = BranchService::findOrFail($request->branchServiceId);
 
-                $queue = $branchService->active_queue->first();
+                $queue = Queue::where('branch_service_id', $branchService->id)->where('active','=', 1)->lockForUpdate()->first();
 
                 if($queue == null){
                     

@@ -64,3 +64,4 @@ Auth::routes();
 /* AppController */
 Route::get('checkAuth', 'AppController@checkAuth');
 Route::get('getAllSession', 'AppController@getAllSession');
+Route::get('test', 'AppController@test');

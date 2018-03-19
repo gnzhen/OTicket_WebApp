@@ -6,7 +6,7 @@
             <p>Confirm take ticket for <strong>{{ $branchService->service->name }}</strong>?</p>
         </div>
 
-        <input type="hidden" class="form-control" name="branch_service_id" value="{{ $branchService->id }}">
+        <input type="hidden" class="form-control" name="branchServiceId" value="{{ $branchService->id }}">
     </div>
 
     <div class="form-group">

@@ -7,6 +7,8 @@ use Session;
 use App\Queue;
 use Carbon\Carbon;
 use App\Traits\WaitTimeManager;
+use App\Events\CloseQueueEvent;
+use App\Events\NewQueueEvent;
 
 trait QueueManager {
 
@@ -37,10 +39,6 @@ trait QueueManager {
     }
 
     public function refreshQueue($queue){
-
-        //Update waiting ticket
-        // $waitingTicketNo = $this->getWaitingTicket($queue)->count();
-        // $queue->pending_ticket = $waitingTicketNo;
 
         //Update total ticket
         $totalTicket = $queue->tickets->count();
