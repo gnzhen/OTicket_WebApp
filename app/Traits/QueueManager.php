@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use App\Queue;
 use Carbon\Carbon;
+use App\Http\Controllers\AppController;
 use App\Traits\WaitTimeManager;
 use App\Events\CloseQueueEvent;
 use App\Events\NewQueueEvent;
@@ -72,7 +73,7 @@ trait QueueManager {
         foreach($tickets as $ticket){
             $ticket = $this->refreshTicket($queue, $ticket);
         }
-
+        
         return $queue;
     }
 
@@ -92,7 +93,12 @@ trait QueueManager {
 
     public function getTicketServingNow($queue){
         
-        $ticketServingNow = $queue->tickets->where('status','=','serving')->sortByDesc('id')->first();
+        $ticketServingNow = $queue->tickets
+                            ->where('status', 'serving')
+                            ->sortByDesc('id')
+                            ->first();
+
+        echo $ticketServingNow;
 
         return $ticketServingNow != null ? $ticketServingNow->id : null;
     }

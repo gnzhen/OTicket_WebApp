@@ -19,14 +19,16 @@ use Illuminate\Http\Request;
 Route::post('test', 'Api\MobileUserController@test')->name('mobile.test');
 Route::post('register', 'Api\MobileUserController@register')->name('mobile.register');
 Route::post('login', 'Api\MobileUserController@login')->name('mobile.login');
+Route::post('logout', 'Api\MobileUserController@logout')->name('mobile.logout');
 Route::get('branches', 'Api\MobileUserController@getBranches')->name('mobile.branches');
 Route::get('services', 'Api\MobileUserController@getServices')->name('mobile.services');
 Route::get('branchServices', 'Api\MobileUserController@getBranchServices');
 Route::post('branchServicesByBranchId', 'Api\MobileUserController@getBranchServicesByBranchId');
 Route::post('queuesByBranchId', 'Api\MobileUserController@getQueuesByBranchId');
 Route::post('issueTicket', 'Api\MobileUserController@issueTicket');
-Route::post('userCurrentTickets', 'Api\MobileUserController@getUserCurrentTicket');
-
+Route::post('userCurrentTickets', 'Api\MobileUserController@getUserCurrentTicketsAndDetails');
+Route::post('ticketDetails', 'Api\MobileUserController@getTicketDetails');
+Route::post('histories', 'Api\MobileUserController@getUserHistories');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -32,8 +32,8 @@
                 @foreach($queues as $i => $queue)
                 <div role="tabpanel" class="tab-pane tab-pane-{{ $i }} fade {{ ($appController->getTabSession() == $queue->id) ? 'show active' : '' }}" id="tab{{ $queue->id }}">
                   
-                    <div class="row">
-                        <div class="{{ $user->branchCounter != null ? 'col-md-5' : 'col-md-12' }} hidePageOf hideSearch hideEntries">
+                    <div class="row" style="padding-left: 20px; padding-right: 20px; max-height: 500px;">
+                        <div class="{{ $user->branchCounter != null ? 'col-md-6' : 'col-md-12' }} hidePageOf hideSearch hideEntries" style="overflow-x:scroll;">
                             @include('partials.call._queueTable')
                         </div>
 

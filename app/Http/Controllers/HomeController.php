@@ -65,8 +65,6 @@ class HomeController extends Controller
                 $totalAvgWaitTime += $branchService->system_wait_time;
                 $totalBranchService++;
             }
-            // else
-            //     $totalAvgWaitTime += $branchService->default_wait_time;
         }
 
         $globalAvgWaitTime = $this->calAvgWaitTime($totalAvgWaitTime, $totalBranchService);

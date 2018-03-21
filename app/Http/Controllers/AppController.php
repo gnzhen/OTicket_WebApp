@@ -99,6 +99,11 @@ class AppController extends Controller
 	    return Carbon::parse($datetime, 'Asia/Kuala_Lumpur')->format('g:i A');    
 	}
 
+	public function formatDateTime($datetime)
+	{
+	    return Carbon::parse($datetime, 'Asia/Kuala_Lumpur')->format('d M Y g:i A');    
+	}
+
 	public static function secToTime($seconds) {
 		$hours = floor($seconds / 3600);
   		$minutes = floor(($seconds / 60) % 60);
@@ -130,6 +135,42 @@ class AppController extends Controller
         }
 
         return $wait_time_array;
+	}
+
+	public function generateSysWaitTime(){
+
+		// Calculate average wait time of each branchService
+        $branchServices = BranchService::get();
+        
+        $appController = new AppController;
+        $sysWaitTime = 0;
+        
+        foreach($branchServices as $branchService){
+
+            DB::beginTransaction();
+
+            try {
+
+                $queues = $branchService->inactive_queue;
+
+                $totalWaitTime = $queues->sum('avg_wait_time');
+                $noOfQueue = $queues->count();
+                $sysWaitTime = $this->calAvgWaitTime($totalWaitTime, $noOfQueue);
+
+                $branchService->system_wait_time = $sysWaitTime;
+                $branchService->save();
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+
+                DB::rollback();
+
+                throw $e;
+            }
+
+            return redirect()->route('home')->with('success', 'Data refreshed!');
+        }
 	}
 
 }

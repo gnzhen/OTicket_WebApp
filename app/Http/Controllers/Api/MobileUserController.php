@@ -9,8 +9,11 @@ use App\Branch;
 use App\Service;
 use App\Queue;
 use App\Ticket;
+use App\Serving;
 use App\BranchService;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PrinterController;
+use App\Http\Controllers\AppController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
 use App\Events\NewQueueEvent;
@@ -18,6 +21,7 @@ use App\Traits\QueueManager;
 use App\Traits\TicketManager;
 use Carbon\Carbon;
 use DB;
+use Hash;
 
 class MobileUserController extends Controller
 {
@@ -63,20 +67,19 @@ class MobileUserController extends Controller
 	        $mobileUser->name = $request->name;
 	        $mobileUser->email = $request->email;
 	        $mobileUser->phone = $request->phone;
-	        $mobileUser->password = bcrypt('password');
+	        $mobileUser->password = Hash::make($request->password);
 
         	$mobileUser->save();
 
-    		return response()->json(["success" => "Register Success!"]);
+    		return response()->json(["success" => "Register Success!", "user" => $mobileUser]);
         }
-    	
     }
 
     public function login(Request $request) {
 
     	$validator = Validator::make($request->all(), [
     		'email' => 'required|email',
-    		'password' => 'required|min:8'
+    		'password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -85,14 +88,102 @@ class MobileUserController extends Controller
 
         } 
         else {
-        	$mobileUser = MobileUser::where('email', '=' ,$request->email)->firstOrFail();
+        	$mobileUser = MobileUser::where('email', $request->email)->first();
+        	
+        	if(!$mobileUser)
+        		return response()->json(["fail" => "Email not registered"]);
 
-    		return response()->json(["success" => "Login Success!"]);
+    		if(!Hash::check($request->password, $mobileUser->password)){
+			    
+				return response()->json(["fail" => "Wrong password"]);
+			}
+
+
+			return response()->json(["success" => "Login Success!", "user" => $mobileUser]);
         }
-    	
     }
 
-    public function getUserCurrentTicket(Request $request){
+    public function issueTicket(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'branchServiceId' => 'required|integer',
+            'mobileUserId' => 'required|integer'
+        ]);
+        
+        if ($validator->fails()) {
+
+            return response()->json($validator->messages());
+        }
+
+        /* Check multi ticket */
+    	$branchService = BranchService::findOrFail($request->branchServiceId);
+    	$mobileUser = MobileUser::findOrFail($request->mobileUserId);
+
+    	$currentTickets = Ticket::where('mobile_user_id', $request->mobileUserId)->whereIn('status', ["waiting", "serving"])->get();
+
+    	if($currentTickets != null){
+    		// Check max ticket
+    		if($currentTickets->count() > 2){
+    			return response()->json(["fail" => "You only can have maximum 3 tickets."]);
+    		}
+
+    		// Check Ticket from other branch 
+    		foreach($currentTickets as $currentTicket){
+    			if($currentTicket->queue->branchService->branch_id != $branchService->branch_id){
+    				return response()->json(["fail" => "You cannot have tickets from different branches."]);
+    			}
+    			if($currentTicket->queue->branchService->id == $branchService->id){
+    				return response()->json(["fail" => "You already have this ticket."]);
+    			}
+    		}
+    	}
+    	
+    	DB::beginTransaction();
+
+        try {
+
+            $branchService = BranchService::findOrFail($request->branchServiceId);
+
+            $queue = Queue::where('branch_service_id', $branchService->id)->where('active','=', 1)->lockForUpdate()->first();
+
+            if($queue == null){
+                
+                //Create Queue
+                $queue = $this->storeQueue($branchService->id);
+
+                //Infrom staff
+                event(new NewQueueEvent($branchService->branch->id, $branchService->service->name));
+            }
+
+            $request->replace([
+                'ticket_no' => $this->ticketNoGenerator($queue),
+                'issue_time' => Carbon::now('Asia/Kuala_Lumpur'),
+                'queue_id' => $queue->id, 
+                'wait_time' => $queue->wait_time,
+                'ppl_ahead' => $queue->total_ticket,
+                'mobile_user_id' => $request->mobileUserId,
+                'postponed' => 0,
+                'status' => 'waiting'
+            ]);
+
+            $ticket = $this->storeTicket($request);
+
+            //Update Queue
+            $total_ticket = $this->refreshQueue($queue);
+
+            DB::commit();
+
+			return response()->json(['success' => 'Ticket issued!']);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            throw $e;
+        }
+    }
+
+    public function getUserCurrentTicketsAndDetails(Request $request){
 
     	$validator = Validator::make($request->all(), [
     		'id' => 'required'
@@ -104,9 +195,125 @@ class MobileUserController extends Controller
 
         } 
         else {
-        	$tickets = Ticket::where('mobile_user_id', '=' ,$request->id)->whereIn('status', ["waiting", "serving"])->get();
+        	$tickets = Ticket::where('mobile_user_id', $request->id)->whereIn('status', ["waiting", "serving"])->get();
 
-    		return response()->json($tickets);
+        	$ticketsWithDetails = [];
+
+        	foreach($tickets as $ticket){
+        		$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
+
+        		$ticketWithDetails['id'] = $ticket->id;
+        		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
+        		$ticketWithDetails['issue_time'] = $ticket->issue_time;
+        		$ticketWithDetails['queue_id'] = $ticket->queue_id;
+        		$ticketWithDetails['wait_time'] = $ticket->wait_time;
+        		$ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
+        		$ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
+        		$ticketWithDetails['postponed'] = $ticket->postponed;
+        		$ticketWithDetails['status'] = $ticket->status;
+        		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
+        		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
+        		$ticketWithDetails['serve_time'] = Carbon::now('Asia/Kuala_Lumpur')->addSeconds($ticket->wait_time)->format('h:i A');
+	    		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
+
+	        	if($ticketServingNow){
+	        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
+	        	}
+	        	else{
+	        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
+	        	}
+
+
+        		array_push($ticketsWithDetails, $ticketWithDetails);
+        	}
+
+    		return response()->json($ticketsWithDetails);
+        }
+    }
+
+    public function getTicketDetails(Request $request){
+
+    	$validator = Validator::make($request->all(), [
+    		'id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+			
+            return response()->json($validator->messages());
+
+        } 
+        else {
+        	$ticket = Ticket::findOrFail($request->id);
+        	$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
+
+    		$ticketWithDetails['id'] = $ticket->id;
+    		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
+    		$ticketWithDetails['issue_time'] = $ticket->issue_time;
+    		$ticketWithDetails['queue_id'] = $ticket->queue_id;
+    		$ticketWithDetails['wait_time'] = $ticket->wait_time;
+    		$ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
+    		$ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
+    		$ticketWithDetails['postponed'] = $ticket->postponed;
+    		$ticketWithDetails['status'] = $ticket->status;
+    		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
+    		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
+    		$ticketWithDetails['serve_time'] = Carbon::now('Asia/Kuala_Lumpur')->addSeconds($ticket->wait_time)->format('h:i A');
+    		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
+
+        	if($ticketServingNow){
+        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
+        	}
+        	else{
+        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
+        	}
+
+
+    		return response()->json($ticketWithDetails);
+        	
+        }
+    }
+
+    public function getUserHistories(Request $request){
+
+		$validator = Validator::make($request->all(), [
+    		'id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+			
+            return response()->json($validator->messages());
+        } 
+        else {
+        	$appController = new AppController();
+
+        	$tickets = Ticket::where('mobile_user_id', $request->id)->whereNotIn('status', ["waiting", "serving"])->get();
+        	
+        	$ticketsWithDetails = [];
+
+        	foreach($tickets as $ticket){
+
+	        	$waitTimeString = '-';
+
+	            //Calculate wait time
+	            if($ticket->disposed_time != null){
+		            $issueTime = Carbon::parse($ticket->issue_time, 'Asia/Kuala_Lumpur');
+		            $disposedTime = Carbon::parse($ticket->disposed_time, 'Asia/Kuala_Lumpur');
+		            $waitTime = $disposedTime->diffInSeconds($issueTime);
+		            $waitTimeString = $appController->secToString($waitTime);
+		        }
+
+        		$ticketWithDetails['id'] = $ticket->id;
+        		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
+        		$ticketWithDetails['issue_time'] = $appController->formatDateTime($ticket->issue_time);
+        		$ticketWithDetails['wait_time'] = $waitTimeString;
+        		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
+        		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
+        		$ticketWithDetails['status'] = $ticket->status;
+
+        		array_push($ticketsWithDetails, $ticketWithDetails);
+        	}
+
+    		return response()->json($ticketsWithDetails);
         }
     }
 
@@ -178,82 +385,6 @@ class MobileUserController extends Controller
         	}
 
     		return response()->json($queues);
-        }
-    }
-
-    public function issueTicket(Request $request){
-
-        $validator = Validator::make($request->all(), [
-            'branchServiceId' => 'required|integer',
-            'mobileUserId' => 'required|integer'
-        ]);
-        
-        if ($validator->fails()) {
-
-            return response()->json($validator->messages());
-        }
-    	
-    	/* Check multi ticket */
-    	$branchService = BranchService::findOrFail($request->branchServiceId);
-
-    	$currentTickets = Ticket::where('mobile_user_id', $request->mobileUserId)->whereIn('status', ["waiting", "serving"])->get();
-
-    	if($currentTickets != null){
-    		// Check max ticket
-    		if($currentTickets->count() > 2){
-    			return response()->json(["fail" => "You only can have maximum 3 tickets."]);
-    		}
-
-    		// Check Ticket from other branch 
-    		foreach($currentTickets as $currentTicket){
-    			if($currentTicket->queue->branchService->branch_id != $branchService->branch_id){
-    				return response()->json(["fail" => "You cannot have tickets from different branches."]);
-    			}
-    		}
-    	}
-        	
-		 DB::beginTransaction();
-
-        try {
-
-            $branchService = BranchService::findOrFail($request->branchServiceId);
-
-            $queue = $branchService->active_queue->first();
-
-            if($queue == null){
-                
-                //Create Queue
-                $queue = $this->storeQueue($branchService->id);
-
-                //Infrom staff
-                event(new NewQueueEvent($branchService->branch->id, $branchService->service->name));
-            }
-
-            $request->replace([
-                'ticket_no' => $this->ticketNoGenerator($queue),
-                'issue_time' => Carbon::now('Asia/Kuala_Lumpur'),
-                'queue_id' => $queue->id, 
-                'wait_time' => $queue->wait_time,
-                'ppl_ahead' => $queue->total_ticket,
-                'mobile_user_id' => $request->mobileUserId,
-                'postponed' => 0,
-                'status' => 'waiting'
-            ]);
-
-            $ticket = $this->storeTicket($request);
-
-            //Update Queue
-            $total_ticket = $this->refreshQueue($queue);
-
-            DB::commit();
-            
-			return response()->json($ticket);
-
-        } catch (\Exception $e) {
-
-            DB::rollback();
-
-            throw $e;
         }
     }
 

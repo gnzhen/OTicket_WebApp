@@ -24,8 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('CalSysWaitTime:calculate --force')
-                 ->daily()->timezone('Asia/Kuala_Lumpur');
+        $schedule->command('CalSysWaitTime:calculate')
+                 ->daily()
+                 ->timezone('Asia/Kuala_Lumpur')
+                 ->emailOutputTo('mioyazhen1996@gmail.com');
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\BranchService;
 use App\Queue;
+use App\Http\Controllers\AppController;
 use App\Traits\WaitTimeManager;
 use DB;
 
@@ -62,7 +63,11 @@ class CalSysWaitTime extends Command
 
                 DB::commit();
 
-                echo $branchService->id.": ".$sysWaitTime.", ";
+                $appController = new AppController;
+
+                echo $branchService->branch->name
+                    . " (" . $branchService->service->name . ")" 
+                    . ": ". $appController->secToString($sysWaitTime) .", ";
 
             } catch (\Exception $e) {
 

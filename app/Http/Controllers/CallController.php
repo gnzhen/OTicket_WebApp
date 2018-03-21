@@ -98,7 +98,7 @@ class CallController extends Controller
         try {
             $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
 
-            $ticket = $queue->tickets->where('status', '=', 'waiting')->first();
+            $ticket = $queue->tickets->where('status', 'waiting')->sortBy('id')->first();
 
             if($ticket == null){
             
@@ -107,51 +107,60 @@ class CallController extends Controller
                 return redirect()->route('call.index')->with('fail', 'No more ticket in queue.');
             }
 
+            $busy = false;
+
             //Check ticket user serving by other ticket or not
             if($ticket->mobile_user_id != null){
 
                 $mobileUser = MobileUser::findOrFail($ticket->mobile_user_id);
 
-                $tickets = $mobileUser->tickets;
+                $mobileTickets = $mobileUser->tickets;
 
-                foreach($tickets as $ticket){
-                    if($ticket->status == 'serving'){
-
-                        //postpone ticket
-
-                        DB::commit();
-
-                        return redirect()->route('call.index')->with('fail', 'User is busy now.');
+                foreach($mobileTickets as $mobileTicket){
+                    if($mobileTicket->status == 'serving'){
+                        $busy = true;
                     }
                 }
             }
 
-            //Update Ticket
-            $ticket = $this->serveTicket($ticket);
+            if($busy){
+                //postpone ticket
 
-            //Update Queue
-            $queue = $this->refreshQueue($queue);
+                //call next ticket
 
-            //Create Calling
-            $request->replace([
-                'ticket_id' => $ticket->id, 
-                'branch_counter_id' => $request->branch_counter_id,
-                'call_time' => Carbon::now('Asia/Kuala_Lumpur'),
-                'active' => 1,
-            ]);
+                DB::commit();
 
-            $calling = $this->storeCalling($request);
+                return redirect()->route('call.index')->with('fail', 'User is busy now.');
+            }
+            else {
+                //Update Ticket
+                $ticket = $this->serveTicket($ticket);
 
-            //Update Branch Counter
-            $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
+                //Update Queue
+                $queue = $this->refreshQueue($queue);
 
-            $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
+                //Create Calling
+                $request->replace([
+                    'ticket_id' => $ticket->id, 
+                    'branch_counter_id' => $request->branch_counter_id,
+                    'call_time' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'active' => 1,
+                ]);
+
+                $calling = $this->storeCalling($request);
+
+                //Update Branch Counter
+                $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
+
+                $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
 
 
-            //Trigger display
-            $this->triggerDisplay();
+                //Trigger display
+                $this->triggerDisplay();
 
-            DB::commit();
+                DB::commit();
+
+            }
 
             return redirect()->route('call.index')->with('success', 'Calling ' . $calling->ticket->ticket_no . '.');
 

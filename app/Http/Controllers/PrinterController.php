@@ -109,6 +109,7 @@ class PrinterController extends Controller
                     'queue_id' => $queue->id, 
                     'wait_time' => $queue->wait_time,
                     'ppl_ahead' => $queue->total_ticket,
+                    'mobile_user_id' => $request->mobileUserId,
                     'postponed' => 0,
                     'status' => 'waiting'
                 ]);

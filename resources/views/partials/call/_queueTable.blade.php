@@ -1,10 +1,11 @@
-<table class="table table-bordered dataTable queueTable" cellspacing="0" width="100%">
+<table id="queueTable" class="table table-bordered dataTable queueTable" cellpadding="0">
     <thead>
         <tr>
             <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">No.</th>
-            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Ticket Number</th>
+            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Number</th>
             <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Issue Time</th>
             <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Status</th>
+            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">Ticket Type</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
                 <td><div><strong>{{ $ticket->ticket_no }}</strong></div></td>
                 <td><div>{{ $appController->formatTime($ticket->issue_time) }}</div></td>
                 <td><div>{{ $ticket->status }}</div></td>
+                <td><div>{{ $ticket->mobileUser == null ? 'paper' : 'mobile' }}</div></td>
             </tr>
         @endforeach
     </tbody>

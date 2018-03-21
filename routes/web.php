@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('setSidebarSession', 'AppController@setSidebarSession');
 	Route::get('setTabSession', 'AppController@setTabSession');
 	Route::get('testFunction', 'AppController@testFunction');
+	Route::post('generateSysWaitTime', 'AppController@generateSysWaitTime')->name('app.generateSysWaitTime');
 });
 
 Route::resources([

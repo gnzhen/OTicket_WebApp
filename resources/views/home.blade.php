@@ -9,6 +9,15 @@
         <div class="col-md-4 offset-1 div-dashboard">
             <div class="row">   
                 <div class="card card-dashboard">
+                    {!! Form::open(['route'=>['app.generateSysWaitTime']]) !!}
+                        <button type="submit" class="btn btn-outline-secondary btn-block">Refresh</button>
+                    {!! Form::close() !!}
+                </div>
+                <div class="card card-dashboard">
+                    <div class="card-header">Avg Wait Time</div>
+                    <div class="card-body">{{ $avgWaitTimeString }}</div>
+                </div>
+                <div class="card card-dashboard">
                     <div class="card-header">Total tickets</div>
                     <div class="card-body">{{ $totalTickets }}</div>
                 </div>
@@ -16,11 +25,6 @@
                 <div class="card card-dashboard">
                     <div class="card-header">Tickets yesterday</div>
                     <div class="card-body">{{ $totalTicketsYtd }}</div>
-                </div>
-
-                <div class="card card-dashboard">
-                    <div class="card-header">Avg Wait Time</div>
-                    <div class="card-body">{{ $avgWaitTimeString }}</div>
                 </div>
             </div>
         </div>
