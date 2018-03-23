@@ -35,4 +35,10 @@ class BranchCounter extends Model
     public function queues(){
         return $this->belongsToMany(Queue::class, 'branch_counter_queues')->withPivot('staff_id');
     }
+
+    public function active_callings(){
+
+        return $this->hasMany(Calling::class)->where('active','=', 1);
+    
+    }
 }

@@ -1,4 +1,4 @@
-<table id="queueTable" class="table table-bordered dataTable queueTable" cellpadding="0">
+<table id="queueTable" class="table table-bordered queueTable" cellpadding="0">
     <thead>
         <tr>
             <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">No.</th>
@@ -17,6 +17,7 @@
                 <td><div>{{ $ticket->status }}</div></td>
                 <td><div>{{ $ticket->mobileUser == null ? 'paper' : 'mobile' }}</div></td>
             </tr>
+
         @endforeach
     </tbody>
 </table>

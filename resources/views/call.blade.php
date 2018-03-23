@@ -28,20 +28,22 @@
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content">
+            <div class="tab-content" style="overflow-x:hidden; overflow-y:auto;">
                 @foreach($queues as $i => $queue)
                 <div role="tabpanel" class="tab-pane tab-pane-{{ $i }} fade {{ ($appController->getTabSession() == $queue->id) ? 'show active' : '' }}" id="tab{{ $queue->id }}">
                   
                     <div class="row" style="padding-left: 20px; padding-right: 20px; max-height: 500px;">
-                        <div class="{{ $user->branchCounter != null ? 'col-md-6' : 'col-md-12' }} hidePageOf hideSearch hideEntries" style="overflow-x:scroll;">
-                            @include('partials.call._queueTable')
-                        </div>
-
+                        
                         @if($user->branchCounter != null)
                         <div class="col-md-6">
                             @include('partials.call._calling')
                         </div>
                         @endif
+                        
+                        <div class="{{ $user->branchCounter != null ? 'col-md-6' : 'col-md-12' }} hidePageOf hideSearch hideEntries" style="overflow:auto;">
+                            @include('partials.call._queueTable')
+                        </div>
+
                     </div>
 
                 </div>
@@ -81,7 +83,7 @@
         <script type="text/javascript">
             // $.noConflict();
 
-            jQuery( document ).ready(function( $ ) {
+            $( document ).ready(function( $ ) {
 
                 $('.nav-link-0').addClass('active');
                 $('.tab-pane-0').addClass('active');
@@ -98,7 +100,7 @@
         <script type="text/javascript">
             // $.noConflict();
 
-            jQuery( document ).ready(function( $ ) {
+            $( document ).ready(function( $ ) {
 
                 var count = {{ $timer }};
                 var timer;
@@ -128,4 +130,6 @@
             });
         </script>
     @endif
+
+
 @endsection

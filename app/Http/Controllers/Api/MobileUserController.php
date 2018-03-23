@@ -160,6 +160,7 @@ class MobileUserController extends Controller
                 'issue_time' => Carbon::now('Asia/Kuala_Lumpur'),
                 'queue_id' => $queue->id, 
                 'wait_time' => $queue->wait_time,
+                'serve_time' => Carbon::now('Asia/Kuala_Lumpur')->addSeconds($queue->wait_time),
                 'ppl_ahead' => $queue->total_ticket,
                 'mobile_user_id' => $request->mobileUserId,
                 'postponed' => 0,
@@ -182,6 +183,58 @@ class MobileUserController extends Controller
             throw $e;
         }
     }
+
+    public function postponeTicket(Request $request) {
+    	//
+    }
+
+    public function cancelTicket(Request $request) {
+
+    	$validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+
+            return response()->json($validator->messages());
+        }
+
+        try {
+
+	    	DB::beginTransaction();
+
+            //Update Ticket
+	    	$ticket = Ticket::lockForUpdate()->findOrFail($request->id);
+	    	$ticket->status = "cancelled";
+	    	$ticke->save();
+
+            //Update Calling
+            $calling = Calling::where('ticket_id', $ticket->id)->where('active', 1)->lockForUpdate()->first();
+            $calling = $this->stopCalling($calling);
+
+            //Update Queue
+            $queue = Queue::lockForUpdate()->findOrFail($ticket->queue->id);
+            $queue = $this->refreshQueue($queue);
+
+            //Update Branch Counter
+            $branchCounter = BranchCounter::lockForUpdate()->findOrFail($calling->branchCounter);
+            $branchCounter = $this->branchCounterStopCalling($branchCounter);
+
+            DB::commit();
+
+            //notify staff user cancel ticket
+        
+            //return success
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            throw $e;
+            //return fail
+        }
+    }
+
 
     public function getUserCurrentTicketsAndDetails(Request $request){
 
@@ -257,7 +310,7 @@ class MobileUserController extends Controller
     		$ticketWithDetails['status'] = $ticket->status;
     		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
     		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
-    		$ticketWithDetails['serve_time'] = Carbon::now('Asia/Kuala_Lumpur')->addSeconds($ticket->wait_time)->format('h:i A');
+    		$ticketWithDetails['serve_time'] = $ticket->serve_time->format('h:i A');
     		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
 
         	if($ticketServingNow){
@@ -287,7 +340,7 @@ class MobileUserController extends Controller
         	$appController = new AppController();
 
         	$tickets = Ticket::where('mobile_user_id', $request->id)->whereNotIn('status', ["waiting", "serving"])->get();
-        	
+
         	$ticketsWithDetails = [];
 
         	foreach($tickets as $ticket){

@@ -52,7 +52,7 @@ class CallController extends Controller
         $branch = Branch::where('id', '=', $user->branch_id)->get();
         $branchServices = BranchService::where('branch_id', '=', $user->branch_id)->get();
         $branchCounters = BranchCounter::where('branch_id', '=', $user->branch_id)->get();
-        $tickets = Ticket::where('status','=','waiting')->get();
+        $tickets = Ticket::where('status','=','waiting')->orderBy('issue_time')->get();
 
         $branchServicesId = $branchServices->pluck('id');
 
@@ -72,9 +72,13 @@ class CallController extends Controller
         //get current calling of branch counter
         if($user->branchCounter != null){
 
-            $calling = $user->branchCounter->callings->where('active','=', 1)->sortByDesc('id')->first();
+            $calling = $user->branchCounter->active_callings->first();
 
             if($calling != null){
+
+                $branchCounter = $user->branchCounter;
+                $branchCounter->serving_queue = $calling->ticket->queue->id;
+                $branchCounter->save();
 
                 //Calculate timer
                 $callTime = Carbon::parse($calling->call_time, 'Asia/Kuala_Lumpur');
@@ -96,73 +100,90 @@ class CallController extends Controller
         DB::beginTransaction();
 
         try {
-            $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
 
-            $ticket = $queue->tickets->where('status', 'waiting')->sortBy('id')->first();
+            $branchCounter = BranchCounter::findOrFail($request->branch_counter_id);
 
-            if($ticket == null){
-            
-                DB::commit();
-
-                return redirect()->route('call.index')->with('fail', 'No more ticket in queue.');
-            }
-
-            $busy = false;
-
-            //Check ticket user serving by other ticket or not
-            if($ticket->mobile_user_id != null){
-
-                $mobileUser = MobileUser::findOrFail($ticket->mobile_user_id);
-
-                $mobileTickets = $mobileUser->tickets;
-
-                foreach($mobileTickets as $mobileTicket){
-                    if($mobileTicket->status == 'serving'){
-                        $busy = true;
-                    }
-                }
-            }
-
-            if($busy){
-                //postpone ticket
-
-                //call next ticket
+            if(!$branchCounter->active_callings){
 
                 DB::commit();
 
-                return redirect()->route('call.index')->with('fail', 'User is busy now.');
+                return redirect()->route('call.index')->with('fail', 'You are serving another ticket.');
             }
             else {
-                //Update Ticket
-                $ticket = $this->serveTicket($ticket);
+        
+                $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
 
-                //Update Queue
-                $queue = $this->refreshQueue($queue);
+                $theTicket = $queue->tickets->where('status', 'waiting')->sortBy('issue_time')->first();
 
-                //Create Calling
-                $request->replace([
-                    'ticket_id' => $ticket->id, 
-                    'branch_counter_id' => $request->branch_counter_id,
-                    'call_time' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'active' => 1,
-                ]);
+                //if no more ticket to call
+                if($theTicket == null){
+                
+                    DB::commit();
 
-                $calling = $this->storeCalling($request);
+                    return redirect()->route('call.index')->with('fail', 'No more ticket in queue.');
+                }
 
-                //Update Branch Counter
-                $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
+                $ticket = Ticket::lockForUpdate()->findOrFail($theTicket->id);
 
-                $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
+                //Postpone if user serving on another ticket
+                if($this->ticketUserServing($ticket) != null){
+
+                    //postpone ticket
+                    $ticket = $this->postponeTicketAuto($ticket);
+
+                    //Update Queue
+                    $queue = $this->refreshQueue($queue);
+
+                    DB::commit();
+
+                    //postpone fail 
+                    if($ticket == null){
+                        
+                        return redirect()->route('call.index')->with('fail', 'User is busy now. Ticket is unable to be postponed.');
+                    }
+                    else{
+
+                        //call next ticket
+                        return redirect()->route('call.call');
+                    }
+                }
+                else {
+
+                    //Update Ticket
+                    $ticket = $this->serveTicket($ticket);
+
+                    //Create Calling
+                    $request->replace([
+                        'ticket_id' => $ticket->id, 
+                        'branch_counter_id' => $request->branch_counter_id,
+                        'call_time' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'active' => 1,
+                    ]);
+
+                    $calling = $this->storeCalling($request);
+
+                    //Postpone clashing ticket of current user if neccessary
+                    $postponedTicket = $this->postponeOtherTicket($ticket);
+
+                    // dd ($postponedTicket);
+                    
+                    //Update Queue
+                    $queue = $this->refreshQueue($queue);
+
+                    //Update Branch Counter
+                    $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
+                    $branchCounter = $this->branchCounterCalling($branchCounter, $queue);
 
 
-                //Trigger display
-                $this->triggerDisplay();
+                    //Trigger display
+                    $this->triggerDisplay();
 
-                DB::commit();
+                    DB::commit();
 
+                }
+
+                // return redirect()->route('call.index')->with('success', 'Calling ' . $calling->ticket->ticket_no . '.');
             }
-
-            return redirect()->route('call.index')->with('success', 'Calling ' . $calling->ticket->ticket_no . '.');
 
         } catch (\Exception $e) {
 
@@ -217,6 +238,8 @@ class CallController extends Controller
             DB::rollback();
 
             throw $e;
+
+            return redirect()->route('call.index')->with('fail', 'Fail to recall ' . $calling->ticket->ticket_no . '.');
         }
         
     }
@@ -230,12 +253,12 @@ class CallController extends Controller
         DB::beginTransaction();
 
         try {
-            $calling = Calling::findOrFail($request->calling_id);
+            $calling = Calling::lockForUpdate()->findOrFail($request->calling_id);
             $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
             $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
+            $ticket = Ticket::lockForUpdate()->findOrFail($calling->ticket_id);
 
             //Update Ticket
-            $ticket = Ticket::lockForUpdate()->findOrFail($calling->ticket_id);
             $ticket = $this->skipTicket($ticket);
 
             //Update Queue
@@ -256,6 +279,7 @@ class CallController extends Controller
             DB::rollback();
 
             throw $e;
+            return redirect()->route('call.index')->with('fail', 'Fail to skip ' . $calling->ticket->ticket_no . '.');
         }
     }
 
@@ -268,12 +292,12 @@ class CallController extends Controller
         DB::beginTransaction();
 
         try {
-            $calling = Calling::findOrFail($request->calling_id);
+            $calling = Calling::lockForUpdate()->findOrFail($request->calling_id);
             $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
             $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
+            $ticket = Ticket::lockForUpdate()->findOrFail($calling->ticket_id);
 
             //Update Ticket
-            $ticket = Ticket::lockForUpdate()->findOrFail($calling->ticket_id);
             $ticket = $this->doneTicket($ticket);
 
             //Update Queue
@@ -314,6 +338,7 @@ class CallController extends Controller
             DB::rollback();
 
             throw $e;
+            return redirect()->route('call.index')->with('fail', 'Fail to done serving ' . $serving->ticket->ticket_no . '.');
         }
     }
 
@@ -374,7 +399,7 @@ class CallController extends Controller
      */
     public function closeCounter($id)
     {
-        $branchCounter = BranchCounter::findOrFail($id);
+        $branchCounter = BranchCounter::lockForUpdate()->findOrFail($id);
 
         //Reject close counter during serving
         if($branchCounter->serving_queue != null){

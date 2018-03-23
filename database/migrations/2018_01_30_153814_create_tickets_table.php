@@ -18,6 +18,7 @@ class CreateTicketsTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->string('ticket_no');
             $table->datetime('issue_time');
+            $table->datetime('serve_time');
             $table->datetime('disposed_time')->nullable();
             $table->unsignedBigInteger('queue_id')->index();
             $table->integer('wait_time');

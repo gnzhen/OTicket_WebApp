@@ -30,28 +30,16 @@ trait QueueManager {
         return $queue;
     }
 
-    public function updateQueueServingNow($queue, $ticket_id){
-        
-        $queue->ticket_serving_now = $ticket_id;
-
-        $queue->save();
-
-        return $queue;
-    }
-
     public function refreshQueue($queue){
 
         //Update total ticket
-        $totalTicket = $queue->tickets->count();
-        $queue->total_ticket = $totalTicket;
+        $queue->total_ticket = $queue->tickets->count();
 
         //Update pending ticket
-        $pendingTicket = $this->calPendingTicketNo($queue);
-        $queue->pending_ticket = $pendingTicket;
+        $queue->pending_ticket = $this->calPendingTicketNo($queue);;
 
         //Update queue wait time
-        $queueWaitTime = $this->calQueueWaitTime($queue);
-        $queue->wait_time = $queueWaitTime;
+        $queue->wait_time = $this->calQueueWaitTime($queue);
 
         //Update ticket serving now
         $queue->ticket_serving_now = $this->getTicketServingNow($queue);
@@ -67,11 +55,15 @@ trait QueueManager {
             Session::forget('tab');
         }
 
-        //Update affected ticket
+        //Update ticket in queue
         $tickets = $queue->tickets;
 
         foreach($tickets as $ticket){
-            $ticket = $this->refreshTicket($queue, $ticket);
+
+            if($ticket->status == "serving" || $ticket->status == "waiting"){
+
+                $ticket = $this->refreshTicket($queue, $ticket);
+            }
         }
         
         return $queue;
@@ -98,8 +90,6 @@ trait QueueManager {
                             ->sortByDesc('id')
                             ->first();
 
-        echo $ticketServingNow;
-
         return $ticketServingNow != null ? $ticketServingNow->id : null;
     }
 
@@ -124,13 +114,16 @@ trait QueueManager {
     public function calQueueWaitTime($queue){
 
         $avgWaitTime = $this->getCurrentAvgWaitTimeQueue($queue);
-
         $waitingTicketNo = $this->getWaitingTicket($queue)->count();
         $servingTicketNo = $this->getServingTicket($queue)->count();
+        $totalWaitTime = $this->calCurrentTotalWaitTimeQueue($avgWaitTime, $waitingTicketNo);
 
-        $totalTicket = $servingTicketNo < 1 ? $waitingTicketNo : ($waitingTicketNo + 1);
+        if($servingTicketNo > 0){
 
-        return $this->calCurrentTotalWaitTimeQueue($avgWaitTime, $totalTicket);
+            $totalWaitTime = $totalWaitTime + $this->calServingTicketWaitTime($queue, $avgWaitTime);
+        }
+
+        return $totalWaitTime;
     }
 
     public function calQueueAvgWaitTime($queue){

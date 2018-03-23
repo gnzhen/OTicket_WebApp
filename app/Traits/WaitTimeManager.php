@@ -22,6 +22,8 @@ trait WaitTimeManager {
         return $avgWaitTime * $totalTicket;
     }
 
+    /* get branch service wait time by queue
+     */
     public function getCurrentAvgWaitTime($queue){
         $branchService = $queue->branchService;
         $avgWaitTime = $branchService->system_wait_time;

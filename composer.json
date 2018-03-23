@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^0.8.2",
         "consoletvs/charts": "5.*",
         "fideloper/proxy": "~3.3",
+        "kyslik/column-sortable": "^5.6",
         "laracasts/utilities": "^3.0",
         "laravel/framework": "5.5.*",
         "laravel/passport": "~4.0",
