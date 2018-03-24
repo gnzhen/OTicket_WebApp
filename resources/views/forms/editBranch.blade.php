@@ -44,7 +44,7 @@
 
     <div class="form-group">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary hv-loading">Save</button>
             </button>
         </div>
     </div>

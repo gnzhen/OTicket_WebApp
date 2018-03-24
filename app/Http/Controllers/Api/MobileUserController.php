@@ -10,15 +10,19 @@ use App\Service;
 use App\Queue;
 use App\Ticket;
 use App\Serving;
+use App\Calling;
 use App\BranchService;
+use App\BranchCounter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\AppController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
 use App\Events\NewQueueEvent;
+use App\Events\CancelTicketEvent;
 use App\Traits\QueueManager;
 use App\Traits\TicketManager;
+use App\Traits\CallingManager;
 use Carbon\Carbon;
 use DB;
 use Hash;
@@ -35,6 +39,8 @@ class MobileUserController extends Controller
         calCurrentTotalWaitTime as protected calCurrentTotalWaitTimeTicket;
         getCurrentAvgWaitTime as protected getCurrentAvgWaitTimeTicket;
     }
+
+    use CallingManager;
 
 	private $client;
 
@@ -114,33 +120,34 @@ class MobileUserController extends Controller
 
             return response()->json($validator->messages());
         }
-
-        /* Check multi ticket */
-    	$branchService = BranchService::findOrFail($request->branchServiceId);
-    	$mobileUser = MobileUser::findOrFail($request->mobileUserId);
-
-    	$currentTickets = Ticket::where('mobile_user_id', $request->mobileUserId)->whereIn('status', ["waiting", "serving"])->get();
-
-    	if($currentTickets != null){
-    		// Check max ticket
-    		if($currentTickets->count() > 2){
-    			return response()->json(["fail" => "You only can have maximum 3 tickets."]);
-    		}
-
-    		// Check Ticket from other branch 
-    		foreach($currentTickets as $currentTicket){
-    			if($currentTicket->queue->branchService->branch_id != $branchService->branch_id){
-    				return response()->json(["fail" => "You cannot have tickets from different branches."]);
-    			}
-    			if($currentTicket->queue->branchService->id == $branchService->id){
-    				return response()->json(["fail" => "You already have this ticket."]);
-    			}
-    		}
-    	}
+        
     	
     	DB::beginTransaction();
 
         try {
+
+	        /* Check multi ticket */
+	    	$branchService = BranchService::findOrFail($request->branchServiceId);
+	    	$mobileUser = MobileUser::findOrFail($request->mobileUserId);
+
+	    	$currentTickets = Ticket::where('mobile_user_id', $request->mobileUserId)->whereIn('status', ["waiting", "serving"])->get();
+
+	    	if($currentTickets != null){
+	    		// Check max ticket
+	    		if($currentTickets->count() > 2){
+	    			return response()->json(["fail" => "You only can have maximum 3 tickets."]);
+	    		}
+
+	    		// Check Ticket from other branch 
+	    		foreach($currentTickets as $currentTicket){
+	    			if($currentTicket->queue->branchService->branch_id != $branchService->branch_id){
+	    				return response()->json(["fail" => "You cannot have tickets from different branches."]);
+	    			}
+	    			if($currentTicket->queue->branchService->id == $branchService->id){
+	    				return response()->json(["fail" => "You already have this ticket."]);
+	    			}
+	    		}
+	    	}
 
             $branchService = BranchService::findOrFail($request->branchServiceId);
 
@@ -170,7 +177,7 @@ class MobileUserController extends Controller
             $ticket = $this->storeTicket($request);
 
             //Update Queue
-            $total_ticket = $this->refreshQueue($queue);
+            $queue = $this->refreshQueue($queue);
 
             DB::commit();
 
@@ -181,14 +188,83 @@ class MobileUserController extends Controller
             DB::rollback();
 
             throw $e;
+            
+            return response()->json(["fail" => "Opps! We've some trouble!"]);
         }
     }
 
-    public function postponeTicket(Request $request) {
-    	//
+    public function postponeUserTicket(Request $request) {
+    	$validator = Validator::make($request->all(), [
+            'ticketId' => 'required',
+            'postponeTime' => 'required|integer'
+        ]);
+        
+        if ($validator->fails()) {
+
+            return response()->json($validator->messages());
+        }
+
+        try {
+
+            DB::beginTransaction();
+            
+            $ticket = Ticket::lockForUpdate()->findOrFail($request->ticketId);
+            $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
+
+            //check ticket is waiting 
+            if($ticket->status != "waiting"){
+                
+                return response()->json(["fail" => "Opps! You've been served."]);
+            }
+
+            //check anyone behind 
+            $ticketsBehind = $this->getTicketBehind($ticket);
+
+            $ticketBehindNo = $ticketsBehind->count();
+
+            if($ticketBehindNo < 1) {
+                return response()->json(["fail" => "Opps! There's no one behind you."]);
+            }
+
+            //return variety of postpone time for customer to choose
+            $avgWaitTime = $this->getCurrentAvgWaitTimeTicket($queue);
+            $toSkip = ceil($request->postponeTime / $avgWaitTime);
+
+            if($ticketBehindNo < $toSkip){
+
+                return response()->json(["fail" => "Opps! Not enough person behind you."]);
+            }
+
+            /* Calculate issueTime */
+            //find the issue time of toSkip-th person behind him
+            $thatPerson = $ticketsBehind->values()[$toSkip - 1];
+            $thatPersonIssueTime = $thatPerson->issue_time;
+
+            //new issue time = that person issue time + 1 sec;
+            $newIssueTime = Carbon::parse($thatPersonIssueTime, 'Asia/Kuala_Lumpur')->addSeconds(1);
+
+            $ticket = $this->postponeTicketTo($ticket, $newIssueTime);
+
+            $checkTicket = $queue->tickets->where('id', $ticket->id);
+
+            DB::commit();
+
+            //Update Queue
+            $queue = $this->refreshQueue($queue);
+
+            return response()->json(["success" => "Your ticket has been postponed!"]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            throw $e;
+            
+            return response()->json(["fail" => "Opps! We've some trouble!"]);
+        }
     }
 
-    public function cancelTicket(Request $request) {
+    public function cancelUserTicket(Request $request) {
 
     	$validator = Validator::make($request->all(), [
             'id' => 'required',
@@ -205,36 +281,41 @@ class MobileUserController extends Controller
 
             //Update Ticket
 	    	$ticket = Ticket::lockForUpdate()->findOrFail($request->id);
-	    	$ticket->status = "cancelled";
-	    	$ticke->save();
+            $ticket = $this->cancelTicket($ticket);
 
             //Update Calling
             $calling = Calling::where('ticket_id', $ticket->id)->where('active', 1)->lockForUpdate()->first();
-            $calling = $this->stopCalling($calling);
+            if($calling) {
+
+                $calling = $this->stopCalling($calling);
+
+                //Update Branch Counter
+                $branchCounter = BranchCounter::lockForUpdate()->findOrFail($calling->branchCounter->id);
+                $branchCounter->serving_queue = null;
+                $branchCounter->save(); 
+                $branchCounter = $this->branchCounterStopCalling($branchCounter);
+
+                //inform the staff 
+                event(new CancelTicketEvent($calling->id));
+            }
 
             //Update Queue
-            $queue = Queue::lockForUpdate()->findOrFail($ticket->queue->id);
+            $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
             $queue = $this->refreshQueue($queue);
-
-            //Update Branch Counter
-            $branchCounter = BranchCounter::lockForUpdate()->findOrFail($calling->branchCounter);
-            $branchCounter = $this->branchCounterStopCalling($branchCounter);
 
             DB::commit();
 
-            //notify staff user cancel ticket
-        
-            //return success
+            return response()->json(["success" => "Ticket had been cancelled!"]);
 
         } catch (\Exception $e) {
 
             DB::rollback();
 
             throw $e;
-            //return fail
+            
+            return response()->json(["fail" => "Opps! We've some trouble!"]);
         }
     }
-
 
     public function getUserCurrentTicketsAndDetails(Request $request){
 
@@ -248,39 +329,123 @@ class MobileUserController extends Controller
 
         } 
         else {
-        	$tickets = Ticket::where('mobile_user_id', $request->id)->whereIn('status', ["waiting", "serving"])->get();
 
-        	$ticketsWithDetails = [];
+            DB::beginTransaction();
 
-        	foreach($tickets as $ticket){
-        		$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
+            try {
 
-        		$ticketWithDetails['id'] = $ticket->id;
-        		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
-        		$ticketWithDetails['issue_time'] = $ticket->issue_time;
-        		$ticketWithDetails['queue_id'] = $ticket->queue_id;
-        		$ticketWithDetails['wait_time'] = $ticket->wait_time;
-        		$ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
-        		$ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
-        		$ticketWithDetails['postponed'] = $ticket->postponed;
-        		$ticketWithDetails['status'] = $ticket->status;
-        		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
-        		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
-        		$ticketWithDetails['serve_time'] = Carbon::now('Asia/Kuala_Lumpur')->addSeconds($ticket->wait_time)->format('h:i A');
-	    		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
+            	$tickets = Ticket::where('mobile_user_id', $request->id)->whereIn('status', ["waiting", "serving"])->get();
 
-	        	if($ticketServingNow){
-	        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
-	        	}
-	        	else{
-	        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
-	        	}
+            	$ticketsWithDetails = [];
+
+            	foreach($tickets as $ticket){
+
+                    $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
+                    $queue = $this->refreshQueue($queue);
+
+            		$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
+
+            		$ticketWithDetails['id'] = $ticket->id;
+            		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
+            		$ticketWithDetails['issue_time'] = $ticket->issue_time;
+            		$ticketWithDetails['queue_id'] = $ticket->queue_id;
+            		$ticketWithDetails['wait_time'] = $ticket->wait_time;
+            		$ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
+            		$ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
+            		$ticketWithDetails['postponed'] = $ticket->postponed;
+            		$ticketWithDetails['status'] = $ticket->status;
+            		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
+            		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
+            		$ticketWithDetails['serve_time'] = Carbon::now('Asia/Kuala_Lumpur')->addSeconds($ticket->wait_time)->format('h:i A');
+    	    		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
+
+    	        	if($ticketServingNow){
+    	        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
+    	        	}
+    	        	else{
+    	        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
+    	        	}
 
 
-        		array_push($ticketsWithDetails, $ticketWithDetails);
-        	}
+            		array_push($ticketsWithDetails, $ticketWithDetails);
+            	}
 
-    		return response()->json($ticketsWithDetails);
+                DB::commit();
+
+        		return response()->json($ticketsWithDetails);
+
+            } catch (\Exception $e) {
+
+                DB::rollback();
+
+                throw $e;
+            
+                return response()->json(["fail" => "Opps! We've some trouble!"]);
+            }
+        }
+    }
+
+    public function getPostponeDetails(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            
+            return response()->json($validator->messages());
+
+        } 
+        else {
+
+            DB::beginTransaction();
+
+            try {
+
+                $ticket = Ticket::findOrFail($request->id);
+                
+                $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
+                $queue = $this->refreshQueue($queue);
+
+                //check ticket is waiting 
+                if($ticket->status != "waiting"){
+                    
+                    return response()->json(["fail" => "Opps! You've been served."]);
+                }
+
+                //check anyone behind 
+                $ticketsBehind = $this->getTicketBehind($ticket);
+                $ticketBehindNo = $ticketsBehind->count();
+
+                if($ticketBehindNo < 1) {
+                    return response()->json(["fail" => "Opps! There's no one behind you."]);
+                }
+
+                //return variety of postpone time for customer to choose
+                $avgWaitTime = $this->getCurrentAvgWaitTimeTicket($queue);
+                $postponeTimes = [];
+
+                for($i = 1; $i <= $ticketBehindNo; $i++){
+                    $postponeTime = $i * $avgWaitTime;
+
+                    array_push($postponeTimes, $postponeTime);
+                }
+
+                DB::commit();
+                
+                if($postponeTimes)
+                    return response()->json(["postpone_times" => $postponeTimes]);
+                else
+                    return response()->json(["fail" => "Opps! There's no available postpone time."]);
+
+                } catch (\Exception $e) {
+
+                    DB::rollback();
+
+                    throw $e;
+            
+                    return response()->json(["fail" => "Opps! We've some trouble!"]);
+            }
         }
     }
 
@@ -296,33 +461,56 @@ class MobileUserController extends Controller
 
         } 
         else {
-        	$ticket = Ticket::findOrFail($request->id);
-        	$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
 
-    		$ticketWithDetails['id'] = $ticket->id;
-    		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
-    		$ticketWithDetails['issue_time'] = $ticket->issue_time;
-    		$ticketWithDetails['queue_id'] = $ticket->queue_id;
-    		$ticketWithDetails['wait_time'] = $ticket->wait_time;
-    		$ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
-    		$ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
-    		$ticketWithDetails['postponed'] = $ticket->postponed;
-    		$ticketWithDetails['status'] = $ticket->status;
-    		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
-    		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
-    		$ticketWithDetails['serve_time'] = $ticket->serve_time->format('h:i A');
-    		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
+            DB::beginTransaction();
 
-        	if($ticketServingNow){
-        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
-        	}
-        	else{
-        		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
-        	}
+            try {
 
+            	$ticket = Ticket::findOrFail($request->id);
 
-    		return response()->json($ticketWithDetails);
-        	
+                $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
+                $queue = $this->refreshQueue($queue);
+
+                if($ticket->status != "waiting"){
+
+                    return response()->json(["fail" => "This ticket has been served."]);
+                }
+
+            	$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
+                $serveTime = Carbon::parse($ticket->serve_time, 'Asia/Kuala_Lumpur');
+
+        		$ticketWithDetails['id'] = $ticket->id;
+        		$ticketWithDetails['ticket_no'] = $ticket->ticket_no;
+        		$ticketWithDetails['issue_time'] = $ticket->issue_time;
+        		$ticketWithDetails['queue_id'] = $ticket->queue_id;
+        		$ticketWithDetails['wait_time'] = $ticket->wait_time;
+        		$ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
+        		$ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
+        		$ticketWithDetails['postponed'] = $ticket->postponed;
+        		$ticketWithDetails['status'] = $ticket->status;
+        		$ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
+        		$ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
+        		$ticketWithDetails['serve_time'] = $serveTime->format('h:i A');
+        		$ticketWithDetails['disposed_time'] = $ticket->disposed_time;
+
+            	if($ticketServingNow){
+            		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
+            	}
+            	else{
+            		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
+            	}
+
+                DB::commit();
+
+        		return response()->json($ticketWithDetails);
+            } catch (\Exception $e) {
+
+                DB::rollback();
+
+                throw $e;
+                
+                return response()->json(["fail" => "Opps! We've some trouble!"]);
+            }
         }
     }
 
@@ -377,67 +565,62 @@ class MobileUserController extends Controller
     	return response()->json($branches);
     }
 
-    public function getServices(){
+    public function getBranchServicesDetailsByBranchId(Request $request){
 
-    	$services = Service::get();
-
-    	return response()->json($services);
-    }
-
-    public function getBranchServices(){
-
-    	$branchServices = BranchService::get();
-
-    	return response()->json($branchServices);
-    }
-
-    public function getBranchServicesByBranchId(Request $request){
-
-    	$validator = Validator::make($request->all(), [
-    		'id' => 'required'
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
         ]);
 
         if ($validator->fails()) {
-			
+            
             return response()->json($validator->messages());
 
         } 
         else {
 
-        	$branch = Branch::findOrFail($request->id);
+            DB::beginTransaction();
+            
+            try {
 
-        	$branchServices = $branch->branchServices;
+                $branch = Branch::findOrFail($request->id);
+                $branchServices = $branch->branchServices;
 
-    		return response()->json($branchServices);
-        }
-    }
+                $branchServicesWithDetails = [];
 
-    public function getQueuesByBranchId(Request $request){
+                foreach($branchServices as $branchService){
 
-    	$validator = Validator::make($request->all(), [
-    		'id' => 'required'
-        ]);
+                    $queue = Queue::where('branch_service_id', $branchService->id)->where('active','=', 1)->lockForUpdate()->first();
+                    $queue = $this->refreshQueue($queue);
 
-        if ($validator->fails()) {
-			
-            return response()->json($validator->messages());
-        } 
-        else {
-        	$branch = Branch::findOrFail($request->id);
+                    $waitTime = 0;
+                    $pendingTicket = 0;
 
-        	$branchServices = $branch->branchServices;
+                    if($queue != null){
+                        $waitTime = $queue->wait_time;
+                        $pendingTicket = $queue->pending_ticket;
+                    }
 
-        	$queues = []; 
+                    $branchServiceWithDetails['id'] = $branchService->id;
+                    $branchServiceWithDetails['service_name'] = $branchService->service->name;
+                    $branchServiceWithDetails['wait_time'] = $waitTime;
+                    $branchServiceWithDetails['pending_ticket'] = $pendingTicket;
 
-        	foreach($branchServices as $branchService){
 
-                $queue = $branchService->active_queue->first();
+                    array_push($branchServicesWithDetails, $branchServiceWithDetails);
+                }
 
-        		if($queue != null)
-        			array_push($queues, $queue);
-        	}
+                DB:commit();
 
-    		return response()->json($queues);
+                return response()->json($branchServicesWithDetails);
+
+            } catch (\Exception $e) {
+
+                DB::rollback();
+
+                throw $e;
+
+                return response()->json(["fail" => "Opps! We've some trouble!"]);
+            }
         }
     }
 

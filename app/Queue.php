@@ -17,7 +17,7 @@ class Queue extends Model
 
     public function tickets(){
     	
-    	return $this->hasMany(Ticket::class);
+    	return $this->hasMany(Ticket::class)->orderBy('issue_time');
     }
 
     public function branchCounters(){

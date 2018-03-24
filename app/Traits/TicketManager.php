@@ -31,14 +31,8 @@ trait TicketManager {
         return $ticket;
     }
 
-    public function waitTicket($ticket){
-        $ticket->status = 'waiting';
-        $ticket->save();
-
-        return $ticket;
-    }
-
     public function serveTicket($ticket){
+
         $ticket->status = 'serving';
         $ticket->ppl_ahead = 0;
         $ticket->save();
@@ -47,6 +41,7 @@ trait TicketManager {
     }
 
     public function skipTicket($ticket){
+
         $ticket->status = 'skipped';
         $ticket->ppl_ahead = 0;
         $ticket->disposed_time = Carbon::now('Asia/Kuala_Lumpur');
@@ -66,6 +61,17 @@ trait TicketManager {
 
         return $ticket;
     }
+
+    public function cancelTicket($ticket) {
+
+        $ticket->status = "cancelled";
+        $ticket->ppl_ahead = 0;
+        $ticket->disposed_time = Carbon::now('Asia/Kuala_Lumpur');
+        $ticket->save();
+
+        return $ticket;
+    }
+
     public function refreshTicket($queue, $ticket){
 
         $ticket->ppl_ahead = $this->getWaitingTicketInfrontNo($queue, $ticket);
@@ -80,6 +86,7 @@ trait TicketManager {
         $ticket->save();
 
         if($change != null){
+
             //notify this ticket holder
         }
 
@@ -138,7 +145,6 @@ trait TicketManager {
     }
 
     public function postponeOtherTicket($ticket) {
-        echo "serving ticket id: ".$ticket->id;
 
         $postponedTickets = [];
 
@@ -147,22 +153,14 @@ trait TicketManager {
         if($waitingTickets){
             foreach($waitingTickets as $waitingTicket) {
 
-                echo ", waiting ticketid: ".$waitingTicket->id;
-
                 //check if clash with serving ticket
                 if($this->ticketClash($ticket, $waitingTicket)){
-
-                    echo ", clash";
 
                     //postpone only if got ppl behind
                     $ticketsBehind = $this->getTicketBehind($waitingTicket);
                     $ticketBehindNo = $ticketsBehind->count();
 
-                    echo ", ticketBehindNo: ".$ticketBehindNo;
-
                     if($ticketBehindNo > 0) {
-
-                        echo ", ticketsBehind: ".$ticketsBehind;
 
                         //calculate issue time
                         $servingDoneTime = $this->getEstimatedDoneTime($ticket);
@@ -178,11 +176,7 @@ trait TicketManager {
                         $thatPersonIssueTime = $thatPerson->issue_time;
                         $newIssueTime = Carbon::parse($thatPersonIssueTime, 'Asia/Kuala_Lumpur')->addSeconds(1);
 
-                        echo ", servingDoneTime: ".$servingDoneTime.", thatPerson: ".$thatPerson.", newIssueTime: ".$newIssueTime.", postponedTicketid: ".$ticket->id.", originalIssueTime: ".$ticket->issue_time;
-
                         $postponedTicket = $this->postponeTicketTo($ticket, $newIssueTime);
-
-                        echo ", postponedTicketid: ".$postponedTicket->id.", newIssueTime: ".$postponedTicket->issue_time;
 
                         if($postponedTicket != null) {
                             array_push($postponedTickets, $postponedTicket);
@@ -230,18 +224,6 @@ trait TicketManager {
         }
     }
 
-    public function postponeTicketByUser($ticket, $postponeTime){
-
-        //find number toSkip
-            //toskip = ceil(postponeTime / avgwaittime)
-
-        //check number of ticket behind < toSkip
-        //if false, return null
-        //if true, renew the issue time
-            //calculate issue time (toSkip * awt)
-            //update ticket issue time & postpone
-    }
-
     public function postponeTicketTo($ticket, $issueTime) {
 
         $ticket->issue_time = $issueTime;
@@ -277,7 +259,9 @@ trait TicketManager {
 
     public function getTicketBehind($ticket) {
 
-        return $ticket->queue->tickets->where('issue_time', '>', $ticket->issue_time);
+        $ticketsBehind = Ticket::where('queue_id', $ticket->queue_id)->where('issue_time', '>', $ticket->issue_time)->get();
+
+        return $ticketsBehind;
     }
 
     public function calTicketWaitTime($queue, $ticket){

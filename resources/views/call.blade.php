@@ -93,7 +93,6 @@
         </script>
     @endif
 
-
     {{-- Timer --}}
 
     @if($calling != null)

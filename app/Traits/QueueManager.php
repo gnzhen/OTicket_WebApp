@@ -8,7 +8,7 @@ use App\Queue;
 use Carbon\Carbon;
 use App\Http\Controllers\AppController;
 use App\Traits\WaitTimeManager;
-use App\Events\CloseQueueEvent;
+use App\Events\CancelTicketEvent;
 use App\Events\NewQueueEvent;
 
 trait QueueManager {
@@ -56,9 +56,7 @@ trait QueueManager {
         }
 
         //Update ticket in queue
-        $tickets = $queue->tickets;
-
-        foreach($tickets as $ticket){
+        foreach($queue->tickets as $ticket){
 
             if($ticket->status == "serving" || $ticket->status == "waiting"){
 

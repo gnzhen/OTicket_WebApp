@@ -25,8 +25,9 @@ Broadcast::channel('newQueueChannel.*', function ($branchId) {
 	return $branchId;
 });
 
-Broadcast::channel('closeQueueChannel.*', function ($branchId) {
+Broadcast::channel('cancelTicketChannel.*', function ($callingId) {
 
-	return $branchId;
+	return $callingId;
+
 });
 

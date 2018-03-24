@@ -61,6 +61,7 @@ const call = new Vue({
         messages: []
     },
     created() {
+
         Echo.join('newQueueChannel.' + branchId)
         .listen('NewQueueEvent', (e) => {
             console.log(window.location.pathname);
@@ -70,11 +71,11 @@ const call = new Vue({
             }
         });
 
-        Echo.join('closeQueueChannel.' + branchId)
-        .listen('NewQueueEvent', (e) => {
+        Echo.join('cancelTicketChannel.' + callingId)
+        .listen('CancelTicketEvent', (e) => {
             console.log(window.location.pathname);
             if(window.location.pathname == "/call"){
-                alert(e.serviceName + "queue closed.")
+                alert("User cancel ticket.")
                 window.location.reload(true);
             }
         });

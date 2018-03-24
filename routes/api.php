@@ -24,8 +24,12 @@ Route::get('branches', 'Api\MobileUserController@getBranches')->name('mobile.bra
 Route::get('services', 'Api\MobileUserController@getServices')->name('mobile.services');
 Route::get('branchServices', 'Api\MobileUserController@getBranchServices');
 Route::post('branchServicesByBranchId', 'Api\MobileUserController@getBranchServicesByBranchId');
+Route::post('branchServicesDetailsByBranchId', 'Api\MobileUserController@getBranchServicesDetailsByBranchId');
 Route::post('queuesByBranchId', 'Api\MobileUserController@getQueuesByBranchId');
 Route::post('issueTicket', 'Api\MobileUserController@issueTicket');
+Route::post('postponeDetails', 'Api\MobileUserController@getPostponeDetails');
+Route::post('postponeTicket', 'Api\MobileUserController@postponeUserTicket');
+Route::post('cancelTicket', 'Api\MobileUserController@cancelUserTicket');
 Route::post('userCurrentTickets', 'Api\MobileUserController@getUserCurrentTicketsAndDetails');
 Route::post('ticketDetails', 'Api\MobileUserController@getTicketDetails');
 Route::post('histories', 'Api\MobileUserController@getUserHistories');

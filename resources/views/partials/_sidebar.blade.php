@@ -31,7 +31,7 @@
     <!-- Sidebar Links -->
     <div class="sidebar-body">
         <ul class="list-unstyled components" role="button">
-            <li class="{{ Request::is('home') ? "active" : "" }}"><a href="{{ route('home') }}">Home</a></li>
+            <li class="hv-loading {{ Request::is('home') ? "active" : "" }}"><a href="{{ route('home') }}">Home</a></li>
 
              @if(Auth::check())
                 @if(Auth::user()->isSuperAdmin() || Auth::user()->isAdmin())
@@ -47,17 +47,17 @@
                         </a> 
 
                         <ul class="list-unstyled" id="adminMenu">
-                            <li class="{{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configurations</a></li>
-                            <li class="{{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
-                            <li class="{{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
+                            <li class="hv-loading {{ Request::is('config') ? "active" : "" }}"><a href="{{ route('config.index') }}">Configurations</a></li>
+                            <li class="hv-loading {{ Request::is('user') ? "active" : "" }}"><a href="{{ route('user.index') }}">Manage Users</a></li>
+                            <li class="hv-loading {{ Request::is('report') ? "active" : "" }}"><a href="{{ route('report.index') }}">Report</a></li>
                         </ul>
                     </li>
                 @endif
             @endif
 
-            <li class="{{ Request::is('call') ? "active" : "" }}"><a href="{{ route('call.index') }}">Ticket Calling</a></li>
-            <li class="{{ Request::is('printer') ? "active" : "" }}"><a href="{{ route('printer.index') }}">Ticket Machine</a></li>
-            <li class="{{ Request::is('display') ? "active" : "" }}"><a href="{{ route('display.index') }}">Display</a></li>
+            <li class="hv-loading {{ Request::is('call') ? "active" : "" }}"><a href="{{ route('call.index') }}">Ticket Calling</a></li>
+            <li class="hv-loading {{ Request::is('printer') ? "active" : "" }}"><a href="{{ route('printer.index') }}">Ticket Machine</a></li>
+            <li class="hv-loading {{ Request::is('display') ? "active" : "" }}"><a href="{{ route('display.index') }}">Display</a></li>
         </ul>
     </div>
 </nav>

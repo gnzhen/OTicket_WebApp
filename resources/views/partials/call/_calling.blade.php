@@ -1,5 +1,6 @@
-<div class="card">
-    <div class="card-header" style="font-size: 20px;">{{ $queue->branchService->service->name }}</div>
+<div class="card" id="calling">
+    <div class="card-header" style="font-size: 20px;">{{ $queue->branchService->service->name }}
+    </div>
     <div class="card-body">
         <div class="col-md-12">
             <div class="row">
@@ -37,7 +38,7 @@
             {!! Form::open(['route'=>['call.call']]) !!}
                 <input type="hidden" name="queue_id" value="{{ $queue->id }}">
                 <input type="hidden" name="branch_counter_id" value="{{ $user->branchCounter->id }}">
-                <button type="submit" id="btnCallNext" data-id="{{ $queue->id }}" class="btn btn-primary btn-block btn-lg {{ $user->branchCounter->serving_queue == null ? '' : 'disabled' }}">Call Next</button>
+                <button type="submit" id="btnCallNext" data-id="{{ $queue->id }}" class="btn btn-primary btn-block btn-lg hv-loading {{ $user->branchCounter->serving_queue == null ? '' : 'disabled' }}">Call Next</button>
             {!! Form::close() !!}
         </div>
 
@@ -50,7 +51,7 @@
                         @if($calling != null)
                             <input type="hidden" name="calling_id" value="{{ $calling->id }}">
                         @endif
-                        <button type="submit" id="btnRecall" data-id="{{ $queue->id }}" class="btn btn-success btn-block {{ $user->branchCounter->serving_queue == $queue->id && $calling != null ? '' : 'disabled' }}">Recall</button>
+                        <button type="submit" id="btnRecall" data-id="{{ $queue->id }}" class="btn btn-success btn-block hv-loading {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Recall</button>
                     {!! Form::close() !!}
                 </div>
                 <div class="col-md-6">
@@ -60,7 +61,7 @@
                          @if($calling != null)
                             <input type="hidden" name="calling_id" value="{{ $calling->id }}">
                         @endif
-                        <button type="submit" id="btnSkip" data-id="{{ $queue->id }}" class="btn btn-secondary btn-block {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Skip</button>
+                        <button type="submit" id="btnSkip" data-id="{{ $queue->id }}" class="btn btn-secondary btn-block hv-loading {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Skip</button>
                     {!! Form::close() !!}
                 </div>
             </div>
@@ -74,7 +75,7 @@
                     <input type="hidden" name="calling_id" value="{{ $calling->id }}">
                 @endif
                 <input type="hidden" name="user_id" value="{{ $user->id }}">
-                <button type="submit" id="btnDone" data-id="{{ $queue->id }}" class="btn btn-dark btn-block btn-lg {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Done</button>
+                <button type="submit" id="btnDone" data-id="{{ $queue->id }}" class="btn btn-dark btn-block btn-lg hv-loading {{ $user->branchCounter->serving_queue == $queue->id ? '' : 'disabled' }}">Done</button>
             {!! Form::close() !!}
         </div>
     </div>

@@ -38,7 +38,7 @@ class BranchCounter extends Model
 
     public function active_callings(){
 
-        return $this->hasMany(Calling::class)->where('active','=', 1);
+        return $this->hasMany(Calling::class)->where('active','=', 1)->orderByDesc('call_time');
     
     }
 }

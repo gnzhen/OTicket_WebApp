@@ -12,7 +12,7 @@
     <div class="form-group">
         <div class="col-md-12 offset-6">
             <button type="button" class="btn btn-light" data-dismiss="modal">No</button>
-            <button type="submit" class="btn btn-primary">Yes</button>
+            <button type="submit" class="btn btn-primary hv-loading">Yes</button>
         </div>
     </div>
 </form>

@@ -10,22 +10,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class CloseQueueEvent implements ShouldBroadcast
+class CancelTicketEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $branchId;
-    public $serviceName;
+    public $callingId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($branchId, $serviceName)
+    public function __construct($callingId)
     {
-        $this->branchId = $branchId;
-        $this->serviceName = $serviceName;
+        $this->callingId = $callingId;
     }
 
     /**
@@ -35,7 +33,7 @@ class CloseQueueEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('closeQueueChannel.'.$this->branchId);
+        return new PresenceChannel('cancelTicketChannel.'.$this->callingId);
     }
 
 }

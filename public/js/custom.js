@@ -5,7 +5,14 @@ $( document ).ready(function( $ ) {
 
 	// setInitialSidebar();
 	// getAllSession();
+	// loadTable(1);
 
+	showLoading(false);
+
+
+	$('.hv-loading').click(function(){
+		showLoading(true);
+	});
 
     $('.navbar-toggler').on('click', function () {
         toggleSidebar();
@@ -177,6 +184,15 @@ $( document ).ready(function( $ ) {
 	    $('.wrapper').toggleClass('active');
 	}
 
+	function showLoading(show) {
+		if(show){
+			$('body').addClass('loading');
+		}	
+		else{
+			$('body').removeClass('laoding');
+		}
+	}
+
 	function showModal(id){
 		jQuery(id).modal('show');
 	}
@@ -284,6 +300,16 @@ $( document ).ready(function( $ ) {
 
 		return date;
     }
+
+    function loadTable(branchId){
+	$.get('ticketsJSON', {'branchId':branchId})
+		.done(function(data) {
+			console.log("loadTable: " + data);
+		})
+		.fail(function(xhr, status, error){
+			console.log(xhr);
+		});		
+	}
 	
 
 // });

@@ -117,8 +117,8 @@ class PrinterController extends Controller
 
                 $ticket = $this->storeTicket($request);
 
-                //Update Queue
-                $total_ticket = $this->refreshQueue($queue);
+                //Update Queue & tickets
+                $queue = $this->refreshQueue($queue);
 
                 DB::commit();
 
