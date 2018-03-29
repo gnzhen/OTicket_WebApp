@@ -168,6 +168,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -236,6 +238,8 @@ return [
         'Datatables' => Yajra\DataTables\Facades\DataTables::class,
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'PushNotification' => Davibennun\LaravelPushNotification\Facades\PushNotification::class,
     ],
 
 ];

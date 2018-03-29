@@ -56,6 +56,23 @@ class PrinterController extends Controller
         return view('printer')->withUser($user)->withQueues($queues)->withBranch($branch)->withBranchServices($branchServices)->withAppController($appController);
     }
 
+    public function showQRCode(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'branchServiceId' => 'required|integer',
+        ]);
+        
+        if ($validator->fails()) {
+
+            Session::flash('fail', 'Issue ticket fail.');
+            return back();
+        }
+
+        $branchService = BranchService::findOrFail($request->branchServiceId);
+
+        return view('qrcode')->withBranchService($branchService);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

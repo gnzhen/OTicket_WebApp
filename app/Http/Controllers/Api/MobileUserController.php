@@ -26,6 +26,7 @@ use App\Traits\CallingManager;
 use Carbon\Carbon;
 use DB;
 use Hash;
+use PushNotification;
 
 class MobileUserController extends Controller
 {
@@ -403,7 +404,7 @@ class MobileUserController extends Controller
             try {
 
                 $ticket = Ticket::findOrFail($request->id);
-                
+
                 $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
                 $queue = $this->refreshQueue($queue);
 
@@ -590,12 +591,12 @@ class MobileUserController extends Controller
                 foreach($branchServices as $branchService){
 
                     $queue = Queue::where('branch_service_id', $branchService->id)->where('active','=', 1)->lockForUpdate()->first();
-                    $queue = $this->refreshQueue($queue);
 
                     $waitTime = 0;
                     $pendingTicket = 0;
 
                     if($queue != null){
+                        $queue = $this->refreshQueue($queue);
                         $waitTime = $queue->wait_time;
                         $pendingTicket = $queue->pending_ticket;
                     }
@@ -609,7 +610,7 @@ class MobileUserController extends Controller
                     array_push($branchServicesWithDetails, $branchServiceWithDetails);
                 }
 
-                DB:commit();
+                DB::commit();
 
                 return response()->json($branchServicesWithDetails);
 

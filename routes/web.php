@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/report/download', 'ReportController@download')->name('report.download');
 	Route::post('/report', 'ReportController@back')->name('report.back');
 	Route::post('/report/result', 'ReportController@result')->name('report.result');
-
+	Route::post('/printer/qrcode', 'PrinterController@showQRCode')->name('printer.qrcode');
 	
 	Route::get('getSidebarSession', 'AppController@getSidebarSession');
 	Route::get('getTabSession', 'AppController@getTabSession');

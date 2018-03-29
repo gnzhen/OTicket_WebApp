@@ -18,7 +18,9 @@
         "mpociot/laravel-firebase-sync": "^1.0",
         "pusher/pusher-php-server": "^3.0",
         "tightenco/ziggy": "^0.6.0",
-        "yajra/laravel-datatables-oracle": "~8.0"
+        "yajra/laravel-datatables-oracle": "~8.0",
+        "simplesoftwareio/simple-qrcode": "~2",
+        "davibennun/laravel-push-notification": "dev-laravel5"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

@@ -10,6 +10,7 @@ use App\Ticket;
 use App\BranchService;
 use App\Traits\WaitTimeManager;
 use Session;
+use DB;
 
 class HomeController extends Controller
 {
@@ -54,6 +55,39 @@ class HomeController extends Controller
     }
 
     public function calGlobalAvgWaitTime(){
+
+        // Calculate average wait time of each branchService
+        $branchServices = BranchService::get();
+        
+        foreach($branchServices as $branchService){
+
+            DB::beginTransaction();
+
+            try {
+
+                $queues = $branchService->inactive_queue;
+                $totalWaitTime = $queues->sum('avg_wait_time');
+                $noOfQueue = $queues->count();
+                $sysWaitTime = $this->calAvgWaitTime($totalWaitTime, $noOfQueue);
+
+                $branchService->system_wait_time = $sysWaitTime;
+                $branchService->save();
+
+                DB::commit();
+
+                $appController = new AppController;
+
+                echo $branchService->branch->name
+                    . " (" . $branchService->service->name . ")" 
+                    . ": ". $appController->secToString($sysWaitTime) .", ";
+
+            } catch (\Exception $e) {
+
+                DB::rollback();
+
+                throw $e;
+            }
+        }
 
         $branchServices = BranchService::get();
         $totalBranchService = 0;

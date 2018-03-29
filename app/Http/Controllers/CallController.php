@@ -236,6 +236,17 @@ class CallController extends Controller
         }
         if($calling != null){
 
+            // $deviceToken = "eEMToLxktIk:APA91bHoaON0aOyaq15uvWrZApUJOh9apLvSI4VJKQ9ALA3cJVOLj5AgiVuNchuUoRKQ9TNK5zP4IQi-mwS3UhpxghLY3hOQg-Vr4QAQlXhhTw0LxU00T7nmgZUMoOELCXMtKhQNWUOD";
+
+            // $data['title'] = "Calling ticket ".$calling->ticket->ticket_no;
+            // $data['body'] = "Counter: ".$calling->branchCounter->counter->name;
+            // $data['type'] = "call";
+            // $data['data'] = $calling;
+
+            // $noti = PushNotification::Message($data);
+
+            // PushNotification::app('oticket')->to($deviceToken)->send($noti);
+
             return $calling->ticket->ticket_no;
         }
         else{
