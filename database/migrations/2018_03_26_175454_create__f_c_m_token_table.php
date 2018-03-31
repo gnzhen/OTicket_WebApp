@@ -13,9 +13,9 @@ class CreateFCMTokenTable extends Migration
      */
     public function up()
     {
-        Schema::create('FCMToken', function (Blueprint $table) {
+        Schema::create('FCMTokens', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->nullable();
+            $table->unsignedInteger('user_id')->unique();
             $table->string('token',512)->nullable();
             $table->string('apns_id',512)->nullable();
             $table->timestamps();

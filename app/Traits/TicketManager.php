@@ -8,10 +8,12 @@ use App\Change;
 use App\MobileUser;
 use Carbon\Carbon;
 use App\Traits\WaitTimeManager;
+use App\Traits\FCMManager;
 
 trait TicketManager {
 
     use WaitTimeManager;
+    use FCMManager;
 
     public function storeTicket(Request $request){
     	$ticket = new Ticket();
@@ -79,15 +81,26 @@ trait TicketManager {
 
         $ticket->save();  
 
-        //check for serve_time change
+        $change = null;
+
+        if($ticket->mobile_user_id != null){
+
+            $change = $this->checkChange($ticket);
+        }
+
+        //serve_time change
         $ticket->serve_time = $this->calServeTime($ticket);
-        $change = $this->checkChange($ticket);
 
         $ticket->save();
 
+        //notify user for wait time change
         if($change != null){
+            $changeNoti = $this->notifyChange($ticket->mobile_user_id, $ticket, $change);
+        }
 
-            //notify this ticket holder
+        //notify user for turn in 5 min
+        if($this->checkNear($ticket)){
+            $nearNoti = $this->notifyNear($ticket->mobile_user_id, $ticket);
         }
 
         return $ticket;
@@ -285,7 +298,6 @@ trait TicketManager {
         return $totalWaitTime;
     }
 
-
     public function calServingTicketWaitTime($queue, $avgWaitTime){
 
         //get the earliest serving person in queue
@@ -324,17 +336,21 @@ trait TicketManager {
             $serveTimeDiff = $oldServeTime->diffInSeconds($newServeTime);
         }
 
-        // Create change if serve time change is more than 5 minutes
-        if($serveTimeDiff > 300){
+        // Create change if serve time change is more than 3 minutes
+        if($serveTimeDiff > 180){
             $change = new Change();
+            $change->ticket_id = $ticket->id;
             $change->change = $condition;
             $change->time = $serveTimeDiff;
             $change->save();
 
             return $change;
         }
+    }
 
-        return null;
+    public function checkNear($ticket){
+
+        return $ticket->wait_time < 310 && $ticket->wait_time > 300;
     }
 
 }

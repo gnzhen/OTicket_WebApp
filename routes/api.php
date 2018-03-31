@@ -33,6 +33,16 @@ Route::post('cancelTicket', 'Api\MobileUserController@cancelUserTicket');
 Route::post('userCurrentTickets', 'Api\MobileUserController@getUserCurrentTicketsAndDetails');
 Route::post('ticketDetails', 'Api\MobileUserController@getTicketDetails');
 Route::post('histories', 'Api\MobileUserController@getUserHistories');
+Route::post('tokenToServer', 'Api\MobileUserController@saveToken');
+
+/* FCM */
+Route::get('testFCM', 'Api\FCMController@test');
+Route::post('notifyCall', 'Api\FCMController@notifyCall');
+Route::post('notifyRecall', 'Api\FCMController@notifyRecall');
+Route::post('notifySkip', 'Api\FCMController@notifySkip');
+Route::post('notifyNext', 'Api\FCMController@notifyNext');
+Route::post('notifyNear', 'Api\FCMController@notifyNear');
+Route::post('notifyChange', 'Api\FCMController@notifyChange');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

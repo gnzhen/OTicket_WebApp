@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Change extends Model
 {
     //
-    public function tickets(){
+    public function ticket(){
     	
-    	return $this->belongsToMany(Ticket::class);
+    	return $this->hasOne(Ticket::class);
     }
 }

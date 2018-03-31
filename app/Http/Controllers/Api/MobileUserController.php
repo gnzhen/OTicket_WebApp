@@ -13,6 +13,7 @@ use App\Serving;
 use App\Calling;
 use App\BranchService;
 use App\BranchCounter;
+use App\FCMToken;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\AppController;
@@ -54,6 +55,47 @@ class MobileUserController extends Controller
 
 		return response()->json(['test' => 'test']);
 	}
+
+    public function saveToken(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'mobileUserId' => 'required|integer',
+            'token' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+
+            return response()->json($validator->messages());
+        }
+        
+        
+        DB::beginTransaction();
+
+        try {
+
+            $FCMToken = FCMToken::where('user_id', $request->mobileUserId)->first();
+
+            if($FCMToken == null){
+                
+                $FCMToken = new FCMToken;
+            }
+
+            $FCMToken->user_id = $request->mobileUserId;
+            $FCMToken->token = $request->token;
+            $FCMToken->save();
+
+            DB::commit();
+
+            return response()->json(['success' => $FCMToken]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            throw $e;
+            
+            return response()->json(["fail" => "Opps! We've some trouble!"]);
+        }
+    }
 
     public function register(Request $request) {
 
@@ -195,6 +237,7 @@ class MobileUserController extends Controller
     }
 
     public function postponeUserTicket(Request $request) {
+
     	$validator = Validator::make($request->all(), [
             'ticketId' => 'required',
             'postponeTime' => 'required|integer'
@@ -250,9 +293,15 @@ class MobileUserController extends Controller
 
             DB::commit();
 
+            DB::beginTransaction();
+
+            $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
+
             //Update Queue
             $queue = $this->refreshQueue($queue);
 
+            DB::commit();
+            
             return response()->json(["success" => "Your ticket has been postponed!"]);
 
         } catch (\Exception $e) {

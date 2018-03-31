@@ -13,4 +13,9 @@ class MobileUser extends Model
     	
     	return $this->hasMany(Ticket::class);
     }
+
+    public function FCMToken(){
+
+    	return $this->hasOne(FCMToken::class);
+    }
 }

@@ -19,7 +19,7 @@ class CreateChangesTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->string('change');
             $table->integer('time');
-            $table->text('ticket_ids')->nullable();
+            $table->unsignedBigInteger('ticket_id')->index();
             $table->timestamps();
         });
     }

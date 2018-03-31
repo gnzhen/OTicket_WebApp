@@ -59,10 +59,18 @@ class TableRelations extends Migration
             $table->foreign('queue_id')->references('id')->on('queues');
         });
 
+        Schema::table('changes', function($table){
+            $table->foreign('ticket_id')->references('id')->on('tickets');
+        });
+
         Schema::table('ticket_change', function($table) {
             $table->unique(['ticket_id', 'change_id']);
             $table->foreign('ticket_id')->references('id')->on('tickets');
             $table->foreign('change_id')->references('id')->on('changes');
+        });
+
+        Schema::table('FCMTokens', function($table) {
+            $table->foreign('user_id')->references('id')->on('mobile_users');
         });
     }
 
