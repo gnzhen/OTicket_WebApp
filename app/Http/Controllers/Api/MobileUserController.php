@@ -521,10 +521,10 @@ class MobileUserController extends Controller
                 $queue = Queue::lockForUpdate()->findOrFail($ticket->queue_id);
                 $queue = $this->refreshQueue($queue);
 
-                if($ticket->status != "waiting"){
+                // if($ticket->status != "waiting"){
 
-                    return response()->json(["fail" => "This ticket has been served."]);
-                }
+                //     return response()->json(["fail" => "This ticket has been served."]);
+                // }
 
             	$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
                 $serveTime = Carbon::parse($ticket->serve_time, 'Asia/Kuala_Lumpur');

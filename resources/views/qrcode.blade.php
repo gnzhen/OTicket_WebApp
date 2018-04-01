@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '| Counter')
+@section('title', '| QRCode')
 
 @section('content')
 

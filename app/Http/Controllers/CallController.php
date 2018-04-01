@@ -224,10 +224,10 @@ class CallController extends Controller
 
                         $calling = $this->storeCalling($request);
 
-                        // //Postpone clashing ticket of current user if neccessary
+                        // Postpone clashing ticket of current user if neccessary
                         $this->postponeOtherTicket($ticket);
                         
-                        // //Update Queue & tickets
+                        // Update Queue & tickets
                         $queue = $this->refreshQueue($queue);
                         $queue->ticket_serving_now = $ticket->id;
                         $queue->save();

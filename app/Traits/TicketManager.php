@@ -350,7 +350,7 @@ trait TicketManager {
 
     public function checkNear($ticket){
 
-        return $ticket->wait_time < 310 && $ticket->wait_time > 300;
+        return $ticket->wait_time == 300;
     }
 
 }

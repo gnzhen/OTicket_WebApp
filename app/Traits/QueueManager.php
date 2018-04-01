@@ -58,7 +58,7 @@ trait QueueManager {
         //Update ticket in queue
         foreach($queue->tickets as $ticket){
 
-            if($ticket->status == "serving" || $ticket->status == "waiting"){
+            if($ticket->status == "waiting"){
 
                 $ticket = $this->refreshTicket($queue, $ticket);
             }
