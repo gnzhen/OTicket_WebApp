@@ -91,8 +91,33 @@ class AppController extends Controller
 		$hours = floor($seconds / 3600);
   		$minutes = floor(($seconds / 60) % 60);
   		$seconds = $seconds % 60;
-  
-  		return $hours > 0 ? "$hours hr $minutes min" : ($minutes > 0 ? "$minutes min $seconds sec" : "$seconds sec");
+
+        $stringTime = "";
+
+        if($hours > 0){
+
+            $stringTime = $hours." hr";
+
+            if($minutes > 0){
+
+                $stringTime = $stringTime." ".$minutes." min";
+            }
+        }
+        else if($minutes > 0){
+            
+            $stringTime = $minutes." min";
+
+            if($seconds > 0){
+
+                $stringTime = $stringTime." ".$seconds." sec";    
+            }
+        }
+        else if($seconds > 0){
+
+            $stringTime = $seconds." sec";
+        }
+
+        return $stringTime;
 	}
 
 	public function formatTime($datetime){
@@ -173,58 +198,6 @@ class AppController extends Controller
 
             return redirect()->route('home')->with('success', 'Data refreshed!');
         }
-	}
-
-	public function getTicketsToCallJSON(Request $request){
-
-		$validator = Validator::make($request->all(), [
-    		'branchId' => 'required|integer'
-        ]);
-
-        if ($validator->fails()) {
-			
-            return response()->json($validator->messages());
-
-        } 
-        else {
-        	
-        	$branchServices = BranchService::where('branch_id', $request->branchId)->get();
-        	$branchServicesId = $branchServices->pluck('id');
-
-            if(!$branchServicesId->isEmpty()){
-            	$queues = Queue::where('active', 1)->whereIn('branch_service_id', $branchServicesId)->with('branchService')->with('tickets')->get();
-            	return $queues;
-        	}
-        }
-
-      //   	$ticket = Ticket::findOrFail($request->id);
-      //   	$ticketServingNow = Ticket::find($ticket->queue->ticket_serving_now);
-
-    		// $ticketWithDetails['id'] = $ticket->id;
-    		// $ticketWithDetails['ticket_no'] = $ticket->ticket_no;
-    		// $ticketWithDetails['issue_time'] = $ticket->issue_time;
-    		// $ticketWithDetails['queue_id'] = $ticket->queue_id;
-    		// $ticketWithDetails['wait_time'] = $ticket->wait_time;
-    		// $ticketWithDetails['mobile_user_id'] = $ticket->mobile_user_id;
-    		// $ticketWithDetails['ppl_ahead'] = $ticket->ppl_ahead;
-    		// $ticketWithDetails['postponed'] = $ticket->postponed;
-    		// $ticketWithDetails['status'] = $ticket->status;
-    		// $ticketWithDetails['branch_name'] = $ticket->queue->branchService->branch->name;
-    		// $ticketWithDetails['service_name'] = $ticket->queue->branchService->service->name;
-    		// $ticketWithDetails['serve_time'] = $ticket->serve_time->format('h:i A');
-    		// $ticketWithDetails['disposed_time'] = $ticket->disposed_time;
-
-      //   	if($ticketServingNow){
-      //   		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow->ticket_no;
-      //   	}
-      //   	else{
-      //   		$ticketWithDetails['ticket_serving_now'] = $ticketServingNow;
-      //   	}
-
-
-    		// return response()->json($ticketWithDetails);
-
-      //   $tickets = Ticket::where('status','=','waiting')->orderBy('issue_time')->get();
 	}
 
 }

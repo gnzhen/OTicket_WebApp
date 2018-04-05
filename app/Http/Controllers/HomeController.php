@@ -77,10 +77,6 @@ class HomeController extends Controller
 
                 $appController = new AppController;
 
-                echo $branchService->branch->name
-                    . " (" . $branchService->service->name . ")" 
-                    . ": ". $appController->secToString($sysWaitTime) .", ";
-
             } catch (\Exception $e) {
 
                 DB::rollback();

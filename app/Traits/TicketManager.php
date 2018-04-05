@@ -9,6 +9,7 @@ use App\MobileUser;
 use Carbon\Carbon;
 use App\Traits\WaitTimeManager;
 use App\Traits\FCMManager;
+use DB;
 
 trait TicketManager {
 
@@ -74,24 +75,39 @@ trait TicketManager {
         return $ticket;
     }
 
-    public function refreshTicket($queue, $ticket){
+    public function refreshTicket($queue, $tix){
 
-        $ticket->ppl_ahead = $this->getWaitingTicketInfrontNo($queue, $ticket);
-        $ticket->wait_time = $this->calTicketWaitTime($queue, $ticket);  
+        DB::beginTransaction();
 
-        $ticket->save();  
+        try {
 
-        $change = null;
+            $ticket = Ticket::lockForUpdate()->findOrFail($tix->id);
 
-        if($ticket->mobile_user_id != null){
+            $ticket->ppl_ahead = $this->getWaitingTicketInfrontNo($queue, $ticket);
+            $ticket->wait_time = $this->calTicketWaitTime($queue, $ticket);  
 
-            $change = $this->checkChange($ticket);
+            $ticket->save();  
+
+            $change = null;
+
+            if($ticket->mobile_user_id != null){
+
+                $change = $this->checkChange($ticket);
+            }
+
+            //serve_time change
+            $ticket->serve_time = $this->calServeTime($ticket);
+
+            $ticket->save();
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            throw $e;
         }
-
-        //serve_time change
-        $ticket->serve_time = $this->calServeTime($ticket);
-
-        $ticket->save();
 
         //notify user for wait time change
         if($change != null){
@@ -326,7 +342,7 @@ trait TicketManager {
     public function checkChange($ticket){
         $newServeTime = Carbon::now('Asia/Kuala_Lumpur')->addSeconds($ticket->wait_time);
         $oldServeTime = Carbon::parse($ticket->serve_time, 'Asia/Kuala_Lumpur');
-        
+
         if($newServeTime->gte($oldServeTime)){
             $condition = "delay";
             $serveTimeDiff = $newServeTime->diffInSeconds($oldServeTime);
@@ -336,8 +352,8 @@ trait TicketManager {
             $serveTimeDiff = $oldServeTime->diffInSeconds($newServeTime);
         }
 
-        // Create change if serve time change is more than 3 minutes
-        if($serveTimeDiff > 180){
+        // Create change if serve time change is more than 5 minutes
+        if($serveTimeDiff > 300){
             $change = new Change();
             $change->ticket_id = $ticket->id;
             $change->change = $condition;
@@ -350,7 +366,7 @@ trait TicketManager {
 
     public function checkNear($ticket){
 
-        return $ticket->wait_time == 300;
+        return $ticket->wait_time == 301;
     }
 
 }

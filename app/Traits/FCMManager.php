@@ -40,7 +40,7 @@ trait FCMManager {
 
             PushNotification::app('oticket')->to($deviceToken->token)->send($noti);
 
-            return $noti;
+            return true;
         }
     }
 

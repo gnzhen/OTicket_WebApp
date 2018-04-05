@@ -382,19 +382,16 @@ class CallController extends Controller
 
     public function done(Request $request){
 
-        DB::beginTransaction();
-
         try {
+
+            DB::beginTransaction();
+
             $calling = Calling::lockForUpdate()->findOrFail($request->calling_id);
-            $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
             $branchCounter = BranchCounter::lockForUpdate()->findOrFail($request->branch_counter_id);
             $ticket = Ticket::lockForUpdate()->findOrFail($calling->ticket_id);
 
             //Update Ticket
             $ticket = $this->doneTicket($ticket);
-
-            //Update Queue & tickets
-            $queue = $this->refreshQueue($queue);
 
             //Update Calling
             $calling = $this->stopCalling($calling);
@@ -413,6 +410,15 @@ class CallController extends Controller
             //Update Branch Counter
             $branchCounter = $this->branchCounterStopCalling($branchCounter);
 
+            DB::commit();
+
+            DB::beginTransaction();
+
+            $queue = Queue::lockForUpdate()->findOrFail($request->queue_id);
+            
+            //Update Queue & tickets
+            $queue = $this->refreshQueue($queue);
+            
             DB::commit();
 
             if($queue->active == 0)
